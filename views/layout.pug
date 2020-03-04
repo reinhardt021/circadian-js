@@ -11,14 +11,8 @@ html
   body.has-navbar-fixed-bottom
     nav.navbar.is-fixed-bottom
       div.navbar-brand
-        a.navbar-item(href='#')
-          i.fas.fa-bug.fa-2x
         div.column.is-half.is-centered.has-text-centered
-          button.button.has-text-centered.is-success.is-inverted.is-light
-            i.fas.fa-play-circle.fa-3x
+          button.button.has-text-centered.is-success.is-outlined.is-inverted.is-rounded
+            | GO
 
-        a.navbar-burger.burger(role='button', aria-label='menu', aria-expanded='false' data-target='navbarMenu')
-          span(aria-hidden='true')
-          span(aria-hidden='true')
-          span(aria-hidden='true')
     block content
