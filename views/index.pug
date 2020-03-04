@@ -24,5 +24,9 @@ block content
     p {{ message }}
     input.input(type='text', v-model='message')
 
+  div#app-7 
+    ol  
+      todo-item(v-for='item in groceryList', v-bind:todo='item', v-bind:key='item.id')
+
 
   script(src='/javascripts/index.js')
