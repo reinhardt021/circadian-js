@@ -11,8 +11,15 @@ html
   body.has-navbar-fixed-bottom
     nav.navbar.is-fixed-bottom
       div.navbar-brand
+        a.navbar-item(href='#')
+          h1.title
+            i.fas.fa-bug
         div.column.is-half.is-centered.has-text-centered
           button.button.has-text-centered.is-success.is-rounded
             | GO
+        a.navbar-burger.burger(role='button', aria-label='menu', aria-expanded='false' data-target='navbarMenu')
+          span(aria-hidden='true')
+          span(aria-hidden='true')
+          span(aria-hidden='true')
 
     block content
