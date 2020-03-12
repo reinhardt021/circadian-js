@@ -83,7 +83,7 @@ body {
 }
 
 /* the transparent black outlines surrounding */
-.timer ::before, ::after {
+.timer ::before {
   content: '';
   display: block;
   position: absolute;

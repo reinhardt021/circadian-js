@@ -91,7 +91,8 @@
             minutes: 25,
             seconds: '00',
 
-            isTimerActive: false,
+            // isTimerActive: true, // should show Pause button
+            isTimerActive: false, // should show Play button
         },
     });
 
