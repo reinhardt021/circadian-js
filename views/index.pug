@@ -7,26 +7,37 @@ block content
         i.fas.fa-bug
         |  #{title}
       //- p.subtitle Welcome to #{title}
-  div#app {{ message }}
-  div#app-2
-    span(v-bind:title='message') 
-      | Hover your mouse over me for a few seconds to see my dynamically bound title!
-  div#app-3
-    span(v-if='seen') Now you see me
-  div#app-4
-    ol
-      li(v-for='todo in todos') {{ todo.text }}
-  div#app-5
-    p {{ message }}
-    button.button(v-on:click='reverseMessage') Reverse Message
+  //- div#app {{ message }}
+  //- div#app-2
+  //-   span(v-bind:title='message') 
+  //-     | Hover your mouse over me for a few seconds to see my dynamically bound title!
+  //- div#app-3
+  //-   span(v-if='seen') Now you see me
+  //- div#app-4
+  //-   ol
+  //-     li(v-for='todo in todos') {{ todo.text }}
+  //- div#app-5
+  //-   p {{ message }}
+  //-   button.button(v-on:click='reverseMessage') Reverse Message
 
-  div#app-6
-    p {{ message }}
-    input.input(type='text', v-model='message')
+  //- div#app-6
+  //-   p {{ message }}
+  //-   input.input(type='text', v-model='message')
 
-  div#app-7 
-    ol  
-      todo-item(v-for='item in groceryList', v-bind:todo='item', v-bind:key='item.id')
+  //- div#app-7 
+  //-   ol  
+  //-     todo-item(v-for='item in groceryList', v-bind:todo='item', v-bind:key='item.id')
 
+  div#app-8.site(:class="{'site-break': isBreakTime}")
+    app-main(:is-break-time='isBreakTime', :minutes='minutes', :seconds='seconds')
+
+  script#app-main(type='text/x-template')
+    main.site-content
+      div.container
+        div.timer
+          span.timer-session.js-session {{ isBreakTime ? 'break' : 'work' }}
+          span.timer-countdown.js-countdown {{ `${minutes}:${seconds}` }}
 
   script(src='/javascripts/index.js')
+
+

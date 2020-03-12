@@ -63,4 +63,27 @@
         }
     })
 
+    Vue.component('app-main', {
+        props: [
+            'isBreakTime',
+            'minutes',
+            'seconds',
+        ],
+        template: '#app-main',
+    });
+
+    let app8 = new Vue({
+        el: '#app-8',
+        data: {
+            // Settings
+            initWork: 25,
+            initShortBreak: 5,
+
+            // App state
+            isBreakTime: false,
+            minutes: 25,
+            seconds: '00'
+        },
+    });
+
 // })();
