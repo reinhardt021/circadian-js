@@ -4,22 +4,23 @@ html
     title= title
     meta(charset='utf-8')
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css')
+    //- link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://use.fontawesome.com/releases/v5.3.1/js/all.js' defer)
     script(src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js')
-  body.has-navbar-fixed-bottom
-    nav.navbar.is-fixed-bottom
-      div.navbar-brand
-        a.navbar-item(href='#')
-          h1.title
-            i.fas.fa-bug
-        div.column.is-half.is-centered.has-text-centered
-          button.button.has-text-centered.is-success.is-rounded
-            | GO
-        a.navbar-burger.burger(role='button', aria-label='menu', aria-expanded='false' data-target='navbarMenu')
-          span(aria-hidden='true')
-          span(aria-hidden='true')
-          span(aria-hidden='true')
+  body
+    //- body.has-navbar-fixed-bottom
+    //- nav.navbar.is-fixed-bottom
+    //-   div.navbar-brand
+    //-     a.navbar-item(href='#')
+    //-       h1.title
+    //-         i.fas.fa-bug
+    //-     div.column.is-half.is-centered.has-text-centered
+    //-       button.button.has-text-centered.is-success.is-rounded
+    //-         | GO
+        //- a.navbar-burger.burger(role='button', aria-label='menu', aria-expanded='false' data-target='navbarMenu')
+        //-   span(aria-hidden='true')
+        //-   span(aria-hidden='true')
+        //-   span(aria-hidden='true')
 
     block content
