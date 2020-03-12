@@ -72,6 +72,13 @@
         template: '#app-main',
     });
 
+    Vue.component('app-controls', {
+        props: [
+            'isTimerActive',
+        ],
+        template: '#app-controls',
+    });
+
     let app8 = new Vue({
         el: '#app-8',
         data: {
@@ -82,7 +89,9 @@
             // App state
             isBreakTime: false,
             minutes: 25,
-            seconds: '00'
+            seconds: '00',
+
+            isTimerActive: false,
         },
     });
 
