@@ -30,7 +30,7 @@ block content
 
   div#app-8.site(:class="{'site-break': isBreakTime}")
     app-main(:is-break-time='isBreakTime', :minutes='minutes', :seconds='seconds')
-    app-controls(:is-timer-active='isTimerActive')
+    app-controls(:is-timer-active='isTimerActive', @reset-timer='resetTimer', @toggle-timer='toggleTimer', @toggle-sidebar='toggleSidebar')
 
   script#app-main(type='text/x-template')
     main.site-content
@@ -42,10 +42,10 @@ block content
   script#app-controls(type='text/x-template')
     div.container
       div.controls
-        button.btn-sm(title='reset')
+        button.btn-sm(title='reset-timer', @click='resetTimer')
           svg(width='16', height='20', xmlns='http://www.w3.org/2000/svg')
             path(d='M8 4.023c4.398 0 8 3.556 8 7.954 0 4.397-3.602 8-8 8s-8-3.603-8-8h2.012A5.97 5.97 0 0 0 8 17.965a5.97 5.97 0 0 0 5.988-5.988A5.97 5.97 0 0 0 8 5.988v4.024L2.994 5.006 8 0v4.023z', fill='#FFF', fill-rule='nonzero')
-        button.btn-md
+        button.btn-md(@click='toggleTimer')
           span.flex-center(v-if='isTimerActive')
             svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
               path(d='M8.016.016H12v13.968H8.016V.016zM0 13.984V.016h3.984v13.968H0z', fill='#FFF', fill-rule='non-zero')
@@ -53,7 +53,7 @@ block content
             svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
               path(d='M0 0l14 9-14 9z', fill='#FFF', fill-rule='non-zero')
 
-        button.btn-sm(title='settings')
+        button.btn-sm(title='settings', @click='toggleSidebar')
           svg(width='24', height='22', xmlns='http://www.w3.org/2000/svg')
             path(d='M 9.6679688 2 L 9.1757812 4.5234375 C 8.3550224 4.8338012 7.5961042 5.2674041 6.9296875 5.8144531 L 4.5058594 4.9785156 L 2.1738281 9.0214844 L 4.1132812 10.707031 C 4.0445153 11.128986 4 11.558619 4 12 C 4 12.441381 4.0445153 12.871014 4.1132812 13.292969 L 2.1738281 14.978516 L 4.5058594 19.021484 L 6.9296875 18.185547 C 7.5961042 18.732596 8.3550224 19.166199 9.1757812 19.476562 L 9.6679688 22 L 14.332031 22 L 14.824219 19.476562 C 15.644978 19.166199 16.403896 18.732596 17.070312 18.185547 L 19.494141 19.021484 L 21.826172 14.978516 L 19.886719 13.292969 C 19.955485 12.871014 20 12.441381 20 12 C 20 11.558619 19.955485 11.128986 19.886719 10.707031 L 21.826172 9.0214844 L 19.494141 4.9785156 L 17.070312 5.8144531 C 16.403896 5.2674041 15.644978 4.8338012 14.824219 4.5234375 L 14.332031 2 L 9.6679688 2 z M 12 8 C 14.209 8 16 9.791 16 12 C 16 14.209 14.209 16 12 16 C 9.791 16 8 14.209 8 12 C 8 9.791 9.791 8 12 8 z', fill='#FFF', fill-rule='non-zero')
   script(src='/javascripts/index.js')

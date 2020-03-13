@@ -77,6 +77,17 @@
             'isTimerActive',
         ],
         template: '#app-controls',
+        methods: {
+            resetTimer() {
+                this.$emit('reset-timer');
+            },
+            toggleTimer() {
+                this.$emit('toggle-timer');
+            },
+            toggleSidebar() {
+                this.$emit('toggle-sidebar');
+            },
+        },
     });
 
     let app8 = new Vue({
@@ -93,6 +104,20 @@
 
             // isTimerActive: true, // should show Pause button
             isTimerActive: false, // should show Play button
+        },
+        methods: {
+            resetTimer: function() {
+                const self = this;
+                console.log('>>> resetTimer self: ', self);
+            },
+            toggleTimer: function() {
+                const self = this;
+                console.log('>>> toggleTimer self: ', self);
+            },
+            toggleSidebar: function() {
+                const self = this;
+                console.log('>>> toggleSidebar self: ', self);
+            },
         },
     });
 
