@@ -29,8 +29,8 @@ block content
   //-     todo-item(v-for='item in groceryList', v-bind:todo='item', v-bind:key='item.id')
 
   div#app-8.site(:class="{'site-break': isBreakTime}")
-    app-main(:is-break-time='isBreakTime', :minutes='minutes', :seconds='seconds')
-    app-controls(:is-timer-active='isTimerActive', @reset-timer='resetTimer', @toggle-timer='toggleTimer', @toggle-sidebar='toggleSidebar')
+    app-main(:is-break-time='isBreakTime', :minutes='minutes', :seconds='seconds', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
+    app-controls(@reset-timer='resetTimer', @toggle-sidebar='toggleSidebar')
 
   script#app-main(type='text/x-template')
     main.site-content
@@ -38,6 +38,13 @@ block content
         div.timer
           span.timer-session.js-session {{ isBreakTime ? 'break' : 'work' }}
           span.timer-countdown.js-countdown {{ `${minutes}:${seconds}` }}
+          button.btn-timer(@click='toggleTimer')
+            span.flex-center(v-if='isTimerActive')
+              svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
+                path(d='M8.016.016H12v13.968H8.016V.016zM0 13.984V.016h3.984v13.968H0z', fill='#FFF', fill-rule='non-zero')
+            span.flex-center(v-else)
+              svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
+                path(d='M0 0l14 9-14 9z', fill='#FFF', fill-rule='non-zero')
 
   script#app-controls(type='text/x-template')
     div.container
@@ -45,13 +52,13 @@ block content
         button.btn-sm(title='reset-timer', @click='resetTimer')
           svg(width='16', height='20', xmlns='http://www.w3.org/2000/svg')
             path(d='M8 4.023c4.398 0 8 3.556 8 7.954 0 4.397-3.602 8-8 8s-8-3.603-8-8h2.012A5.97 5.97 0 0 0 8 17.965a5.97 5.97 0 0 0 5.988-5.988A5.97 5.97 0 0 0 8 5.988v4.024L2.994 5.006 8 0v4.023z', fill='#FFF', fill-rule='nonzero')
-        button.btn-md(@click='toggleTimer')
-          span.flex-center(v-if='isTimerActive')
-            svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
-              path(d='M8.016.016H12v13.968H8.016V.016zM0 13.984V.016h3.984v13.968H0z', fill='#FFF', fill-rule='non-zero')
-          span.flex-center(v-else)
-            svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
-              path(d='M0 0l14 9-14 9z', fill='#FFF', fill-rule='non-zero')
+        //- button.btn-md(@click='toggleTimer')
+        //-   span.flex-center(v-if='isTimerActive')
+        //-     svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
+        //-       path(d='M8.016.016H12v13.968H8.016V.016zM0 13.984V.016h3.984v13.968H0z', fill='#FFF', fill-rule='non-zero')
+        //-   span.flex-center(v-else)
+        //-     svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
+        //-       path(d='M0 0l14 9-14 9z', fill='#FFF', fill-rule='non-zero')
 
         button.btn-sm(title='settings', @click='toggleSidebar')
           svg(width='24', height='22', xmlns='http://www.w3.org/2000/svg')

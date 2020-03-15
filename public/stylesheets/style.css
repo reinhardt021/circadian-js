@@ -133,9 +133,22 @@ button:not(:disabled) {
 .controls {
   padding-bottom: 24px;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   align-items: center;
   justify-content: center;
+}
+
+.controls button {
+  margin-bottom: 12px;
+}
+
+.btn-timer {
+  margin-top: 1rem;
+  /* margin: 1.5rem 1.5rem; */
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto; */
 }
 
 .btn-sm {

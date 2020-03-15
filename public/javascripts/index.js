@@ -65,24 +65,25 @@
 
     Vue.component('app-main', {
         props: [
-            'isBreakTime',
             'minutes',
             'seconds',
+            'isTimerActive',
+            'isBreakTime',
         ],
         template: '#app-main',
+        methods: {
+            toggleTimer() {
+                this.$emit('toggle-timer');
+            },
+        },
     });
 
     Vue.component('app-controls', {
-        props: [
-            'isTimerActive',
-        ],
+        props: [],
         template: '#app-controls',
         methods: {
             resetTimer() {
                 this.$emit('reset-timer');
-            },
-            toggleTimer() {
-                this.$emit('toggle-timer');
             },
             toggleSidebar() {
                 this.$emit('toggle-sidebar');
@@ -98,21 +99,24 @@
             initShortBreak: 5,
 
             // App state
-            isBreakTime: false,
             minutes: 25,
             seconds: '00',
-
+            isBreakTime: false,
             // isTimerActive: true, // should show Pause button
             isTimerActive: false, // should show Play button
         },
         methods: {
+            toggleTimer: function() {
+                const self = this;
+                const isBreakTime = self.isBreakTime;
+                console.log('>>> toggleTimer isBreakTime: ', isBreakTime);
+
+                // toggle Timer play and pause button
+                self.isTimerActive = !self.isTimerActive;
+            },
             resetTimer: function() {
                 const self = this;
                 console.log('>>> resetTimer self: ', self);
-            },
-            toggleTimer: function() {
-                const self = this;
-                console.log('>>> toggleTimer self: ', self);
             },
             toggleSidebar: function() {
                 const self = this;
