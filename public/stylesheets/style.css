@@ -98,7 +98,9 @@ body {
 }
 
 .timer-countdown {
+  margin-top: 1.5rem;
   font-size: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* CONTROLS */
@@ -128,10 +130,6 @@ button:not(:disabled) {
 
 .controls button {
   margin-bottom: 12px;
-}
-
-.btn-timer {
-  margin-top: 1rem;
 }
 
 .btn-sm {
