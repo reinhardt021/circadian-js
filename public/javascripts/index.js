@@ -31,13 +31,13 @@ const app8 = new Vue({
     el: '#app-8',
     data: {
         // Settings
-        initWork: 25,
-        initShortBreak: 5,
+        initWork: '25',
+        initShortBreak: '05',
 
         // App state
         timer: null, // used to keep track of interval of counting down
-        hours: '01',
-        minutes: '01',
+        hours: '00',
+        minutes: '00',
         seconds: '03',
         isTimerActive: false, // should show Play button
         isBreakTime: false,
@@ -81,34 +81,22 @@ const app8 = new Vue({
                 }
 
                 // test what happens if all reaches zero
-
+                // >> just prints this
                 console.log(`>>> the time is: ${hours}:${minutes}:${seconds}`);
-                // if seconds are zero 
-                // check if minutes > zero then minus minutes & start at 59
-
-                // >> then remove minute if not zero & seconds start at 59
-                // if minute is zero 
-                // >> then remove hour if not zero & start minutes at 59
-                // if seconds are zero and minute is zero then check if hour is zero
-                //
-                
-
-                // pad the number if less than 10 (sec/min/hr)
-
-                // if timer reaches 00:00:00 then stop all count down
-                // don't start until 
+                // if timer reaches 00:00:00 then stop all count down #TODO
+                // don't start until press play again? or reset
             }
 
             // toggle Timer play and pause button
             self.isTimerActive = !self.isTimerActive;
 
             if (self.isTimerActive) {
-                self.timer = setInterval(countdown,1000);
+                self.timer = setInterval(countdown, 1000);
             } else {
                 clearInterval(self.timer);
             }
 
-            // do something to check if it is break time (or next task)
+            // do something to check if it is break time (or next task) #TODO
         },
         resetTimer: function() {
             const self = this;
