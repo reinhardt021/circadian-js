@@ -6,27 +6,6 @@ block content
       h1.title 
         i.fas.fa-bug
         |  #{title}
-      //- p.subtitle Welcome to #{title}
-  //- div#app {{ message }}
-  //- div#app-2
-  //-   span(v-bind:title='message') 
-  //-     | Hover your mouse over me for a few seconds to see my dynamically bound title!
-  //- div#app-3
-  //-   span(v-if='seen') Now you see me
-  //- div#app-4
-  //-   ol
-  //-     li(v-for='todo in todos') {{ todo.text }}
-  //- div#app-5
-  //-   p {{ message }}
-  //-   button.button(v-on:click='reverseMessage') Reverse Message
-
-  //- div#app-6
-  //-   p {{ message }}
-  //-   input.input(type='text', v-model='message')
-
-  //- div#app-7 
-  //-   ol  
-  //-     todo-item(v-for='item in groceryList', v-bind:todo='item', v-bind:key='item.id')
 
   div#app-8.site(:class="{'site-break': isBreakTime}")
     app-main(:is-break-time='isBreakTime', :minutes='minutes', :seconds='seconds', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
@@ -52,13 +31,6 @@ block content
         button.btn-sm(title='reset-timer', @click='resetTimer')
           svg(width='16', height='20', xmlns='http://www.w3.org/2000/svg')
             path(d='M8 4.023c4.398 0 8 3.556 8 7.954 0 4.397-3.602 8-8 8s-8-3.603-8-8h2.012A5.97 5.97 0 0 0 8 17.965a5.97 5.97 0 0 0 5.988-5.988A5.97 5.97 0 0 0 8 5.988v4.024L2.994 5.006 8 0v4.023z', fill='#FFF', fill-rule='nonzero')
-        //- button.btn-md(@click='toggleTimer')
-        //-   span.flex-center(v-if='isTimerActive')
-        //-     svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
-        //-       path(d='M8.016.016H12v13.968H8.016V.016zM0 13.984V.016h3.984v13.968H0z', fill='#FFF', fill-rule='non-zero')
-        //-   span.flex-center(v-else)
-        //-     svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')
-        //-       path(d='M0 0l14 9-14 9z', fill='#FFF', fill-rule='non-zero')
 
         button.btn-sm(title='settings', @click='toggleSidebar')
           svg(width='24', height='22', xmlns='http://www.w3.org/2000/svg')
