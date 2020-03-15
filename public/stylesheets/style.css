@@ -180,3 +180,13 @@ button:not(:disabled) {
   z-index: 4;
   transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
 }
+
+.settings-enter-active,
+.settings-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+}
+
+.settings-enter,
+.settings-leave-to {
+  transform: translateX(100%);
+}
