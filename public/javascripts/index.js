@@ -28,8 +28,8 @@ Vue.component('app-controls', {
 });
 
 const defaultHours = '00';
-const defaultMinutes = '00';
-const defaultSeconds = '03';
+const defaultMinutes = '01';
+const defaultSeconds = '02';
 
 const app8 = new Vue({
     el: '#app-8',
@@ -59,9 +59,9 @@ const app8 = new Vue({
             }
 
             function countdownTime() {
-                let hours = Number(self.$data.hours);
-                let minutes = Number(self.$data.minutes);
-                let seconds = Number(self.$data.seconds);
+                const hours = Number(self.$data.hours);
+                const minutes = Number(self.$data.minutes);
+                const seconds = Number(self.$data.seconds);
 
                 if (seconds > 0) {
                     self.seconds--;
@@ -84,26 +84,23 @@ const app8 = new Vue({
                     return;
                 }
 
-                // test what happens if all reaches zero [x]-
-                // >> just prints this
                 console.log(`>>> the time is: ${hours}:${minutes}:${seconds}`);
                 // if timer reaches 00:00:00 then stop all count down #TODO
                 // don't start until press play again? or reset
 
-                // test what happens if timer is set to negative value [x]-
-                // << just prints that above 
+                // do something to check if it is break time (or next task) #TODO
             }
 
             // toggle Timer play and pause button
             self.isTimerActive = !self.isTimerActive;
 
+            // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
                 self.timer = setInterval(countdownTime, 1000);
             } else {
                 clearInterval(self.timer);
             }
 
-            // do something to check if it is break time (or next task) #TODO
         },
         resetTimer: function() {
             const self = this;
