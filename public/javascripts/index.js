@@ -27,38 +27,42 @@ Vue.component('app-controls', {
     },
 });
 
+const defaultHours = '00';
+const defaultMinutes = '00';
+const defaultSeconds = '03';
+
 const app8 = new Vue({
     el: '#app-8',
     data: {
         // Settings
-        initWork: '25',
+        initialHours: defaultHours,
+        initialMinutes: defaultMinutes,
+        initialSeconds: defaultSeconds,
+        
+        // figure this part out #TODO
         initShortBreak: '05',
 
         // App state
         timer: null, // used to keep track of interval of counting down
-        hours: '00',
-        minutes: '00',
-        seconds: '03',
+        hours: defaultHours,
+        minutes: defaultMinutes,
+        seconds: defaultSeconds,
         isTimerActive: false, // should show Play button
         isBreakTime: false,
     },
     methods: {
         toggleTimer: function() {
             const self = this;
-            const isBreakTime = self.isBreakTime;
-            console.log('>>> toggleTimer isBreakTime: ', isBreakTime);
 
             function ensurePadding(count) {
                 return (count < 10 ? `0${count}` : count);
             }
 
-            // start the timer count down
-            function countdown() {
+            function countdownTime() {
                 let hours = Number(self.$data.hours);
                 let minutes = Number(self.$data.minutes);
                 let seconds = Number(self.$data.seconds);
 
-                // remove seconds
                 if (seconds > 0) {
                     self.seconds--;
                     self.seconds = ensurePadding(self.seconds);
@@ -80,18 +84,21 @@ const app8 = new Vue({
                     return;
                 }
 
-                // test what happens if all reaches zero
+                // test what happens if all reaches zero [x]-
                 // >> just prints this
                 console.log(`>>> the time is: ${hours}:${minutes}:${seconds}`);
                 // if timer reaches 00:00:00 then stop all count down #TODO
                 // don't start until press play again? or reset
+
+                // test what happens if timer is set to negative value [x]-
+                // << just prints that above 
             }
 
             // toggle Timer play and pause button
             self.isTimerActive = !self.isTimerActive;
 
             if (self.isTimerActive) {
-                self.timer = setInterval(countdown, 1000);
+                self.timer = setInterval(countdownTime, 1000);
             } else {
                 clearInterval(self.timer);
             }
@@ -100,7 +107,13 @@ const app8 = new Vue({
         },
         resetTimer: function() {
             const self = this;
-            console.log('>>> resetTimer self: ', self);
+
+            clearInterval(self.timer);
+            self.isTimerActive = false;
+            self.hours = self.initialHours;
+            self.minutes = self.initialMinutes;
+            self.seconds = self.initialSeconds;
+
         },
         toggleSidebar: function() {
             const self = this;
