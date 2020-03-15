@@ -21,9 +21,21 @@ Vue.component('app-controls', {
         resetTimer() {
             this.$emit('reset-timer');
         },
-        toggleSidebar() {
-            this.$emit('toggle-sidebar');
+        toggleSettings() {
+            this.$emit('toggle-settings');
         },
+    },
+});
+
+Vue.component('app-settings', {
+    props: [],
+    template: '#app-settings',
+    methods: {
+        toggle() {
+            //  03> we then call the method name that was passed in
+            // note that we $emit the method name passed into this component
+            this.$emit('toggle');
+        }
     },
 });
 
@@ -41,6 +53,7 @@ const app8 = new Vue({
         
         // figure this part out #TODO
         initShortBreak: '05',
+        isBreakTime: false,
 
         // App state
         timer: null, // used to keep track of interval of counting down
@@ -48,7 +61,7 @@ const app8 = new Vue({
         minutes: defaultMinutes,
         seconds: defaultSeconds,
         isTimerActive: false, // should show Play button
-        isBreakTime: false,
+        isSettingsOpen: false,
     },
     methods: {
         toggleTimer: function() {
@@ -112,9 +125,10 @@ const app8 = new Vue({
             self.seconds = self.initialSeconds;
 
         },
-        toggleSidebar: function() {
+        // 01> method created
+        toggleSettings: function() {
             const self = this;
-            console.log('>>> toggleSidebar self: ', self);
+            self.isSettingsOpen = !self.isSettingsOpen;
         },
     },
 });
