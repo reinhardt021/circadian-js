@@ -41,12 +41,19 @@ block content
   script#app-settings(type='text/x-template')
     transition(name='settings', enter-active-class='settings-show')
       div.settings
-        div.filter
-          span.filter-title WORK
-          div.filter-time {{ `00:00:00` }}
-          input.filter-input(type='range', min='1', max='24', data-type='work', :value=24)
-          input.filter-input(type='range', min='1', max='59', data-type='work', :value=25)
-          input.filter-input(type='range', min='1', max='59', data-type='work', :value=00)
+        div.tasks
+          div.task
+            span.task-title WORK
+            div.task-time {{ `00:00:00` }}
+            input.task-input(type='range', min='1', max='24', data-type='task-hour', :value=24)
+            input.task-input(type='range', min='1', max='59', data-type='task-minute', :value=25)
+            input.task-input(type='range', min='1', max='59', data-type='task-second', :value=00)
+          div.task
+            span.task-title WORK02
+            div.task-time {{ `00:00:00` }}
+            input.task-input(type='range', min='1', max='24', data-type='task-hour', :value=24)
+            input.task-input(type='range', min='1', max='59', data-type='task-minute', :value=25)
+            input.task-input(type='range', min='1', max='59', data-type='task-second', :value=00)
         //- 04> we then add the click event with the method name we expect - designated in the component definition
         button.settings-toggle(@click='toggle')
           svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')

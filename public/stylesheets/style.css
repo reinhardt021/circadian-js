@@ -168,6 +168,7 @@ button:not(:disabled) {
   padding: 77px 20px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   right: 0;
@@ -189,4 +190,16 @@ button:not(:disabled) {
 .settings-enter,
 .settings-leave-to {
   transform: translateX(100%);
+}
+
+.settings-toggle {
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
