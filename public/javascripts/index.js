@@ -66,8 +66,8 @@ Vue.component('app-settings', {
 });
 
 const defaultHours = 0;
-const defaultMinutes = 1;
-const defaultSeconds = 10;
+const defaultMinutes = 0;
+const defaultSeconds = 5;
 
 let tasks = [
     {
@@ -155,9 +155,11 @@ const app8 = new Vue({
 
             clearInterval(self.timer);
             self.isTimerActive = false;
+            // todo: will have to reset this to the first task in the flow
             self.hours = self.initialHours;
             self.minutes = self.initialMinutes;
             self.seconds = self.initialSeconds;
+            self.time = showTime(self.hours, self.minutes, self.seconds);
 
         },
         toggleSettings: function() {
