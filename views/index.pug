@@ -10,8 +10,7 @@ block content
   div#app-8.site(:class="{'site-break': isBreakTime}")
     app-main(:is-break-time='isBreakTime', :hours='hours', :minutes='minutes', :seconds='seconds', :time='time', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
     app-controls(@reset-timer='resetTimer', @open-settings='toggleSettings')
-    //- 02> we pass in the main method from the app top level into the component
-    app-settings(:task='task', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
+    app-settings(:tasks='tasks', :task='task', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
 
   script#app-main(type='text/x-template')
     main.site-content
@@ -41,24 +40,23 @@ block content
   script#app-settings(type='text/x-template')
     transition(name='settings', enter-active-class='settings-show')
       div.settings
-        div.tasks
-          //- div.task(v-for='task in tasks')
-          div.task
-            span.task-title WORK
-            div.task-time {{ task.time }}
-            input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
-            input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes', @change='handleRangeChange')
-            input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds', @change='handleRangeChange')
-          div.task
-            span.task-title WORK02
-            div.task-time {{ `00:00:00` }}
-            input.task-input(type='range', min='0', max='24', data-type='task-hour', :value=24)
-            input.task-input(type='range', min='0', max='59', data-type='task-minute', :value=25)
-            input.task-input(type='range', min='0', max='59', data-type='task-second', :value=00)
-        //- 04> we then add the click event with the method name we expect - designated in the component definition
-        button.settings-toggle(@click='closeSettings')
-          svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
-            path(fill='#333', fill-rule='evenodd', d='M5.586 7L.636 2.05A1 1 0 0 1 2.05.636L7 5.586l4.95-4.95a1 1 0 0 1 1.414 1.414L8.414 7l4.95 4.95a1 1 0 0 1-1.414 1.414L7 8.414l-4.95 4.95A1 1 0 0 1 .636 11.95L5.586 7z')
+        div.flow
+          h2 Flow
+          div.tasks
+            task(v-for='(task, index) in tasks', v-bind:task='task', v-bind:index='index', v-bind:key='task.id')
+        div.options
+          button.settings-toggle(@click='closeSettings')
+            svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
+              path(fill='#333', fill-rule='evenodd', d='M5.586 7L.636 2.05A1 1 0 0 1 2.05.636L7 5.586l4.95-4.95a1 1 0 0 1 1.414 1.414L8.414 7l4.95 4.95a1 1 0 0 1-1.414 1.414L7 8.414l-4.95 4.95A1 1 0 0 1 .636 11.95L5.586 7z')
+
+  script#task(type='text/x-template')
+    div.task
+      span.task-title {{ task.title }}
+        div.task-time {{ task.time }}
+        //-   input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
+        input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours')
+        input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes')
+        input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds')
 
   script(src='/javascripts/index.js')
 

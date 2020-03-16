@@ -39,51 +39,43 @@ Vue.component('app-controls', {
 Vue.component('app-settings', {
     props: [
         'task',
+        'tasks',
     ],
     template: '#app-settings',
     methods: {
-        handleRangeChange(event) {
-            // todo: one time change event to make API call once new time is decided
-            // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
-            // const data = { 'something': 21 };
-            // this.$emit('change-time', data);
-        },
         closeSettings() {
             this.$emit('close-settings');
         },
     },
-    beforeUpdate: function() {
-        const { hours, minutes, seconds } = this.task;
-    
-        this.task.hours = Number(hours);
-        this.task.minutes = Number(minutes);
-        this.task.seconds = Number(seconds);
-        this.task.time = showTime(hours, minutes, seconds);
-    }
+    components: {
+        'task': {
+            props: [
+                'task'
+            ],
+            template: '#task',
+            beforeUpdate: function() {
+                const { hours, minutes, seconds } = this.task;
+            
+                this.task.hours = Number(hours);
+                this.task.minutes = Number(minutes);
+                this.task.seconds = Number(seconds);
+                this.task.time = showTime(hours, minutes, seconds);
+            },
+            methods: {
+                // handleRangeChange(event) {
+                //     // todo: one time change event to make API call once new time is decided
+                //     // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
+                //     // const data = { 'something': 21 };
+                //     // this.$emit('change-time', data);
+                // },
+            },
+        },
+    },
 });
 
 const defaultHours = 0;
 const defaultMinutes = 0;
 const defaultSeconds = 5;
-
-let tasks = [
-    {
-        id: 1,
-        title: 'Warm Up',
-        time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-        hours: defaultHours,
-        minutes: defaultMinutes,
-        seconds: defaultSeconds,
-    },
-    {
-        id: 2,
-        title: 'Work',
-        time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-        hours: defaultHours,
-        minutes: defaultMinutes,
-        seconds: defaultSeconds,
-    },
-];
 
 const app8 = new Vue({
     el: '#app-8',
@@ -113,6 +105,32 @@ const app8 = new Vue({
             hours: defaultHours,
             minutes: defaultMinutes,
             seconds: defaultSeconds,
+        },
+        tasks: {
+            11: {
+                id: 11,
+                title: 'Warm Up',
+                time: showTime(0, 5, 0),
+                hours: 0,
+                minutes: 5,
+                seconds: 0,
+            },
+            21: {
+                id: 21,
+                title: 'Work',
+                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
+                hours: defaultHours,
+                minutes: defaultMinutes,
+                seconds: defaultSeconds,
+            },
+            31: {
+                id: 31,
+                title: 'Break',
+                time: showTime(0, 1, 7),
+                hours: 0,
+                minutes: 1,
+                seconds: 7,
+            },
         },
     },
     methods: {
@@ -168,6 +186,7 @@ const app8 = new Vue({
             self.seconds = self.initialSeconds;
             self.time = showTime(self.hours, self.minutes, self.seconds);
 
+            // if TIMER is reset then set to the first task in flow
         },
         toggleSettings: function() {
             const self = this;
@@ -177,6 +196,9 @@ const app8 = new Vue({
             // todo: to use for API call later
             // const self = this;
             console.log('>>> app new Vue methods changeTaskTime() data:', data);
+
+            // if TIMER is NOT active then update from settings
+            // if TIMER is active then don't activate until reset
         }
     },
 });
