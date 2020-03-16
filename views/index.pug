@@ -9,9 +9,9 @@ block content
 
   div#app-8.site(:class="{'site-break': isBreakTime}")
     app-main(:is-break-time='isBreakTime', :hours='hours', :minutes='minutes', :seconds='seconds', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
-    app-controls(@reset-timer='resetTimer', @toggle-settings='toggleSettings')
+    app-controls(@reset-timer='resetTimer', @open-settings='toggleSettings')
     //- 02> we pass in the main method from the app top level into the component
-    app-settings(v-show='isSettingsOpen', :is-settings-open='isSettingsOpen', @toggle='toggleSettings')
+    app-settings(:task='task', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
 
   script#app-main(type='text/x-template')
     main.site-content
@@ -34,7 +34,7 @@ block content
           svg(width='16', height='20', xmlns='http://www.w3.org/2000/svg')
             path(fill='#FFF', fill-rule='nonzero', d='M8 4.023c4.398 0 8 3.556 8 7.954 0 4.397-3.602 8-8 8s-8-3.603-8-8h2.012A5.97 5.97 0 0 0 8 17.965a5.97 5.97 0 0 0 5.988-5.988A5.97 5.97 0 0 0 8 5.988v4.024L2.994 5.006 8 0v4.023z')
 
-        button.btn-sm(title='settings', @click='toggleSettings')
+        button.btn-sm(title='settings', @click='openSettings')
           svg(width='24', height='22', xmlns='http://www.w3.org/2000/svg')
             path(fill='#FFF', fill-rule='non-zero', d='M 9.6679688 2 L 9.1757812 4.5234375 C 8.3550224 4.8338012 7.5961042 5.2674041 6.9296875 5.8144531 L 4.5058594 4.9785156 L 2.1738281 9.0214844 L 4.1132812 10.707031 C 4.0445153 11.128986 4 11.558619 4 12 C 4 12.441381 4.0445153 12.871014 4.1132812 13.292969 L 2.1738281 14.978516 L 4.5058594 19.021484 L 6.9296875 18.185547 C 7.5961042 18.732596 8.3550224 19.166199 9.1757812 19.476562 L 9.6679688 22 L 14.332031 22 L 14.824219 19.476562 C 15.644978 19.166199 16.403896 18.732596 17.070312 18.185547 L 19.494141 19.021484 L 21.826172 14.978516 L 19.886719 13.292969 C 19.955485 12.871014 20 12.441381 20 12 C 20 11.558619 19.955485 11.128986 19.886719 10.707031 L 21.826172 9.0214844 L 19.494141 4.9785156 L 17.070312 5.8144531 C 16.403896 5.2674041 15.644978 4.8338012 14.824219 4.5234375 L 14.332031 2 L 9.6679688 2 z M 12 8 C 14.209 8 16 9.791 16 12 C 16 14.209 14.209 16 12 16 C 9.791 16 8 14.209 8 12 C 8 9.791 9.791 8 12 8 z')
 
@@ -42,12 +42,13 @@ block content
     transition(name='settings', enter-active-class='settings-show')
       div.settings
         div.tasks
+          //- div.task(v-for='task in tasks')
           div.task
             span.task-title WORK
-            div.task-time {{ `00:00:00` }}
-            input.task-input(type='range', min='1', max='24', data-type='task-hour', :value=24)
-            input.task-input(type='range', min='1', max='59', data-type='task-minute', :value=25)
-            input.task-input(type='range', min='1', max='59', data-type='task-second', :value=00)
+            div.task-time {{ `${task.hours}:${task.minutes}:${task.seconds}` }}
+            input.task-input(type='range', min='1', max='24', data-type='task-hour', v-model.lazy='task.hours', @change='handleRangeChange')
+            input.task-input(type='range', min='1', max='59', data-type='task-minute', v-model='task.minutes', @change='handleRangeChange')
+            input.task-input(type='range', min='1', max='59', data-type='task-second', v-model='task.seconds', @change='handleRangeChange')
           div.task
             span.task-title WORK02
             div.task-time {{ `00:00:00` }}
@@ -55,7 +56,7 @@ block content
             input.task-input(type='range', min='1', max='59', data-type='task-minute', :value=25)
             input.task-input(type='range', min='1', max='59', data-type='task-second', :value=00)
         //- 04> we then add the click event with the method name we expect - designated in the component definition
-        button.settings-toggle(@click='toggle')
+        button.settings-toggle(@click='closeSettings')
           svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
             path(fill='#333', fill-rule='evenodd', d='M5.586 7L.636 2.05A1 1 0 0 1 2.05.636L7 5.586l4.95-4.95a1 1 0 0 1 1.414 1.414L8.414 7l4.95 4.95a1 1 0 0 1-1.414 1.414L7 8.414l-4.95 4.95A1 1 0 0 1 .636 11.95L5.586 7z')
 

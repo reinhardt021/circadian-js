@@ -21,27 +21,48 @@ Vue.component('app-controls', {
         resetTimer() {
             this.$emit('reset-timer');
         },
-        toggleSettings() {
-            this.$emit('toggle-settings');
+        openSettings() {
+            console.log('>>> Vue.component app-controls methods openSettings()');
+            // calls what is passed into the main app declaration
+            this.$emit('open-settings');
         },
     },
 });
 
 Vue.component('app-settings', {
-    props: [],
+    props: [
+        'task',
+    ],
     template: '#app-settings',
     methods: {
-        toggle() {
+        handleRangeChange(event) {
+            console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
+
+            const data = { 'something': 21 };
+            this.$emit('change-time', data);
+        },
+        closeSettings() {
+            console.log('>>> Vue.component app-settings methods closeSettings()');
             //  03> we then call the method name that was passed in
             // note that we $emit the method name passed into this component
-            this.$emit('toggle');
-        }
+            this.$emit('close-settings');
+        },
     },
 });
 
 const defaultHours = '00';
 const defaultMinutes = '01';
 const defaultSeconds = '02';
+
+let tasks = [
+    {
+        id: 1,
+        time: `${defaultHours}:${defaultMinutes}:${defaultSeconds}`,
+        hours: defaultHours,
+        minutes: defaultMinutes,
+        seconds: defaultSeconds,
+    },
+];
 
 const app8 = new Vue({
     el: '#app-8',
@@ -61,7 +82,14 @@ const app8 = new Vue({
         minutes: defaultMinutes,
         seconds: defaultSeconds,
         isTimerActive: false, // should show Play button
+        
         isSettingsOpen: false,
+        task: {
+            time: `${defaultHours}:${defaultMinutes}:${defaultSeconds}`,
+            hours: defaultHours,
+            minutes: defaultMinutes,
+            seconds: defaultSeconds,
+        },
     },
     methods: {
         toggleTimer: function() {
@@ -127,8 +155,13 @@ const app8 = new Vue({
         },
         // 01> method created
         toggleSettings: function() {
+            console.log('>>> app new Vue methods toggleSettings()');
             const self = this;
             self.isSettingsOpen = !self.isSettingsOpen;
         },
+        changeTaskTime(data) {
+            const self = this;
+            console.log('>>> app new Vue methods changeTaskTime() data:', data);
+        }
     },
 });

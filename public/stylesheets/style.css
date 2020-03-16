@@ -192,6 +192,10 @@ button:not(:disabled) {
   transform: translateX(100%);
 }
 
+.task {
+  margin-bottom: 30px;
+}
+
 .settings-toggle {
   width: 48px;
   height: 48px;
