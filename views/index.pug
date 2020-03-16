@@ -8,7 +8,7 @@ block content
         |  #{title}
 
   div#app-8.site(:class="{'site-break': isBreakTime}")
-    app-main(:is-break-time='isBreakTime', :hours='hours', :minutes='minutes', :seconds='seconds', :time='time', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
+    app-main(:is-break-time='isBreakTime', :current-task='currentTask', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
     app-controls(@reset-timer='resetTimer', @open-settings='toggleSettings')
     app-settings(:tasks='tasks', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
 
@@ -16,8 +16,8 @@ block content
     main.site-content
       div.container
         div.timer
-          span.timer-session.js-session {{ isBreakTime ? 'break' : 'work' }}
-          span.timer-countdown.js-countdown {{ time }}
+          span.timer-session.js-session {{ currentTask.title }}
+          span.timer-countdown.js-countdown {{ currentTask.time }}
           button.btn-timer(@click='toggleTimer')
             span.flex-center(v-if='isTimerActive')
               svg(width='14', height='18', xmlns='http://www.w3.org/2000/svg')

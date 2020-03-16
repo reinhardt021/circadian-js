@@ -8,11 +8,8 @@ function showTime(hours, minutes, seconds) {
 
 Vue.component('app-main', {
     props: [
-        'hours',
-        'minutes',
-        'seconds',
-        'time',
         'isTimerActive',
+        'currentTask',
         'isBreakTime',
     ],
     template: '#app-main',
@@ -92,7 +89,7 @@ const app8 = new Vue({
         isTimerActive: false, // should show Play button
         currentTask: {
             // TODO: move the main timer to use this instead
-            id: 1,
+            id: 21,
             title: 'Work',
             hours: defaultHours,
             minutes: defaultMinutes,
@@ -100,11 +97,6 @@ const app8 = new Vue({
             time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
             timer: null, // used to keep track of interval of counting down
         },
-        hours: defaultHours,
-        minutes: defaultMinutes,
-        seconds: defaultSeconds,
-        time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-        timer: null, // used to keep track of interval of counting down
         
         isSettingsOpen: false,
         tasks: {
@@ -138,28 +130,32 @@ const app8 = new Vue({
         toggleTimer: function() {
             const self = this;
 
-            function countdownTime() {
-                const hours = Number(self.$data.hours);
-                const minutes = Number(self.$data.minutes);
-                const seconds = Number(self.$data.seconds);
+            function countdownTime(dataTask, currentTask) {
+                const hours = Number(dataTask.hours);
+                const minutes = Number(dataTask.minutes);
+                const seconds = Number(dataTask.seconds);
 
                 if (seconds > 0) {
-                    self.seconds--;
+                    currentTask.seconds--;
                 } 
 
                 if (seconds == 0 && minutes > 0) {
-                    self.minutes--;
-                    self.seconds = 59;
+                    currentTask.minutes--;
+                    currentTask.seconds = 59;
                 }
 
                 if (seconds == 0 && minutes == 0 && hours > 0) {
-                    self.hours--;
-                    self.minutes = 59;
-                    self.seconds = 59;
+                    currentTask.hours--;
+                    currentTask.minutes = 59;
+                    currentTask.seconds = 59;
                 }
 
-                self.time = showTime(self.hours, self.minutes, self.seconds);
-                console.log(`>>> the time is: ${self.time}`);
+                currentTask.time = showTime(
+                    currentTask.hours, 
+                    currentTask.minutes, 
+                    currentTask.seconds
+                );
+                console.log(`>>> the time is: ${currentTask.time}`);
                 // if timer reaches 00:00:00 then stop all count down #TODO
                 // don't start until press play again? or reset
                 // do something to check if it is break time (or next task) #TODO
@@ -170,16 +166,21 @@ const app8 = new Vue({
 
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
-                self.timer = setInterval(countdownTime, 1000);
+                self.currentTask.timer = setInterval(
+                    countdownTime, 
+                    1000, 
+                    self.$data.currentTask, 
+                    self.currentTask
+                );
             } else {
-                clearInterval(self.timer);
+                clearInterval(self.currentTask.timer);
             }
 
         },
         resetTimer: function() {
             const self = this;
 
-            clearInterval(self.timer);
+            clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
             // todo: will have to reset this to the first task in the flow
             self.hours = self.initialHours;
