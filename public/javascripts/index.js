@@ -182,12 +182,12 @@ const app8 = new Vue({
 
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
-            // todo: will have to reset this to the first task in the flow
-            self.hours = self.initialHours;
-            self.minutes = self.initialMinutes;
-            self.seconds = self.initialSeconds;
-            self.time = showTime(self.hours, self.minutes, self.seconds);
-
+            
+            const { hours, minutes, seconds, time } = self.tasks[self.currentTask.id];
+            self.currentTask.hours = hours;
+            self.currentTask.minutes = minutes;
+            self.currentTask.seconds = seconds;
+            self.currentTask.time = time;
             // if TIMER is reset then set to the first task in flow
         },
         toggleSettings: function() {
