@@ -10,7 +10,7 @@ block content
   div#app-8.site(:class="{'site-break': isBreakTime}")
     app-main(:is-break-time='isBreakTime', :hours='hours', :minutes='minutes', :seconds='seconds', :time='time', :is-timer-active='isTimerActive', @toggle-timer='toggleTimer')
     app-controls(@reset-timer='resetTimer', @open-settings='toggleSettings')
-    app-settings(:tasks='tasks', :task='task', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
+    app-settings(:tasks='tasks', :is-settings-open='isSettingsOpen', v-show='isSettingsOpen', @change-time='changeTaskTime($event)', @close-settings='toggleSettings')
 
   script#app-main(type='text/x-template')
     main.site-content

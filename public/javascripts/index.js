@@ -38,7 +38,6 @@ Vue.component('app-controls', {
 
 Vue.component('app-settings', {
     props: [
-        'task',
         'tasks',
     ],
     template: '#app-settings',
@@ -90,22 +89,24 @@ const app8 = new Vue({
         isBreakTime: false,
 
         // App state
-        timer: null, // used to keep track of interval of counting down
+        isTimerActive: false, // should show Play button
+        currentTask: {
+            // TODO: move the main timer to use this instead
+            id: 1,
+            title: 'Work',
+            hours: defaultHours,
+            minutes: defaultMinutes,
+            seconds: defaultSeconds,
+            time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
+            timer: null, // used to keep track of interval of counting down
+        },
         hours: defaultHours,
         minutes: defaultMinutes,
         seconds: defaultSeconds,
         time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-        isTimerActive: false, // should show Play button
+        timer: null, // used to keep track of interval of counting down
         
         isSettingsOpen: false,
-        task: {
-            id: 1,
-            title: 'Work',
-            time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-            hours: defaultHours,
-            minutes: defaultMinutes,
-            seconds: defaultSeconds,
-        },
         tasks: {
             11: {
                 id: 11,
