@@ -54,13 +54,10 @@ Vue.component('app-settings', {
     },
     beforeUpdate: function() {
         const { hours, minutes, seconds } = this.task;
-        // const formattedHours = ensurePadding(Number(hours));
-        // const formattedMinutes = ensurePadding(Number(minutes));
-        // const formattedSeconds = ensurePadding(Number(seconds));
     
-        // this.task.hours = hours;
-        // this.task.minutes = minutes;
-        // this.task.seconds = seconds;
+        this.task.hours = Number(hours);
+        this.task.minutes = Number(minutes);
+        this.task.seconds = Number(seconds);
         this.task.time = showTime(hours, minutes, seconds);
     }
 });
@@ -72,6 +69,14 @@ const defaultSeconds = 5;
 let tasks = [
     {
         id: 1,
+        title: 'Warm Up',
+        time: showTime(defaultHours, defaultMinutes, defaultSeconds),
+        hours: defaultHours,
+        minutes: defaultMinutes,
+        seconds: defaultSeconds,
+    },
+    {
+        id: 2,
         title: 'Work',
         time: showTime(defaultHours, defaultMinutes, defaultSeconds),
         hours: defaultHours,
@@ -102,6 +107,8 @@ const app8 = new Vue({
         
         isSettingsOpen: false,
         task: {
+            id: 1,
+            title: 'Work',
             time: showTime(defaultHours, defaultMinutes, defaultSeconds),
             hours: defaultHours,
             minutes: defaultMinutes,
@@ -167,7 +174,8 @@ const app8 = new Vue({
             self.isSettingsOpen = !self.isSettingsOpen;
         },
         changeTaskTime(data) {
-            const self = this;
+            // todo: to use for API call later
+            // const self = this;
             console.log('>>> app new Vue methods changeTaskTime() data:', data);
         }
     },
