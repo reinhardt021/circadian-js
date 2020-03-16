@@ -10,7 +10,6 @@ Vue.component('app-main', {
     props: [
         'isTimerActive',
         'currentTask',
-        'isBreakTime',
     ],
     template: '#app-main',
     methods: {
@@ -35,6 +34,8 @@ Vue.component('app-controls', {
 
 Vue.component('app-settings', {
     props: [
+        'isTimerActive',
+        'currentTask',
         'tasks',
     ],
     template: '#app-settings',
@@ -46,16 +47,26 @@ Vue.component('app-settings', {
     components: {
         'task': {
             props: [
-                'task'
+                'isTimerActive',
+                'currentTask',
+                'task',
             ],
             template: '#task',
             beforeUpdate: function() {
-                const { hours, minutes, seconds } = this.task;
+                const { id, hours, minutes, seconds } = this.task;
             
                 this.task.hours = Number(hours);
                 this.task.minutes = Number(minutes);
                 this.task.seconds = Number(seconds);
                 this.task.time = showTime(hours, minutes, seconds);
+                
+                if (id == this.currentTask.id && !this.isTimerActive) {
+                    // TODO: should we update the other things as well? ex title?
+                    this.currentTask.hours = this.task.hours;
+                    this.currentTask.minutes = this.task.minutes;
+                    this.currentTask.seconds = this.task.seconds;
+                    this.currentTask.time = this.task.time;
+                }
             },
             methods: {
                 // handleRangeChange(event) {
@@ -76,19 +87,9 @@ const defaultSeconds = 5;
 const app8 = new Vue({
     el: '#app-8',
     data: {
-        // Settings
-        initialHours: defaultHours,
-        initialMinutes: defaultMinutes,
-        initialSeconds: defaultSeconds,
-        
-        // figure this part out #TODO
-        initShortBreak: 5,
-        isBreakTime: false,
-
         // App state
         isTimerActive: false, // should show Play button
         currentTask: {
-            // TODO: move the main timer to use this instead
             id: 21,
             title: 'Work',
             hours: defaultHours,
@@ -98,6 +99,7 @@ const app8 = new Vue({
             timer: null, // used to keep track of interval of counting down
         },
         
+        autoPlayTasks: true, // TODO
         isSettingsOpen: false,
         tasks: {
             11: {
@@ -175,14 +177,13 @@ const app8 = new Vue({
             } else {
                 clearInterval(self.currentTask.timer);
             }
-
         },
         resetTimer: function() {
             const self = this;
 
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
-            
+
             const { hours, minutes, seconds, time } = self.tasks[self.currentTask.id];
             self.currentTask.hours = hours;
             self.currentTask.minutes = minutes;
