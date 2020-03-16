@@ -1,3 +1,11 @@
+function ensurePadding(count) {
+    return (count < 10 ? `0${count}` : `${count}`);
+}
+
+function showTime(hours, minutes, seconds) {
+    return `${hours}:${minutes}:${seconds}`;
+}
+
 Vue.component('app-main', {
     props: [
         'hours',
@@ -48,15 +56,28 @@ Vue.component('app-settings', {
             this.$emit('close-settings');
         },
     },
+    beforeUpdate: function() {
+        console.log('>>> Vue.component app-settings beforeUpdate() this.task', this.task);
+        const { hours, minutes, seconds } = this.task;
+        const formattedHours = ensurePadding(Number(hours));
+        const formattedMinutes = ensurePadding(Number(minutes));
+        const formattedSeconds = ensurePadding(Number(seconds));
+    
+        this.task.hours = formattedHours;
+        this.task.minutes = formattedMinutes;
+        this.task.seconds = formattedSeconds;
+        this.task.time = showTime(formattedHours, formattedMinutes, formattedSeconds);
+    }
 });
 
 const defaultHours = '00';
 const defaultMinutes = '01';
-const defaultSeconds = '02';
+const defaultSeconds = '10';
 
 let tasks = [
     {
         id: 1,
+        title: 'Work',
         time: `${defaultHours}:${defaultMinutes}:${defaultSeconds}`,
         hours: defaultHours,
         minutes: defaultMinutes,
@@ -85,7 +106,7 @@ const app8 = new Vue({
         
         isSettingsOpen: false,
         task: {
-            time: `${defaultHours}:${defaultMinutes}:${defaultSeconds}`,
+            time: showTime(defaultHours, defaultMinutes, defaultSeconds),
             hours: defaultHours,
             minutes: defaultMinutes,
             seconds: defaultSeconds,
@@ -94,10 +115,6 @@ const app8 = new Vue({
     methods: {
         toggleTimer: function() {
             const self = this;
-
-            function ensurePadding(count) {
-                return (count < 10 ? `0${count}` : count);
-            }
 
             function countdownTime() {
                 const hours = Number(self.$data.hours);
@@ -112,23 +129,22 @@ const app8 = new Vue({
 
                 if (seconds == 0 && minutes > 0) {
                     self.minutes--;
-                    self.seconds = 59;
                     self.minutes = ensurePadding(self.minutes);
+                    self.seconds = '59';
                     return;
                 }
 
                 if (seconds == 0 && minutes == 0 && hours > 0) {
                     self.hours--;
-                    self.minutes = 59;
-                    self.seconds = 59;
                     self.hours = ensurePadding(self.hours);
+                    self.minutes = '59';
+                    self.seconds = '59';
                     return;
                 }
 
                 console.log(`>>> the time is: ${hours}:${minutes}:${seconds}`);
                 // if timer reaches 00:00:00 then stop all count down #TODO
                 // don't start until press play again? or reset
-
                 // do something to check if it is break time (or next task) #TODO
             }
 
@@ -153,9 +169,7 @@ const app8 = new Vue({
             self.seconds = self.initialSeconds;
 
         },
-        // 01> method created
         toggleSettings: function() {
-            console.log('>>> app new Vue methods toggleSettings()');
             const self = this;
             self.isSettingsOpen = !self.isSettingsOpen;
         },

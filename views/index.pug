@@ -45,16 +45,16 @@ block content
           //- div.task(v-for='task in tasks')
           div.task
             span.task-title WORK
-            div.task-time {{ `${task.hours}:${task.minutes}:${task.seconds}` }}
-            input.task-input(type='range', min='1', max='24', data-type='task-hour', v-model.lazy='task.hours', @change='handleRangeChange')
-            input.task-input(type='range', min='1', max='59', data-type='task-minute', v-model='task.minutes', @change='handleRangeChange')
-            input.task-input(type='range', min='1', max='59', data-type='task-second', v-model='task.seconds', @change='handleRangeChange')
+            div.task-time {{ task.time }}
+            input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
+            input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes', @change='handleRangeChange')
+            input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds', @change='handleRangeChange')
           div.task
             span.task-title WORK02
             div.task-time {{ `00:00:00` }}
-            input.task-input(type='range', min='1', max='24', data-type='task-hour', :value=24)
-            input.task-input(type='range', min='1', max='59', data-type='task-minute', :value=25)
-            input.task-input(type='range', min='1', max='59', data-type='task-second', :value=00)
+            input.task-input(type='range', min='0', max='24', data-type='task-hour', :value=24)
+            input.task-input(type='range', min='0', max='59', data-type='task-minute', :value=25)
+            input.task-input(type='range', min='0', max='59', data-type='task-second', :value=00)
         //- 04> we then add the click event with the method name we expect - designated in the component definition
         button.settings-toggle(@click='closeSettings')
           svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
