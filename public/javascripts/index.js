@@ -167,7 +167,7 @@ const app8 = new Vue({
                     currentTask.seconds
                 );
                 console.log(`>>> the time is: ${currentTask.time}`);
-                // if timer reaches 00:00:00 then stop all count down #TODO
+                // if timer reaches 00:00:00 then stop all count down? #TODO
                 // don't start until press play again? or reset
                 // do something to check if it is break time (or next task) #TODO
             }
@@ -193,7 +193,7 @@ const app8 = new Vue({
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
             self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.id]);
-            // if TIMER is reset then set to the first task in flow #todo
+            // if TIMER is reset then set to the first task in flow? #todo
         },
         toggleSettings: function() {
             const self = this;
