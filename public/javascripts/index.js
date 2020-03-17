@@ -83,7 +83,7 @@ Vue.component('app-settings', {
     },
 });
 
-const defaultHours = 0;
+const defaultHours = 1;
 const defaultMinutes = 0;
 const defaultSeconds = 5;
 
@@ -108,26 +108,26 @@ const app8 = new Vue({
             11: {
                 id: 11,
                 title: 'Warm Up',
-                time: showTime(0, 5, 0),
                 hours: 0,
                 minutes: 5,
                 seconds: 0,
+                time: showTime(0, 5, 0),
             },
             21: {
                 id: 21,
                 title: 'Work',
-                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
                 hours: defaultHours,
                 minutes: defaultMinutes,
                 seconds: defaultSeconds,
+                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
             },
             31: {
                 id: 31,
                 title: 'Break',
-                time: showTime(0, 1, 7),
                 hours: 0,
                 minutes: 1,
                 seconds: 7,
+                time: showTime(0, 1, 7),
             },
         },
     },
@@ -187,24 +187,22 @@ const app8 = new Vue({
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
 
-            const { hours, minutes, seconds, time } = self.tasks[self.currentTask.id];
+            const { title, hours, minutes, seconds, time } = self.tasks[self.currentTask.id];
+            self.currentTask.title = title;
             self.currentTask.hours = hours;
             self.currentTask.minutes = minutes;
             self.currentTask.seconds = seconds;
             self.currentTask.time = time;
-            // if TIMER is reset then set to the first task in flow
+            // if TIMER is reset then set to the first task in flow #todo
         },
         toggleSettings: function() {
             const self = this;
             self.isSettingsOpen = !self.isSettingsOpen;
         },
         changeTaskTime(data) {
-            // todo: to use for API call later
+            // to use for API call later #todo
             // const self = this;
             console.log('>>> app new Vue methods changeTaskTime() data:', data);
-
-            // if TIMER is NOT active then update from settings
-            // if TIMER is active then don't activate until reset
         }
     },
 });
