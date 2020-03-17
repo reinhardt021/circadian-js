@@ -6,6 +6,16 @@ function showTime(hours, minutes, seconds) {
     return `${ensurePadding(hours)}:${ensurePadding(minutes)}:${ensurePadding(seconds)}`;
 }
 
+function updateCurrentTask(currentTask, updatedTask) {
+    currentTask.title = updatedTask.title;
+    currentTask.hours = updatedTask.hours;
+    currentTask.minutes = updatedTask.minutes;
+    currentTask.seconds = updatedTask.seconds;
+    currentTask.time = updatedTask.time;
+
+    return currentTask;
+}
+
 Vue.component('app-main', {
     props: [
         'isTimerActive',
@@ -61,11 +71,7 @@ Vue.component('app-settings', {
                 this.task.time = showTime(hours, minutes, seconds);
                 
                 if (id == this.currentTask.id && !this.isTimerActive) {
-                    this.currentTask.title = this.task.title;
-                    this.currentTask.hours = this.task.hours;
-                    this.currentTask.minutes = this.task.minutes;
-                    this.currentTask.seconds = this.task.seconds;
-                    this.currentTask.time = this.task.time;
+                    this.currentTask = updateCurrentTask(this.currentTask, this.task);
                 }
             },
             methods: {
@@ -186,13 +192,7 @@ const app8 = new Vue({
 
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
-
-            const { title, hours, minutes, seconds, time } = self.tasks[self.currentTask.id];
-            self.currentTask.title = title;
-            self.currentTask.hours = hours;
-            self.currentTask.minutes = minutes;
-            self.currentTask.seconds = seconds;
-            self.currentTask.time = time;
+            self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.id]);
             // if TIMER is reset then set to the first task in flow #todo
         },
         toggleSettings: function() {
