@@ -51,12 +51,12 @@ block content
 
   script#task(type='text/x-template')
     div.task
-      span.task-title {{ task.title }}
-        div.task-time {{ task.time }}
-        //-   input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
-        input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours')
-        input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes')
-        input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds')
+      span.task-title(contenteditable='true', v-text='task.title', @blur='onTitleUpdate($event)')
+      div.task-time {{ task.time }}
+      //-   input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
+      input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours')
+      input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes')
+      input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds')
 
   script(src='/javascripts/index.js')
 

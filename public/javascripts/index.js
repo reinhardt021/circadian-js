@@ -61,7 +61,7 @@ Vue.component('app-settings', {
                 this.task.time = showTime(hours, minutes, seconds);
                 
                 if (id == this.currentTask.id && !this.isTimerActive) {
-                    // TODO: should we update the other things as well? ex title?
+                    this.currentTask.title = this.task.title;
                     this.currentTask.hours = this.task.hours;
                     this.currentTask.minutes = this.task.minutes;
                     this.currentTask.seconds = this.task.seconds;
@@ -69,6 +69,9 @@ Vue.component('app-settings', {
                 }
             },
             methods: {
+                onTitleUpdate: function(e) {
+                    this.task.title = e.target.innerText.trim();
+                },
                 // handleRangeChange(event) {
                 //     // todo: one time change event to make API call once new time is decided
                 //     // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
