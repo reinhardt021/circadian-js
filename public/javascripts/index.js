@@ -89,7 +89,7 @@ Vue.component('app-settings', {
     },
 });
 
-const defaultHours = 1;
+const defaultHours = 0;
 const defaultMinutes = 0;
 const defaultSeconds = 5;
 
@@ -161,12 +161,19 @@ const app8 = new Vue({
                     currentTask.seconds = 59;
                 }
 
+                if (seconds == 0 && minutes == 0 && hours ==0) {
+                    clearInterval(currentTask.timer);
+                    self.isTimerActive = !self.isTimerActive;
+                }
+
                 currentTask.time = showTime(
-                    currentTask.hours, 
-                    currentTask.minutes, 
+                    currentTask.hours,
+                    currentTask.minutes,
                     currentTask.seconds
                 );
                 console.log(`>>> the time is: ${currentTask.time}`);
+
+                
                 // if timer reaches 00:00:00 then stop all count down? #TODO
                 // don't start until press play again? or reset
                 // do something to check if it is break time (or next task) #TODO
