@@ -2,22 +2,215 @@ html {
   height: 100%;
 }
 
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
 body {
   height: 100%;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: lightgray;
+ 
+  background: #2c3e50;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(0deg, #3498db, #2c3e50);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(0deg, #3498db, #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  color: white;
   text-shadow: 0 1px 5px rgba(0, 0, 0, .1);
 
-  background: #2c3e50;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #3498db, #2c3e50);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #3498db, #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
 }
 
-.navbar {
-  background-color: rgba(255, 255, 255, 0.10);
+
+/* HELPERS */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
-a {
-  color: #00B7FF;
+/* LAYOUT */
+.site {
+  display: flex;
+  min-height: 80vh;
+  flex-direction: column;
+  /* background-color: #d9534f; >> no need for this now */
+  /* transition: background-color .15s ease;   */
+}
+
+.site-break {
+  background-color: #3eab45;
+}
+
+.site-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  padding: 0 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* MAIN */
+.timer {
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;  
+  justify-content: center;
+  
+  border: 4px solid white;
+  border-radius: 50%;
+  max-width: 224px;
+  height: 224px;
+}
+
+/* the transparent black outlines surrounding */
+.timer ::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.timer ::before {
+  width: 120%;
+  height: 120%;
+}
+
+/*  this does nothing I believe */
+.timer-session {
+  font-weight: 500;
+}
+
+.timer-countdown {
+  margin-top: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* CONTROLS */
+button {
+  padding: 0;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  user-select: none;
+  transition: border-color .15s ease;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.controls {
+  padding-bottom: 24px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls button {
+  margin-bottom: 12px;
+}
+
+.btn-sm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 3rem;
+
+  border: 2px solid rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  width: calc(3rem + 4px);
+  height: calc(3rem + 4px);
+}
+
+.btn-md {
+  margin: 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  border: 2px solid rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  width: calc(4rem + 4px);
+  height: calc(4rem + 4px);
+}
+
+.btn-sm:hover, 
+.btn-md:hover {
+  border-color: #fff;
+}
+
+/* SETTINGS */
+.settings {
+  padding: 77px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 256px;
+  height: 100vh;
+  background-color: #fff;
+  color: #333;
+  will-change: transform;
+  overflow-y: auto;
+  z-index: 4;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+}
+
+.settings-enter-active,
+.settings-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+}
+
+.settings-enter,
+.settings-leave-to {
+  transform: translateX(100%);
+}
+
+.task {
+  margin-bottom: 30px;
+}
+
+.close-settings {
+  border: 2px solid rgba(0, 0, 0, .20);
+  border-radius: 50%;
+
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-settings:hover {
+  border-color: #000;
 }
