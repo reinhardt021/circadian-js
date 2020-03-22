@@ -12,6 +12,7 @@ function updateCurrentTask(currentTask, updatedTask) {
     currentTask.minutes = updatedTask.minutes;
     currentTask.seconds = updatedTask.seconds;
     currentTask.time = updatedTask.time;
+    currentTask.nextTask = updatedTask.nextTask;
 
     return currentTask;
 }
@@ -106,6 +107,7 @@ const app8 = new Vue({
             seconds: defaultSeconds,
             time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
             timer: null, // used to keep track of interval of counting down
+            nextTask: 11,
         },
         
         autoPlayTasks: true, // TODO
@@ -115,9 +117,10 @@ const app8 = new Vue({
                 id: 11,
                 title: 'Warm Up',
                 hours: 0,
-                minutes: 5,
-                seconds: 0,
+                minutes: 0,
+                seconds: 21,
                 time: showTime(0, 5, 0),
+                nextTask: 31,
             },
             21: {
                 id: 21,
@@ -126,14 +129,16 @@ const app8 = new Vue({
                 minutes: defaultMinutes,
                 seconds: defaultSeconds,
                 time: showTime(defaultHours, defaultMinutes, defaultSeconds),
+                nextTask: 11,
             },
             31: {
                 id: 31,
                 title: 'Break',
                 hours: 0,
-                minutes: 1,
+                minutes: 0,
                 seconds: 7,
                 time: showTime(0, 1, 7),
+                nextTask: null,
             },
         },
     },
@@ -141,7 +146,7 @@ const app8 = new Vue({
         toggleTimer: function() {
             const self = this;
 
-            function countdownTime(dataTask, currentTask) {
+            function countdownTimeLoop(dataTask, currentTask) {
                 const hours = Number(dataTask.hours);
                 const minutes = Number(dataTask.minutes);
                 const seconds = Number(dataTask.seconds);
@@ -162,8 +167,36 @@ const app8 = new Vue({
                 }
 
                 if (seconds == 0 && minutes == 0 && hours ==0) {
+                    console.log('>>> I am going to stop timer now');
                     clearInterval(currentTask.timer);
-                    self.isTimerActive = !self.isTimerActive;
+                    // self.isTimerActive = !self.isTimerActive;
+
+                    // #todo
+                    // at this point you need to check 
+                    // if you can autoplay the next thing
+                    // I think it might end up recursive if I call the next thing
+                    // example:
+                    self.isTimerActive = false;
+                    // have the next task ID ready?
+                    // linked list?
+                    // with objects rather than a list / array 
+                    // this might be the best course of action
+                    // you just need to update the list if you add more things
+                    //>> OR
+                    // use a separate array 
+                    // to hold the list of ID's in order that you want
+                    // >> easier to use with VueJS rendering I think
+                    // >> but would still be easier 
+                    // >>   if the currentTask new the next task
+
+                    // I think this will probably need to be extracted somehow
+                    if (!self.currentTask.nextTask) {
+                        return;
+                    }
+                    self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.nextTask]);
+                    self.isTimerActive = true;
+                    self.currentTask.timer = 
+                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask);
                 }
 
                 currentTask.time = showTime(
@@ -172,7 +205,6 @@ const app8 = new Vue({
                     currentTask.seconds
                 );
                 console.log(`>>> the time is: ${currentTask.time}`);
-
                 
                 // if timer reaches 00:00:00 then stop all count down? #TODO
                 // don't start until press play again? or reset
@@ -184,12 +216,8 @@ const app8 = new Vue({
 
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
-                self.currentTask.timer = setInterval(
-                    countdownTime, 
-                    1000, 
-                    self.$data.currentTask, 
-                    self.currentTask
-                );
+                self.currentTask.timer = 
+                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask);
             } else {
                 clearInterval(self.currentTask.timer);
             }
