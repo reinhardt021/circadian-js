@@ -49,6 +49,7 @@ Vue.component('app-settings', {
         'isTimerActive',
         'currentTask',
         'tasks',
+        'taskOrder',
     ],
     template: '#app-settings',
     methods: {
@@ -113,18 +114,11 @@ const app8 = new Vue({
         },
         
         autoPlayTasks: true,
-        loopTasks: true, // #todo
+        loopTasks: true, // #todo 02
         isSettingsOpen: false,
+
+        taskOrder: [21, 11, 31],
         tasks: {
-            21: {
-                id: 21,
-                title: 'Work',
-                hours: defaultHours,
-                minutes: defaultMinutes,
-                seconds: defaultSeconds,
-                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-                nextTask: 11,
-            },
             11: {
                 id: 11,
                 title: 'Warm Up',
@@ -133,6 +127,15 @@ const app8 = new Vue({
                 seconds: 21,
                 time: showTime(0, 0, 21),
                 nextTask: 31,
+            },
+            21: {
+                id: 21,
+                title: 'Work',
+                hours: defaultHours,
+                minutes: defaultMinutes,
+                seconds: defaultSeconds,
+                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
+                nextTask: 11,
             },
             31: {
                 id: 31,
@@ -171,11 +174,10 @@ const app8 = new Vue({
 
                 if (seconds == 0 && minutes == 0 && hours ==0) {
                     console.log('>>> I am going to stop timer now');
-                    // #todo: fix to limit this scope
+                    // #todo: fix to limit this scope 03
                     self.isTimerActive = false;
                     clearInterval(currentTask.timer);
 
-                    // How to use with VueJS rendering? with Linked list #todo
                     if (!autoPlayTasks || !currentTask.nextTask) {
                         return;
                     }
