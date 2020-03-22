@@ -7,6 +7,7 @@ function showTime(hours, minutes, seconds) {
 }
 
 function updateCurrentTask(currentTask, updatedTask) {
+    currentTask.id = updatedTask.id;
     currentTask.title = updatedTask.title;
     currentTask.hours = updatedTask.hours;
     currentTask.minutes = updatedTask.minutes;
@@ -100,6 +101,7 @@ const app8 = new Vue({
         // App state
         isTimerActive: false, // should show Play button
         currentTask: {
+            firstTask: 21,
             id: 21,
             title: 'Work',
             hours: defaultHours,
@@ -119,7 +121,7 @@ const app8 = new Vue({
                 hours: 0,
                 minutes: 0,
                 seconds: 21,
-                time: showTime(0, 5, 0),
+                time: showTime(0, 0, 21),
                 nextTask: 31,
             },
             21: {
@@ -137,7 +139,7 @@ const app8 = new Vue({
                 hours: 0,
                 minutes: 0,
                 seconds: 7,
-                time: showTime(0, 1, 7),
+                time: showTime(0, 0, 7),
                 nextTask: null,
             },
         },
@@ -168,15 +170,8 @@ const app8 = new Vue({
 
                 if (seconds == 0 && minutes == 0 && hours ==0) {
                     console.log('>>> I am going to stop timer now');
-                    clearInterval(currentTask.timer);
-                    // self.isTimerActive = !self.isTimerActive;
-
-                    // #todo
-                    // at this point you need to check 
-                    // if you can autoplay the next thing
-                    // I think it might end up recursive if I call the next thing
-                    // example:
                     self.isTimerActive = false;
+                    clearInterval(currentTask.timer);
                     // have the next task ID ready?
                     // linked list?
                     // with objects rather than a list / array 
@@ -199,13 +194,8 @@ const app8 = new Vue({
                         setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask);
                 }
 
-                currentTask.time = showTime(
-                    currentTask.hours,
-                    currentTask.minutes,
-                    currentTask.seconds
-                );
-                console.log(`>>> the time is: ${currentTask.time}`);
-                
+                currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
+                console.log(`>>> the time is ${currentTask.time} for ${currentTask.title}`);
                 // if timer reaches 00:00:00 then stop all count down? #TODO
                 // don't start until press play again? or reset
                 // do something to check if it is break time (or next task) #TODO
@@ -227,8 +217,8 @@ const app8 = new Vue({
 
             clearInterval(self.currentTask.timer);
             self.isTimerActive = false;
-            self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.id]);
-            // if TIMER is reset then set to the first task in flow? #todo
+            // resets to the first task in the Flow
+            self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.firstTask]);
         },
         toggleSettings: function() {
             const self = this;
