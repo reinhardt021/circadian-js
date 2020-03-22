@@ -43,7 +43,7 @@ block content
         div.flow
           h2 Flow
           div.tasks
-            task(v-for='(task, index) in tasks', v-bind:task='task', v-bind:index='index', v-bind:key='task.id', :is-timer-active='isTimerActive', :current-task='currentTask')
+            task(v-for='(task, index) in tasks', :task='task', :index='index', :key='task.id', :is-timer-active='isTimerActive', :current-task='currentTask')
         div.options
           button.close-settings(@click='closeSettings')
             svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
