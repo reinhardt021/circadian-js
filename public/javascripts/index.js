@@ -114,7 +114,7 @@ const app8 = new Vue({
         },
         
         autoPlayTasks: true,
-        loopTasks: true, // #todo 02
+        loopTasks: false,
         isSettingsOpen: false,
 
         taskOrder: [21, 11, 31],
@@ -152,7 +152,7 @@ const app8 = new Vue({
         toggleTimer: function() {
             const self = this;
 
-            function countdownTimeLoop(dataTask, currentTask, autoPlayTasks) {
+            function countdownTimeLoop(dataTask, currentTask, autoPlayTasks, loopTasks) {
                 const hours = Number(dataTask.hours);
                 const minutes = Number(dataTask.minutes);
                 const seconds = Number(dataTask.seconds);
@@ -178,14 +178,22 @@ const app8 = new Vue({
                     self.isTimerActive = false;
                     clearInterval(currentTask.timer);
 
-                    if (!autoPlayTasks || !currentTask.nextTask) {
+                    if (!autoPlayTasks) {
                         return;
                     }
+
+                    if (!currentTask.nextTask && !loopTasks) {
+                        return;
+                    }
+
+                    const nextTask = currentTask.nextTask ? 
+                        self.tasks[currentTask.nextTask] : 
+                        self.tasks[currentTask.firstTask];
                     // #todo: fix to limit this scope
-                    self.currentTask = updateCurrentTask(currentTask, self.tasks[currentTask.nextTask]);
+                    self.currentTask = updateCurrentTask(currentTask, nextTask);
                     self.isTimerActive = true;
                     self.currentTask.timer = 
-                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask, autoPlayTasks);
+                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask, autoPlayTasks, loopTasks);
                 }
 
                 currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
@@ -198,7 +206,7 @@ const app8 = new Vue({
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
                 self.currentTask.timer = 
-                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask, self.autoPlayTasks);
+                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask, self.autoPlayTasks, self.loopTasks);
             } else {
                 clearInterval(self.currentTask.timer);
             }
