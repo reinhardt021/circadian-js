@@ -192,8 +192,30 @@ button:not(:disabled) {
   transform: translateX(100%);
 }
 
+.flow-title {
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .task {
-  margin-bottom: 30px;
+  overflow: auto;
+  position: relative;
+
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 1);
+  font-weight: bold;
+
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.remove-task {
+  position: absolute;
+  float: right;
+  top: 10px;
+  right: 10px;
+  padding: 0;
 }
 
 .close-settings {
