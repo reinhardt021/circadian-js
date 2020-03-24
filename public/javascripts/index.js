@@ -242,10 +242,21 @@ const app8 = new Vue({
         //     // const self = this;
         //     console.log('>>> app new Vue methods changeTaskTime() data:', data);
         // },
+        createTask() {
+            console.log('>> createTask');
+        },
         deleteTask(taskId) {
             const self = this;
             console.log('>>> app top level remove task: ID?', taskId);
             console.log('>>> self', self);
+            // remove from self.tasks && taskOrder && previous task 
+
+            // check if matching currentTask
+            // if currently going (isTimerActive) then dont update >> nah just update
+            // if paused then need to updateCurrentTask() with nextTask
+
+            // else check if firstTask & not currentTask >> update currentTask.firstTask
+
         }
     },
 });

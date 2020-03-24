@@ -128,10 +128,6 @@ button:not(:disabled) {
   justify-content: center;
 }
 
-.controls button {
-  margin-bottom: 12px;
-}
-
 .btn-sm {
   display: flex;
   align-items: center;
@@ -143,6 +139,8 @@ button:not(:disabled) {
   border-radius: 50%;
   width: calc(3rem + 4px);
   height: calc(3rem + 4px);
+
+  margin-bottom: 12px;
 }
 
 .btn-md {
@@ -218,7 +216,7 @@ button:not(:disabled) {
   padding: 0;
 }
 
-.close-settings {
+.settings-btn {
   border: 2px solid rgba(0, 0, 0, .20);
   border-radius: 50%;
 
@@ -231,8 +229,10 @@ button:not(:disabled) {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  margin-bottom: 12px;
 }
 
-.close-settings:hover {
+.settings-btn:hover {
   border-color: #000;
 }
