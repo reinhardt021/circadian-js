@@ -244,12 +244,31 @@ const app8 = new Vue({
         // },
         createTask() {
             console.log('>> createTask');
+            // #todo: add to taskOrder
+            // #todo: add to tasks
+            // #todo: update nextTask of last Task
         },
         deleteTask(taskId) {
+            console.log('>>> taskId', taskId);
             const self = this;
-            console.log('>>> app top level remove task: ID?', taskId);
-            console.log('>>> self', self);
-            // remove from self.tasks && taskOrder && previous task 
+            const { taskOrder, tasks } = self;
+            const thisTaskIndex = taskOrder.indexOf(taskId);
+            console.log('>>> thisTaskIndex', thisTaskIndex);
+            
+            // update previous task's nextTask && filter taskOrder && remove from self.tasks
+            //>> this works
+            self.tasks[taskOrder[thisTaskIndex - 1]].nextTask = tasks[taskId].nextTask;
+            
+            console.log('>>> self.taskOrder before', self.taskOrder);
+            console.log('>>> taskOrder ', taskOrder);
+            self.taskOrder = taskOrder.filter(task => {
+                console.log(`>>> task.id=${task.id} && taskId=${taskId}`);
+                return task != taskId;
+            });
+            console.log('>>> self.taskOrder after', self.taskOrder);
+
+            //>> this works
+            delete self.tasks[taskId];
 
             // check if matching currentTask
             // if currently going (isTimerActive) then dont update >> nah just update
