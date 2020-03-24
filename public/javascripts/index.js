@@ -50,7 +50,7 @@ const taskComponent = {
         currentTask: Object,
         task: Object,
     },
-    template: '#task',
+    template: '#task-item',
     beforeUpdate() {
         const self = this;
         console.log('>>> this.$data', this.$data);
