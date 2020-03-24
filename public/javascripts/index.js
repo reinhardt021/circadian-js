@@ -126,9 +126,6 @@ const task03 = {
     seconds: 30,
 };
 
-const defaultMinutes = 0;
-const defaultSeconds = 30;
-
 const appState = {
     isTimerActive: false,
     currentTask: {
@@ -257,9 +254,10 @@ const app8 = new Vue({
             }
             const self = this;
             const { taskOrder } = self;
-            console.log('>>> taskOrder', taskOrder);
-            // #todo: create unique ID
+            // create unique ID
             const newTaskId = getRandomInt(500,1000);
+            const lastTask = taskOrder[taskOrder.length - 1];
+            self.tasks[lastTask].nextTask = newTaskId;
             const newTask = {
                 id: newTaskId,
                 title: 'New Task',
@@ -269,15 +267,7 @@ const app8 = new Vue({
                 time: showTime(0, 0, 0),
                 nextTask: null,
             };
-            // #todo: add to tasks
             self.tasks[newTaskId] = newTask;
-            // #todo: update nextTask of the last Task
-            const lastIndex = taskOrder.length - 1;
-            console.log('>>> lastIndex', lastIndex);
-            const lastTask = taskOrder[lastIndex];
-            console.log('>>> lastTask', lastTask);
-            self.tasks[lastTask].nextTask = newTaskId;
-            // #todo: add to taskOrder
             self.taskOrder = taskOrder.concat([newTaskId]);            
         },
         deleteTask(taskId) {
