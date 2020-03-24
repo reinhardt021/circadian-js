@@ -69,8 +69,6 @@ const taskComponent = {
             this.task.title = e.target.innerText.trim();
         },
         removeTask(taskId) {
-            // need to delete the current task I think from the task list
-            console.log('>>> settings task removeTask', taskId);
             this.$emit('remove-task', taskId);
         }
         // handleRangeChange(event) {
@@ -96,7 +94,6 @@ Vue.component('app-settings', {
             this.$emit('close-settings');
         },
         taskRemove(data) {
-            console.log('>>> app-settings taskRemove(data) ', data);
             this.$emit('task-remove', data);
         },
     },
@@ -246,36 +243,38 @@ const app8 = new Vue({
             console.log('>> createTask');
             // #todo: add to taskOrder
             // #todo: add to tasks
+            //      #todo: create unique ID
             // #todo: update nextTask of last Task
         },
         deleteTask(taskId) {
-            console.log('>>> taskId', taskId);
             const self = this;
-            const { taskOrder, tasks } = self;
+            const { isTimerActive, currentTask, taskOrder, tasks } = self;
             const thisTaskIndex = taskOrder.indexOf(taskId);
-            console.log('>>> thisTaskIndex', thisTaskIndex);
-            
-            // update previous task's nextTask && filter taskOrder && remove from self.tasks
-            //>> this works
-            self.tasks[taskOrder[thisTaskIndex - 1]].nextTask = tasks[taskId].nextTask;
-            
-            console.log('>>> self.taskOrder before', self.taskOrder);
-            console.log('>>> taskOrder ', taskOrder);
-            self.taskOrder = taskOrder.filter(task => {
-                console.log(`>>> task.id=${task.id} && taskId=${taskId}`);
-                return task != taskId;
-            });
-            console.log('>>> self.taskOrder after', self.taskOrder);
+            const taskToDelete = tasks[taskId];
 
-            //>> this works
+            // if the taskToDelete is the first task then update the firstTask
+            if (thisTaskIndex == 0) {
+                self.currentTask.firstTask = taskToDelete.nextTask;
+            }
+
+            if (thisTaskIndex > 0) {
+                // update the Tasks linked list pointer in the previous Task
+                self.tasks[taskOrder[thisTaskIndex - 1]].nextTask = taskToDelete.nextTask;
+            }
+
+            // update the currentTask.nextTask if this points to the task to be deleted
+            if (currentTask.nextTask == taskId) {
+                self.currentTask.nextTask = taskToDelete.nextTask;
+            }
+
+            // if the currentTask is deleted then update if timer is inactive
+            if (currentTask.id == taskId && !isTimerActive && taskToDelete.nextTask) {
+                self.currentTask = updateCurrentTask(currentTask, tasks[taskToDelete.nextTask]);
+            }
+            
+            // remove Task from taskOrder list and from Tasks linked list
+            self.taskOrder = taskOrder.filter(task => task != taskId);
             delete self.tasks[taskId];
-
-            // check if matching currentTask
-            // if currently going (isTimerActive) then dont update >> nah just update
-            // if paused then need to updateCurrentTask() with nextTask
-
-            // else check if firstTask & not currentTask >> update currentTask.firstTask
-
         }
     },
 });
