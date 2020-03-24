@@ -44,11 +44,50 @@ Vue.component('app-controls', {
     },
 });
 
+const taskComponent = {
+    props: [
+        'isTimerActive',
+        'currentTask',
+        'task',
+        'taskRemove',
+    ],
+    template: '#task',
+    beforeUpdate() {
+        const { id, hours, minutes, seconds } = this.task;
+    
+        this.task.hours = Number(hours);
+        this.task.minutes = Number(minutes);
+        this.task.seconds = Number(seconds);
+        this.task.time = showTime(hours, minutes, seconds);
+        
+        if (id == this.currentTask.id && !this.isTimerActive) {
+            this.currentTask = updateCurrentTask(this.currentTask, this.task);
+        }
+    },
+    methods: {
+        onTitleUpdate(e) {
+            this.task.title = e.target.innerText.trim();
+        },
+        removeTask(taskId) {
+            // need to delete the current task I think from the task list
+            console.log('>>> settings task removeTask', taskId);
+            this.$emit('remove-task', taskId);
+        }
+        // handleRangeChange(event) {
+        //     // todo: one time change event to make API call once new time is decided
+        //     // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
+        //     // const data = { 'something': 21 };
+        //     // this.$emit('change-time', data);
+        // },
+    },
+};
+
 Vue.component('app-settings', {
     props: [
         'isTimerActive',
         'currentTask',
         'tasks',
+        'deleteTask',
         'taskOrder',
     ],
     template: '#app-settings',
@@ -56,100 +95,75 @@ Vue.component('app-settings', {
         closeSettings() {
             this.$emit('close-settings');
         },
+        taskRemove(data) {
+            console.log('>>> app-settings taskRemove(data) ', data);
+            this.$emit('task-remove', data);
+        },
     },
     components: {
-        'task': {
-            props: [
-                'isTimerActive',
-                'currentTask',
-                'task',
-            ],
-            template: '#task',
-            beforeUpdate: function() {
-                const { id, hours, minutes, seconds } = this.task;
-            
-                this.task.hours = Number(hours);
-                this.task.minutes = Number(minutes);
-                this.task.seconds = Number(seconds);
-                this.task.time = showTime(hours, minutes, seconds);
-                
-                if (id == this.currentTask.id && !this.isTimerActive) {
-                    this.currentTask = updateCurrentTask(this.currentTask, this.task);
-                }
-            },
-            methods: {
-                onTitleUpdate: function(e) {
-                    this.task.title = e.target.innerText.trim();
-                },
-                // handleRangeChange(event) {
-                //     // todo: one time change event to make API call once new time is decided
-                //     // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
-                //     // const data = { 'something': 21 };
-                //     // this.$emit('change-time', data);
-                // },
-            },
-        },
+        'task': taskComponent,
     },
 });
 
 const defaultHours = 0;
 const defaultMinutes = 0;
 const defaultSeconds = 5;
+const appState = {
+    isTimerActive: false,
+    currentTask: {
+        firstTask: 21,
+        id: 21,
+        title: 'Work',
+        hours: defaultHours,
+        minutes: defaultMinutes,
+        seconds: defaultSeconds,
+        time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
+        timer: null, // used to keep track of interval of counting down
+        nextTask: 11,
+    },
+    
+    autoPlayTasks: true,
+    loopTasks: false,
+    isSettingsOpen: false,
 
-const app8 = new Vue({
-    el: '#app-8',
-    data: {
-        // App state
-        isTimerActive: false, // should show Play button
-        currentTask: {
-            firstTask: 21,
+    taskOrder: [21, 11, 31],
+    tasks: {
+        11: {
+            id: 11,
+            title: 'Warm Up',
+            hours: 0,
+            minutes: 0,
+            seconds: 21,
+            time: showTime(0, 0, 21),
+            nextTask: 31,
+        },
+        21: {
             id: 21,
             title: 'Work',
             hours: defaultHours,
             minutes: defaultMinutes,
             seconds: defaultSeconds,
-            time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
-            timer: null, // used to keep track of interval of counting down
+            time: showTime(defaultHours, defaultMinutes, defaultSeconds),
             nextTask: 11,
         },
-        
-        autoPlayTasks: true,
-        loopTasks: false,
-        isSettingsOpen: false,
-
-        taskOrder: [21, 11, 31],
-        tasks: {
-            11: {
-                id: 11,
-                title: 'Warm Up',
-                hours: 0,
-                minutes: 0,
-                seconds: 21,
-                time: showTime(0, 0, 21),
-                nextTask: 31,
-            },
-            21: {
-                id: 21,
-                title: 'Work',
-                hours: defaultHours,
-                minutes: defaultMinutes,
-                seconds: defaultSeconds,
-                time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-                nextTask: 11,
-            },
-            31: {
-                id: 31,
-                title: 'Break',
-                hours: 0,
-                minutes: 0,
-                seconds: 7,
-                time: showTime(0, 0, 7),
-                nextTask: null,
-            },
+        31: {
+            id: 31,
+            title: 'Break',
+            hours: 0,
+            minutes: 0,
+            seconds: 7,
+            time: showTime(0, 0, 7),
+            nextTask: null,
         },
     },
+};
+
+
+const app8 = new Vue({
+    el: '#app-8',
+    data: appState,
     methods: {
-        toggleTimer: function() {
+        toggleTimer() {
             const self = this;
 
             function countdownTimeLoop(dataTask, currentTask, autoPlayTasks, loopTasks) {
@@ -211,7 +225,7 @@ const app8 = new Vue({
                 clearInterval(self.currentTask.timer);
             }
         },
-        resetTimer: function() {
+        resetTimer() {
             const self = this;
 
             clearInterval(self.currentTask.timer);
@@ -219,14 +233,19 @@ const app8 = new Vue({
             // resets to the first task in the Flow
             self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.firstTask]);
         },
-        toggleSettings: function() {
+        toggleSettings() {
             const self = this;
             self.isSettingsOpen = !self.isSettingsOpen;
         },
-        changeTaskTime(data) {
-            // to use for API call later #todo
-            // const self = this;
-            console.log('>>> app new Vue methods changeTaskTime() data:', data);
+        // changeTaskTime(data) {
+        //     // to use for API call later #todo
+        //     // const self = this;
+        //     console.log('>>> app new Vue methods changeTaskTime() data:', data);
+        // },
+        deleteTask(taskId) {
+            const self = this;
+            console.log('>>> app top level remove task: ID?', taskId);
+            console.log('>>> self', self);
         }
     },
 });
