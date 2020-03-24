@@ -49,19 +49,19 @@ const taskComponent = {
         'isTimerActive',
         'currentTask',
         'task',
-        'taskRemove',
     ],
     template: '#task',
     beforeUpdate() {
-        const { id, hours, minutes, seconds } = this.task;
+        const self = this;
+        const { currentTask, task: { id, hours, minutes, seconds } } = self;
     
-        this.task.hours = Number(hours);
-        this.task.minutes = Number(minutes);
-        this.task.seconds = Number(seconds);
-        this.task.time = showTime(hours, minutes, seconds);
+        self.task.hours = Number(hours);
+        self.task.minutes = Number(minutes);
+        self.task.seconds = Number(seconds);
+        self.task.time = showTime(hours, minutes, seconds);
         
-        if (id == this.currentTask.id && !this.isTimerActive) {
-            this.currentTask = updateCurrentTask(this.currentTask, this.task);
+        if (id == currentTask.id && !self.isTimerActive) {
+            self.currentTask = updateCurrentTask(currentTask, self.task);
         }
     },
     methods: {
@@ -85,7 +85,6 @@ Vue.component('app-settings', {
         'isTimerActive',
         'currentTask',
         'tasks',
-        'deleteTask',
         'taskOrder',
     ],
     template: '#app-settings',
@@ -96,60 +95,69 @@ Vue.component('app-settings', {
         taskRemove(data) {
             this.$emit('task-remove', data);
         },
+        taskAdd() {
+            this.$emit('task-add');
+        },
     },
     components: {
         'task': taskComponent,
     },
 });
 
-const defaultHours = 0;
+const task01 = {
+    id: 21,
+    title: 'Warm Up',
+    hours: 0,
+    minutes: 0,
+    seconds: 5,
+};
+const task02 = {
+    id: 11,
+    title: 'WORK',
+    hours: 0,
+    minutes: 1,
+    seconds: 0,
+};
+const task03 = {
+    id: 31,
+    title: 'Break',
+    hours: 0,
+    minutes: 0,
+    seconds: 30,
+};
+
 const defaultMinutes = 0;
-const defaultSeconds = 5;
+const defaultSeconds = 30;
+
 const appState = {
     isTimerActive: false,
     currentTask: {
-        firstTask: 21,
-        id: 21,
-        title: 'Work',
-        hours: defaultHours,
-        minutes: defaultMinutes,
-        seconds: defaultSeconds,
-        time: showTime(defaultHours, defaultMinutes, defaultSeconds),  
+        firstTask: task01.id,
+        ...task01,
+        time: showTime(task01.hours, task01.minutes, task01.seconds),
         timer: null, // used to keep track of interval of counting down
-        nextTask: 11,
+        nextTask: task02.id,
     },
     
     autoPlayTasks: true,
     loopTasks: false,
     isSettingsOpen: false,
 
-    taskOrder: [21, 11, 31],
+    taskOrder: [task01.id, task02.id, task03.id],
     tasks: {
-        11: {
-            id: 11,
-            title: 'Warm Up',
-            hours: 0,
-            minutes: 0,
-            seconds: 21,
-            time: showTime(0, 0, 21),
-            nextTask: 31,
+        [task01.id]: {
+            ...task01,
+            time: showTime(task01.hours, task01.minutes, task01.seconds),
+            nextTask: task02.id,
         },
-        21: {
-            id: 21,
-            title: 'Work',
-            hours: defaultHours,
-            minutes: defaultMinutes,
-            seconds: defaultSeconds,
-            time: showTime(defaultHours, defaultMinutes, defaultSeconds),
-            nextTask: 11,
+        [task02.id]: {
+            ...task02,
+            time: showTime(task02.hours, task02.minutes, task02.seconds),
+            nextTask: task03.id,
         },
-        31: {
-            id: 31,
-            title: 'Break',
-            hours: 0,
-            minutes: 0,
-            seconds: 7,
-            time: showTime(0, 0, 7),
+        [task03.id]: {
+            ...task03,
+            time: showTime(task03.hours, task03.minutes, task03.seconds),
             nextTask: null,
         },
     },
@@ -241,10 +249,36 @@ const app8 = new Vue({
         // },
         createTask() {
             console.log('>> createTask');
-            // #todo: add to taskOrder
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+            const self = this;
+            const { taskOrder } = self;
+            console.log('>>> taskOrder', taskOrder);
+            // #todo: create unique ID
+            const newTaskId = getRandomInt(500,1000);
+            const newTask = {
+                id: newTaskId,
+                title: 'New Task',
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+                time: showTime(0, 0, 0),
+                nextTask: null,
+            };
             // #todo: add to tasks
-            //      #todo: create unique ID
-            // #todo: update nextTask of last Task
+            self.tasks[newTaskId] = newTask;
+            // #todo: update nextTask of the last Task
+            const lastIndex = taskOrder.length - 1;
+            console.log('>>> lastIndex', lastIndex);
+            const lastTask = taskOrder[lastIndex];
+            console.log('>>> lastTask', lastTask);
+            self.tasks[lastTask].nextTask = newTaskId;
+            // #todo: add to taskOrder
+            self.taskOrder = taskOrder.concat([newTaskId]);            
         },
         deleteTask(taskId) {
             const self = this;
