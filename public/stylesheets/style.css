@@ -163,7 +163,7 @@ button:not(:disabled) {
 
 /* SETTINGS */
 .settings {
-  padding: 77px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -201,7 +201,7 @@ button:not(:disabled) {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
 
   padding: 10px;
