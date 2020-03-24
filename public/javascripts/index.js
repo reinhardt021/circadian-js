@@ -19,10 +19,10 @@ function updateCurrentTask(currentTask, updatedTask) {
 }
 
 Vue.component('app-main', {
-    props: [
-        'isTimerActive',
-        'currentTask',
-    ],
+    props: {
+        isTimerActive: Boolean,
+        currentTask: Object,
+    },
     template: '#app-main',
     methods: {
         toggleTimer() {
@@ -45,15 +45,17 @@ Vue.component('app-controls', {
 });
 
 const taskComponent = {
-    props: [
-        'isTimerActive',
-        'currentTask',
-        'task',
-    ],
+    props: {
+        isTimerActive: Boolean,
+        currentTask: Object,
+        task: Object,
+    },
     template: '#task',
     beforeUpdate() {
         const self = this;
+        console.log('>>> this.$data', this.$data);
         const { currentTask, task: { id, hours, minutes, seconds } } = self;
+        console.log('>>> update task', id);
     
         self.task.hours = Number(hours);
         self.task.minutes = Number(minutes);
@@ -65,32 +67,32 @@ const taskComponent = {
         }
     },
     methods: {
-        onTitleUpdate(e) {
-            this.task.title = e.target.innerText.trim();
-        },
         removeTask(taskId) {
             this.$emit('remove-task', taskId);
-        }
-        // handleRangeChange(event) {
-        //     // todo: one time change event to make API call once new time is decided
-        //     // console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
-        //     // const data = { 'something': 21 };
-        //     // this.$emit('change-time', data);
-        // },
+        },
+        changeTitle(e) {
+            this.$emit('change-title', this.task.id, e.target.innerText.trim());
+        },
+        changeRange(event) {
+            // todo: one time change event to make API call once new time is decided
+            console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
+            // const data = { 'something': 21 };
+            this.$emit('change');
+        },
     },
 };
 
 Vue.component('app-settings', {
-    props: [
-        'isTimerActive',
-        'currentTask',
-        'tasks',
-        'taskOrder',
-    ],
+    props: {
+        isTimerActive: Boolean,
+        currentTask: Object,
+        tasks: Object,
+        taskOrder: Array,
+    },
     template: '#app-settings',
     methods: {
-        closeSettings() {
-            this.$emit('close-settings');
+        titleChange(taskId, newTitle) {
+            this.$emit('title-change', taskId, newTitle);
         },
         taskRemove(data) {
             this.$emit('task-remove', data);
@@ -98,9 +100,12 @@ Vue.component('app-settings', {
         taskAdd() {
             this.$emit('task-add');
         },
+        closeSettings() {
+            this.$emit('close-settings');
+        },
     },
     components: {
-        'task': taskComponent,
+        'task-item': taskComponent,
     },
 });
 
@@ -299,6 +304,10 @@ const app8 = new Vue({
             // remove Task from taskOrder list and from Tasks linked list
             self.taskOrder = taskOrder.filter(task => task != taskId);
             delete self.tasks[taskId];
-        }
+        },
+        updateTitle(taskId, newTitle) {
+            this.tasks[taskId].title = newTitle;
+            console.log('>>> this.tasks', this.tasks);
+        },
     },
 });

@@ -24,6 +24,7 @@ block content
       :task-order='taskOrder',
       :is-settings-open='isSettingsOpen', 
       v-show='isSettingsOpen', 
+      @title-change='updateTitle',
       @change-time='changeTaskTime($event)', 
       @task-remove='deleteTask',
       @task-add='createTask',
@@ -60,13 +61,14 @@ block content
         div.flow
           h2.flow-title Flow
           div.tasks
-            task(
+            task-item(
               v-for='(taskId, index) in taskOrder', 
               :task='tasks[taskId]', 
               :index='index', 
               :key='taskId', 
               :is-timer-active='isTimerActive', 
               :current-task='currentTask', 
+              @change-title='titleChange'
               @remove-task='taskRemove'
             )
         div.options
@@ -83,10 +85,10 @@ block content
         svg(width='14', height='14', xmlns='http://www.w3.org/2000/svg')
               path(fill='grey', fill-rule='evenodd', d='M5.586 7L.636 2.05A1 1 0 0 1 2.05.636L7 5.586l4.95-4.95a1 1 0 0 1 1.414 1.414L8.414 7l4.95 4.95a1 1 0 0 1-1.414 1.414L7 8.414l-4.95 4.95A1 1 0 0 1 .636 11.95L5.586 7z')
       div.task-content
-        span.task-title(contenteditable='true', v-text='task.title', @blur='onTitleUpdate($event)')
+        span.task-title(contenteditable='true', v-text='task.title', @blur='changeTitle($event)')
         div.task-time {{ task.time }}
         //-   input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
-        input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours')
+        input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @blur='changeRange')
         input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes')
         input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds')
 
