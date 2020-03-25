@@ -86,9 +86,9 @@ block content
       div.task-content
         span.task-title(contenteditable='true', v-text='task.title', @blur='changeTitle')
         div.task-time {{ task.time }}
-        input.task-input(type='range', min='0', max='24', data-type='task-hours', :value='task.hours', @input='changeTime')
-        input.task-input(type='range', min='0', max='59', data-type='task-minutes', :value='task.minutes', @input='changeTime')
-        input.task-input(type='range', min='0', max='59', data-type='task-seconds', :value='task.seconds', @input='changeTime')
+        input.task-input(type='range', min='0', max='24', data-type='task-hours', v-model='task.hours', @input='changeTime')
+        input.task-input(type='range', min='0', max='59', data-type='task-minutes', v-model='task.minutes', @input='changeTime')
+        input.task-input(type='range', min='0', max='59', data-type='task-seconds', v-model='task.seconds', @input='changeTime')
 
   script(src='/javascripts/index.js')
 

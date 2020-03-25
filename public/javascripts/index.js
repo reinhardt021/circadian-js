@@ -76,6 +76,12 @@ const taskComponent = {
 };
 
 Vue.component('app-settings', {
+    // this is what seemed to work
+    // data: function() {
+    //     return {
+    //         sortedTasks: [],
+    //     };
+    // },
     props: {
         isTimerActive: Boolean,
         currentTask: Object,
@@ -83,6 +89,14 @@ Vue.component('app-settings', {
         taskOrder: Array,
     },
     template: '#app-settings',
+    // created: function () {
+    //     this.sortedTasks = this.taskOrder.map(taskId => this.tasks[taskId]);
+    //     // this works for some reason
+    // },
+    // updated: function () {
+    //     this.sortedTasks = this.taskOrder.map(taskId => this.tasks[taskId]);
+    //     // this breaks everything even more
+    // },
     methods: {
         taskChange(newTask) {
             const newTasks = {
