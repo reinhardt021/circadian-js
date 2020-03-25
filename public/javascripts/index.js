@@ -58,17 +58,15 @@ const taskComponent = {
         changeTitle(e) {
             const newTask = this.task;
             newTask.title = e.target.innerText.trim();
-            this.task = newTask;
-            this.$emit('change-title', newTask);
+            this.$emit('change-task', newTask);
         },
         changeTime(e) {
             const newTask = this.task;
             const { dataset:{ type }, value } = e.target;
             const timePeriod = type.replace('task-', '');
-            newTask[timePeriod] = Number(value); // #todo check if this is still an issue
+            newTask[timePeriod] = Number(value);
             newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
-            this.task = newTask;
-            this.$emit('change-time', newTask);
+            this.$emit('change-task', newTask);
         },
     },
 };
@@ -82,11 +80,8 @@ Vue.component('app-settings', {
     },
     template: '#app-settings',
     methods: {
-        titleChange(newTask) {
-            this.$emit('title-change', newTask);
-        },
-        timeChange(newTask) {
-            this.$emit('time-change', newTask);
+        taskChange(newTask) {
+            this.$emit('task-change', newTask);
         },
         taskRemove(data) {
             this.$emit('task-remove', data);
@@ -300,9 +295,11 @@ const app8 = new Vue({
                 this.currentTask = updateCurrentTask(this.currentTask, newTask);
             }
         },
-        updateTime(newTask) {
+        updateTask(newTask) {
             this.tasks[newTask.id] = newTask;
             
+            // still figuring out why updates not working on task props/ component 
+
             //#todo figure out why this is not working in flow
             // data at root doesn't seem to update either
             // NOT SURE WHY IT DOESNT Work 
