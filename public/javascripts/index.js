@@ -166,6 +166,10 @@ const appState = {
     },
 };
 
+function playAudio() {
+    var audio = new Audio('../audio/Metal_Gong-Dianakc-109711828.mp3');
+    audio.play();
+}
 
 const app8 = new Vue({
     el: '#app-8',
@@ -192,6 +196,10 @@ const app8 = new Vue({
                     currentTask.hours--;
                     currentTask.minutes = 59;
                     currentTask.seconds = 59;
+                }
+
+                if (seconds == 1 && minutes == 0 && hours ==0) {
+                    playAudio();
                 }
 
                 if (seconds == 0 && minutes == 0 && hours ==0) {
