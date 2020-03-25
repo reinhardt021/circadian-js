@@ -72,7 +72,8 @@ const taskComponent = {
             this.$emit('remove-task', taskId);
         },
         changeTitle(e) {
-            this.$emit('change-title', this.task.id, e.target.innerText.trim());
+            this.task.title = e.target.innerText.trim();
+            this.$emit('change-title', this.task);
         },
         changeTime(e) {
             // todo: one time change event to make API call once new time is decided
@@ -94,8 +95,8 @@ Vue.component('app-settings', {
     },
     template: '#app-settings',
     methods: {
-        titleChange(taskId, newTitle) {
-            this.$emit('title-change', taskId, newTitle);
+        titleChange(task) {
+            this.$emit('title-change', task);
         },
         timeChange(taskId, type, newTime) {
             this.$emit('time-change', taskId, type, newTime);
@@ -306,20 +307,26 @@ const app8 = new Vue({
             self.taskOrder = taskOrder.filter(task => task != taskId);
             delete self.tasks[taskId];
         },
-        updateTitle(taskId, newTitle) {
-            this.tasks[taskId].title = newTitle;
+        updateTitle(task) {
+            this.tasks[task.id] = task;
+            if (task.id == this.currentTask.id && !this.isTimerActive) {
+                this.currentTask = updateCurrentTask(this.currentTask, task);
+            }
         },
         updateTime(taskId, inputType, newTime) {
+            const { isTimerActive, currentTask, tasks } = this;
             const timePeriod = inputType.replace('task-', '');
+            const newTasks = tasks;
 
             // update the time period
-            this.tasks[taskId][timePeriod] = Number(newTime);
-
-            const { isTimerActive, currentTask, tasks } = this;
+            newTasks[taskId][timePeriod] = Number(newTime);
             const { hours, minutes, seconds } = tasks[taskId];
+            newTasks[taskId].time = showTime(hours, minutes, seconds);
 
-            this.tasks[taskId].time = showTime(hours, minutes, seconds);
+            this.tasks = newTasks;
             
+            //#todo figure out why this is not working in flow
+            // data at root doesn't seem to update either
             if (taskId == currentTask.id && !isTimerActive) {
                 this.currentTask = updateCurrentTask(currentTask, tasks[taskId]);
             }
