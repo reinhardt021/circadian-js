@@ -81,7 +81,19 @@ Vue.component('app-settings', {
     template: '#app-settings',
     methods: {
         taskChange(newTask) {
-            this.$emit('task-change', newTask);
+            // todo: update the tasks here to pass up newTasks
+            // so can just reset state up higher
+            // todo: can also check if current task needs update and push up newCurrentTask
+
+            const newTasks = {
+                ...this.tasks,
+                [newTask.id]: newTask,
+            };
+            let newCurrentTask = this.currentTask;
+            if (newTask.id == this.currentTask.id && !this.isTimerActive) {
+                newCurrentTask = updateCurrentTask(newCurrentTask, newTask);
+            }
+            this.$emit('task-change', newTasks, newCurrentTask);
         },
         taskRemove(data) {
             this.$emit('task-remove', data);
@@ -295,14 +307,17 @@ const app8 = new Vue({
                 this.currentTask = updateCurrentTask(this.currentTask, newTask);
             }
         },
-        updateTask(newTask) {
+        updateTask(newTasks, newCurrentTask) {
             // it looks like the data / app state doesn't update unless somehting either than the tasks updates
             // so the current task 
             // or the timer starting and going
-            this.tasks = {
-                ...this.tasks,
-                [newTask.id]: newTask,
-            };
+            // this.tasks = {
+            //     ...this.tasks,
+            //     [newTask.id]: newTask,
+            // };
+
+            this.tasks = newTasks;
+            this.currentTask = newCurrentTask;
             // this works a bit better
             // but still doesn't seem to update the time in the task component for some reason
             
@@ -320,11 +335,11 @@ const app8 = new Vue({
             // 2> it also seems to have a bigger issue of the time just not being update in general
 
             
+            // I think the issues might be an issue of taskOrder being used ...
 
-
-            if (newTask.id == this.currentTask.id && !this.isTimerActive) {
-                this.currentTask = updateCurrentTask(this.currentTask, newTask);
-            }
+            // if (newTask.id == this.currentTask.id && !this.isTimerActive) {
+            //     this.currentTask = updateCurrentTask(this.currentTask, newTask);
+            // }
         },
     },
 });
