@@ -51,22 +51,22 @@ const taskComponent = {
         task: Object,
     },
     template: '#task-item',
-    beforeUpdate() {
-        const self = this;
-        // #todo: have to figure out why this update is not working for newTasks
-        console.log('>>> this.$data', this.$data);
-        const { currentTask, task: { id, hours, minutes, seconds } } = self;
-        console.log('>>> update task', id);
+    // beforeUpdate() {
+    //     // const self = this;
+    //     // // #todo: have to figure out why this update is not working for newTasks
+    //     // console.log('>>> this.$data', this.$data);
+    //     // const { currentTask, task: { id, hours, minutes, seconds } } = self;
+    //     // console.log('>>> update task', id);
     
-        self.task.hours = Number(hours);
-        self.task.minutes = Number(minutes);
-        self.task.seconds = Number(seconds);
-        self.task.time = showTime(hours, minutes, seconds);
+    //     // self.task.hours = Number(hours);
+    //     // self.task.minutes = Number(minutes);
+    //     // self.task.seconds = Number(seconds);
+    //     // self.task.time = showTime(hours, minutes, seconds);
         
-        if (id == currentTask.id && !self.isTimerActive) {
-            self.currentTask = updateCurrentTask(currentTask, self.task);
-        }
-    },
+    //     // if (id == currentTask.id && !self.isTimerActive) {
+    //     //     self.currentTask = updateCurrentTask(currentTask, self.task);
+    //     // }
+    // },
     methods: {
         removeTask(taskId) {
             this.$emit('remove-task', taskId);
@@ -76,9 +76,9 @@ const taskComponent = {
         },
         changeTime(e) {
             // todo: one time change event to make API call once new time is decided
-            console.log('>>> e target value', e.target.value);
-            console.log('>>> e target', e.target);
-            console.log('>>> e target dataset type', e.target.dataset.type);
+            // console.log('>>> e target value', e.target.value);
+            // console.log('>>> e target', e.target);
+            // console.log('>>> e target dataset type', e.target.dataset.type);
             // const data = { 'something': 21 };
             this.$emit('change-time', this.task.id, e.target.dataset.type, e.target.value);
         },
@@ -308,11 +308,21 @@ const app8 = new Vue({
         },
         updateTitle(taskId, newTitle) {
             this.tasks[taskId].title = newTitle;
-            console.log('>>> this.tasks', this.tasks);
         },
-        updateTime(taskId, type, newTime) {
-            const timePeriod = type.replace('task-', '');
-            this.tasks[taskId][timePeriod] = newTime;
+        updateTime(taskId, inputType, newTime) {
+            const timePeriod = inputType.replace('task-', '');
+
+            // update the time period
+            this.tasks[taskId][timePeriod] = Number(newTime);
+
+            const { isTimerActive, currentTask, tasks } = this;
+            const { hours, minutes, seconds } = tasks[taskId];
+
+            this.tasks[taskId].time = showTime(hours, minutes, seconds);
+            
+            if (taskId == currentTask.id && !isTimerActive) {
+                this.currentTask = updateCurrentTask(currentTask, tasks[taskId]);
+            }
         },
     },
 });
