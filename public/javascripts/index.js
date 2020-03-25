@@ -203,7 +203,6 @@ const app8 = new Vue({
                 }
 
                 if (seconds == 0 && minutes == 0 && hours ==0) {
-                    console.log('>>> I am going to stop timer now');
                     // #todo: fix to limit this scope 03
                     self.isTimerActive = false;
                     clearInterval(currentTask.timer);
@@ -227,7 +226,6 @@ const app8 = new Vue({
                 }
 
                 currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
-                console.log(`>>> the time is ${currentTask.time} for ${currentTask.title}`);
             }
 
             // toggle Timer play and pause button
@@ -254,7 +252,6 @@ const app8 = new Vue({
             self.isSettingsOpen = !self.isSettingsOpen;
         },
         createTask() {
-            console.log('>> createTask');
             function getRandomInt(min, max) {
                 min = Math.ceil(min);
                 max = Math.floor(max);
