@@ -56,15 +56,19 @@ const taskComponent = {
             this.$emit('remove-task', taskId);
         },
         changeTitle(e) {
-            const newTask = this.task;
-            newTask.title = e.target.innerText.trim();
+            const newTask = {
+                ...this.task,
+                title: e.target.innerText.trim(),
+            };
             this.$emit('change-task', newTask);
         },
         changeTime(e) {
-            const newTask = this.task;
             const { dataset:{ type }, value } = e.target;
             const timePeriod = type.replace('task-', '');
-            newTask[timePeriod] = Number(value);
+            const newTask = {
+                ...this.task,
+                [timePeriod]: Number(value),
+            };
             newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
             this.$emit('change-task', newTask);
         },
@@ -81,10 +85,6 @@ Vue.component('app-settings', {
     template: '#app-settings',
     methods: {
         taskChange(newTask) {
-            // todo: update the tasks here to pass up newTasks
-            // so can just reset state up higher
-            // todo: can also check if current task needs update and push up newCurrentTask
-
             const newTasks = {
                 ...this.tasks,
                 [newTask.id]: newTask,
@@ -308,38 +308,15 @@ const app8 = new Vue({
             }
         },
         updateTask(newTasks, newCurrentTask) {
-            // it looks like the data / app state doesn't update unless somehting either than the tasks updates
-            // so the current task 
-            // or the timer starting and going
-            // this.tasks = {
-            //     ...this.tasks,
-            //     [newTask.id]: newTask,
-            // };
-
             this.tasks = newTasks;
             this.currentTask = newCurrentTask;
             // this works a bit better
             // but still doesn't seem to update the time in the task component for some reason
-            
             // still figuring out why updates not working on task props/ component 
-
-            //#todo figure out why this is not working in flow
-            // data at root doesn't seem to update either
-            // NOT SURE WHY IT DOESNT Work 
-            // the props don't update for the Task component
+            // it is a little slow in updating the Tasks @root & I'm not sure why
             // but they work for the current task
-            // maybe it is 
-            // it only seems to work for the first Task in the list but any new tasks in the list
-            // scratch that it is only the current task
-            // so there must be some disconnect when updating the task 
-            // 2> it also seems to have a bigger issue of the time just not being update in general
-
-            
+    
             // I think the issues might be an issue of taskOrder being used ...
-
-            // if (newTask.id == this.currentTask.id && !this.isTimerActive) {
-            //     this.currentTask = updateCurrentTask(this.currentTask, newTask);
-            // }
         },
     },
 });
