@@ -173,6 +173,55 @@ function playAudio() {
     audio.play();
 }
 
+function countdownTimeLoop(app) {
+    const { tasks, $data, currentTask, settings } = app;
+    const hours = Number($data.currentTask.hours);
+    const minutes = Number($data.currentTask.minutes);
+    const seconds = Number($data.currentTask.seconds);
+
+    if (seconds > 0) {
+        currentTask.seconds--;
+    } 
+
+    if (seconds == 0 && minutes > 0) {
+        currentTask.minutes--;
+        currentTask.seconds = 59;
+    }
+
+    if (seconds == 0 && minutes == 0 && hours > 0) {
+        currentTask.hours--;
+        currentTask.minutes = 59;
+        currentTask.seconds = 59;
+    }
+
+    if (seconds == 1 && minutes == 0 && hours ==0) {
+        playAudio();
+    }
+
+    if (seconds == 0 && minutes == 0 && hours ==0) {
+        app.isTimerActive = false;
+        clearInterval(currentTask.timer);
+
+        if (!settings.autoPlayTasks) {
+            return;
+        }
+
+        if (!currentTask.nextTask && !settings.loopTasks) {
+            return;
+        }
+
+        const nextTask = currentTask.nextTask 
+            ? tasks[currentTask.nextTask]
+            : tasks[currentTask.firstTask];
+        app.currentTask = updateCurrentTask(currentTask, nextTask);
+        app.isTimerActive = true;
+        app.currentTask.timer = 
+            setInterval(countdownTimeLoop, 1000, app);
+    }
+
+    currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
+}
+
 const app8 = new Vue({
     el: '#app-8',
     data: appState,
@@ -180,63 +229,13 @@ const app8 = new Vue({
         toggleTimer() {
             const self = this;
 
-            function countdownTimeLoop(dataTask, currentTask, settings) {
-                const hours = Number(dataTask.hours);
-                const minutes = Number(dataTask.minutes);
-                const seconds = Number(dataTask.seconds);
-
-                if (seconds > 0) {
-                    currentTask.seconds--;
-                } 
-
-                if (seconds == 0 && minutes > 0) {
-                    currentTask.minutes--;
-                    currentTask.seconds = 59;
-                }
-
-                if (seconds == 0 && minutes == 0 && hours > 0) {
-                    currentTask.hours--;
-                    currentTask.minutes = 59;
-                    currentTask.seconds = 59;
-                }
-
-                if (seconds == 1 && minutes == 0 && hours ==0) {
-                    playAudio();
-                }
-
-                if (seconds == 0 && minutes == 0 && hours ==0) {
-                    // #todo: fix to limit this scope 03
-                    self.isTimerActive = false;
-                    clearInterval(currentTask.timer);
-
-                    if (!settings.autoPlayTasks) {
-                        return;
-                    }
-
-                    if (!currentTask.nextTask && !settings.loopTasks) {
-                        return;
-                    }
-
-                    const nextTask = currentTask.nextTask ? 
-                        self.tasks[currentTask.nextTask] : 
-                        self.tasks[currentTask.firstTask];
-                    // #todo: fix to limit this scope
-                    self.currentTask = updateCurrentTask(currentTask, nextTask);
-                    self.isTimerActive = true;
-                    self.currentTask.timer = 
-                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask, settings);
-                }
-
-                currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
-            }
-
             // toggle Timer play and pause button
             self.isTimerActive = !self.isTimerActive;
 
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
                 self.currentTask.timer = 
-                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask, self.settings);
+                    setInterval(countdownTimeLoop, 1000, self);
             } else {
                 clearInterval(self.currentTask.timer);
             }
