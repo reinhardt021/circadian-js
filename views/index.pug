@@ -25,7 +25,7 @@ block content
       :is-settings-open='isSettingsOpen', 
       v-show='isSettingsOpen', 
       @title-change='updateTitle',
-      @change-time='changeTaskTime($event)', 
+      @time-change='updateTime', 
       @task-remove='deleteTask',
       @task-add='createTask',
       @close-settings='toggleSettings'
@@ -68,7 +68,8 @@ block content
               :key='taskId', 
               :is-timer-active='isTimerActive', 
               :current-task='currentTask', 
-              @change-title='titleChange'
+              @change-title='titleChange',
+              @change-time='timeChange',
               @remove-task='taskRemove'
             )
         div.options
@@ -87,10 +88,9 @@ block content
       div.task-content
         span.task-title(contenteditable='true', v-text='task.title', @blur='changeTitle($event)')
         div.task-time {{ task.time }}
-        //-   input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @change='handleRangeChange')
-        input.task-input(type='range', min='0', max='24', data-type='task-hour', v-model='task.hours', @blur='changeRange')
-        input.task-input(type='range', min='0', max='59', data-type='task-minute', v-model='task.minutes')
-        input.task-input(type='range', min='0', max='59', data-type='task-second', v-model='task.seconds')
+        input.task-input(type='range', min='0', max='24', data-type='task-hours', :value='task.hours', @input='changeTime')
+        input.task-input(type='range', min='0', max='59', data-type='task-minutes', :value='task.minutes', @input='changeTime')
+        input.task-input(type='range', min='0', max='59', data-type='task-seconds', :value='task.seconds', @input='changeTime')
 
   script(src='/javascripts/index.js')
 

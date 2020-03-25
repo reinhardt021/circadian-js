@@ -53,6 +53,7 @@ const taskComponent = {
     template: '#task-item',
     beforeUpdate() {
         const self = this;
+        // #todo: have to figure out why this update is not working for newTasks
         console.log('>>> this.$data', this.$data);
         const { currentTask, task: { id, hours, minutes, seconds } } = self;
         console.log('>>> update task', id);
@@ -73,11 +74,13 @@ const taskComponent = {
         changeTitle(e) {
             this.$emit('change-title', this.task.id, e.target.innerText.trim());
         },
-        changeRange(event) {
+        changeTime(e) {
             // todo: one time change event to make API call once new time is decided
-            console.log('>>> Vue.component app-settings methods handleRangeChange() event', event);
+            console.log('>>> e target value', e.target.value);
+            console.log('>>> e target', e.target);
+            console.log('>>> e target dataset type', e.target.dataset.type);
             // const data = { 'something': 21 };
-            this.$emit('change');
+            this.$emit('change-time', this.task.id, e.target.dataset.type, e.target.value);
         },
     },
 };
@@ -93,6 +96,9 @@ Vue.component('app-settings', {
     methods: {
         titleChange(taskId, newTitle) {
             this.$emit('title-change', taskId, newTitle);
+        },
+        timeChange(taskId, type, newTime) {
+            this.$emit('time-change', taskId, type, newTime);
         },
         taskRemove(data) {
             this.$emit('task-remove', data);
@@ -143,7 +149,7 @@ const appState = {
     
     autoPlayTasks: true,
     loopTasks: false,
-    isSettingsOpen: false,
+    isSettingsOpen: true,
 
     taskOrder: [task01.id, task02.id, task03.id],
     tasks: {
@@ -244,11 +250,6 @@ const app8 = new Vue({
             const self = this;
             self.isSettingsOpen = !self.isSettingsOpen;
         },
-        // changeTaskTime(data) {
-        //     // to use for API call later #todo
-        //     // const self = this;
-        //     console.log('>>> app new Vue methods changeTaskTime() data:', data);
-        // },
         createTask() {
             console.log('>> createTask');
             function getRandomInt(min, max) {
@@ -308,6 +309,10 @@ const app8 = new Vue({
         updateTitle(taskId, newTitle) {
             this.tasks[taskId].title = newTitle;
             console.log('>>> this.tasks', this.tasks);
+        },
+        updateTime(taskId, type, newTime) {
+            const timePeriod = type.replace('task-', '');
+            this.tasks[taskId][timePeriod] = newTime;
         },
     },
 });
