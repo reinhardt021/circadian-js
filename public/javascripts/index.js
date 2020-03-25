@@ -51,37 +51,24 @@ const taskComponent = {
         task: Object,
     },
     template: '#task-item',
-    // beforeUpdate() {
-    //     // const self = this;
-    //     // // #todo: have to figure out why this update is not working for newTasks
-    //     // console.log('>>> this.$data', this.$data);
-    //     // const { currentTask, task: { id, hours, minutes, seconds } } = self;
-    //     // console.log('>>> update task', id);
-    
-    //     // self.task.hours = Number(hours);
-    //     // self.task.minutes = Number(minutes);
-    //     // self.task.seconds = Number(seconds);
-    //     // self.task.time = showTime(hours, minutes, seconds);
-        
-    //     // if (id == currentTask.id && !self.isTimerActive) {
-    //     //     self.currentTask = updateCurrentTask(currentTask, self.task);
-    //     // }
-    // },
     methods: {
         removeTask(taskId) {
             this.$emit('remove-task', taskId);
         },
         changeTitle(e) {
-            this.task.title = e.target.innerText.trim();
-            this.$emit('change-title', this.task);
+            const newTask = this.task;
+            newTask.title = e.target.innerText.trim();
+            this.task = newTask;
+            this.$emit('change-title', newTask);
         },
         changeTime(e) {
-            // todo: one time change event to make API call once new time is decided
-            // console.log('>>> e target value', e.target.value);
-            // console.log('>>> e target', e.target);
-            // console.log('>>> e target dataset type', e.target.dataset.type);
-            // const data = { 'something': 21 };
-            this.$emit('change-time', this.task.id, e.target.dataset.type, e.target.value);
+            const newTask = this.task;
+            const { dataset:{ type }, value } = e.target;
+            const timePeriod = type.replace('task-', '');
+            newTask[timePeriod] = Number(value); // #todo check if this is still an issue
+            newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
+            this.task = newTask;
+            this.$emit('change-time', newTask);
         },
     },
 };
@@ -95,11 +82,11 @@ Vue.component('app-settings', {
     },
     template: '#app-settings',
     methods: {
-        titleChange(task) {
-            this.$emit('title-change', task);
+        titleChange(newTask) {
+            this.$emit('title-change', newTask);
         },
-        timeChange(taskId, type, newTime) {
-            this.$emit('time-change', taskId, type, newTime);
+        timeChange(newTask) {
+            this.$emit('time-change', newTask);
         },
         taskRemove(data) {
             this.$emit('task-remove', data);
@@ -307,28 +294,27 @@ const app8 = new Vue({
             self.taskOrder = taskOrder.filter(task => task != taskId);
             delete self.tasks[taskId];
         },
-        updateTitle(task) {
-            this.tasks[task.id] = task;
-            if (task.id == this.currentTask.id && !this.isTimerActive) {
-                this.currentTask = updateCurrentTask(this.currentTask, task);
+        updateTitle(newTask) {
+            this.tasks[newTask.id] = newTask;
+            if (newTask.id == this.currentTask.id && !this.isTimerActive) {
+                this.currentTask = updateCurrentTask(this.currentTask, newTask);
             }
         },
-        updateTime(taskId, inputType, newTime) {
-            const { isTimerActive, currentTask, tasks } = this;
-            const timePeriod = inputType.replace('task-', '');
-            const newTasks = tasks;
-
-            // update the time period
-            newTasks[taskId][timePeriod] = Number(newTime);
-            const { hours, minutes, seconds } = tasks[taskId];
-            newTasks[taskId].time = showTime(hours, minutes, seconds);
-
-            this.tasks = newTasks;
+        updateTime(newTask) {
+            this.tasks[newTask.id] = newTask;
             
             //#todo figure out why this is not working in flow
             // data at root doesn't seem to update either
-            if (taskId == currentTask.id && !isTimerActive) {
-                this.currentTask = updateCurrentTask(currentTask, tasks[taskId]);
+            // NOT SURE WHY IT DOESNT Work 
+            // the props don't update for the Task component
+            // but they work for the current task
+            // maybe it is 
+            // it only seems to work for the first Task in the list but any new tasks in the list
+            // scratch that it is only the current task
+            // so there must be some disconnect when updating the task 
+            // 2> it also seems to have a bigger issue of the time just not being update in general
+            if (newTask.id == this.currentTask.id && !this.isTimerActive) {
+                this.currentTask = updateCurrentTask(this.currentTask, newTask);
             }
         },
     },
