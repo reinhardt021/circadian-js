@@ -80,7 +80,8 @@ Vue.component('app-settings', {
         isTimerActive: Boolean,
         currentTask: Object,
         tasks: Object,
-        taskOrder: Array,
+        
+        settings: Object,
     },
     template: '#app-settings',
     methods: {
@@ -89,10 +90,9 @@ Vue.component('app-settings', {
                 ...this.tasks,
                 [newTask.id]: newTask,
             };
-            let newCurrentTask = this.currentTask;
-            if (newTask.id == this.currentTask.id && !this.isTimerActive) {
-                newCurrentTask = updateCurrentTask(newCurrentTask, newTask);
-            }
+            const newCurrentTask = (newTask.id == this.currentTask.id && !this.isTimerActive)
+                ? updateCurrentTask(this.currentTask, newTask)
+                : this.currentTask;
             this.$emit('task-change', newTasks, newCurrentTask);
         },
         taskRemove(data) {
@@ -141,12 +141,14 @@ const appState = {
         timer: null, // used to keep track of interval of counting down
         nextTask: task02.id,
     },
-    
-    autoPlayTasks: true,
-    loopTasks: false,
-    isSettingsOpen: true,
 
-    taskOrder: [task01.id, task02.id, task03.id],
+    settings: {
+        isOpen: true,
+        autoPlayTasks: true,
+        taskOrder: [task01.id, task02.id, task03.id],
+        loopTasks: true,
+    },
+
     tasks: {
         [task01.id]: {
             ...task01,
@@ -178,7 +180,7 @@ const app8 = new Vue({
         toggleTimer() {
             const self = this;
 
-            function countdownTimeLoop(dataTask, currentTask, autoPlayTasks, loopTasks) {
+            function countdownTimeLoop(dataTask, currentTask, settings) {
                 const hours = Number(dataTask.hours);
                 const minutes = Number(dataTask.minutes);
                 const seconds = Number(dataTask.seconds);
@@ -207,11 +209,11 @@ const app8 = new Vue({
                     self.isTimerActive = false;
                     clearInterval(currentTask.timer);
 
-                    if (!autoPlayTasks) {
+                    if (!settings.autoPlayTasks) {
                         return;
                     }
 
-                    if (!currentTask.nextTask && !loopTasks) {
+                    if (!currentTask.nextTask && !settings.loopTasks) {
                         return;
                     }
 
@@ -222,7 +224,7 @@ const app8 = new Vue({
                     self.currentTask = updateCurrentTask(currentTask, nextTask);
                     self.isTimerActive = true;
                     self.currentTask.timer = 
-                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask, autoPlayTasks, loopTasks);
+                        setInterval(countdownTimeLoop, 1000, self.currentTask, self.currentTask, settings);
                 }
 
                 currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
@@ -234,7 +236,7 @@ const app8 = new Vue({
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
                 self.currentTask.timer = 
-                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask, self.autoPlayTasks, self.loopTasks);
+                    setInterval(countdownTimeLoop, 1000, self.$data.currentTask, self.currentTask, self.settings);
             } else {
                 clearInterval(self.currentTask.timer);
             }
@@ -248,8 +250,7 @@ const app8 = new Vue({
             self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.firstTask]);
         },
         toggleSettings() {
-            const self = this;
-            self.isSettingsOpen = !self.isSettingsOpen;
+            this.settings.isOpen = !this.settings.isOpen;
         },
         createTask() {
             function getRandomInt(min, max) {
@@ -259,8 +260,7 @@ const app8 = new Vue({
                 return Math.floor(Math.random() * (max - min)) + min;
             }
             const self = this;
-            const { taskOrder } = self;
-            // create unique ID
+            const { settings:{ taskOrder } } = self;
             const newTaskId = getRandomInt(500,1000);
             const lastTask = taskOrder[taskOrder.length - 1];
             self.tasks[lastTask].nextTask = newTaskId;
@@ -274,11 +274,11 @@ const app8 = new Vue({
                 nextTask: null,
             };
             self.tasks[newTaskId] = newTask;
-            self.taskOrder = taskOrder.concat([newTaskId]);            
+            self.settings.taskOrder = taskOrder.concat([newTaskId]);            
         },
         deleteTask(taskId) {
             const self = this;
-            const { isTimerActive, currentTask, taskOrder, tasks } = self;
+            const { isTimerActive, currentTask, settings:{ taskOrder }, tasks } = self;
             const thisTaskIndex = taskOrder.indexOf(taskId);
             const taskToDelete = tasks[taskId];
 
@@ -303,7 +303,7 @@ const app8 = new Vue({
             }
             
             // remove Task from taskOrder list and from Tasks linked list
-            self.taskOrder = taskOrder.filter(task => task != taskId);
+            self.settings.taskOrder = taskOrder.filter(task => task != taskId);
             delete self.tasks[taskId];
         },
         updateTitle(newTask) {
@@ -315,13 +315,6 @@ const app8 = new Vue({
         updateTask(newTasks, newCurrentTask) {
             this.tasks = newTasks;
             this.currentTask = newCurrentTask;
-            // this works a bit better
-            // but still doesn't seem to update the time in the task component for some reason
-            // still figuring out why updates not working on task props/ component 
-            // it is a little slow in updating the Tasks @root & I'm not sure why
-            // but they work for the current task
-    
-            // I think the issues might be an issue of taskOrder being used ...
         },
     },
 });

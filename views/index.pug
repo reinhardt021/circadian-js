@@ -21,9 +21,8 @@ block content
       :is-timer-active='isTimerActive', 
       :current-task='currentTask', 
       :tasks='tasks', 
-      :task-order='taskOrder',
-      :is-settings-open='isSettingsOpen', 
-      v-show='isSettingsOpen', 
+      :settings='settings',
+      v-show='settings.isOpen', 
       @task-change='updateTask', 
       @task-remove='deleteTask',
       @task-add='createTask',
@@ -61,7 +60,7 @@ block content
           h2.flow-title Flow
           div.tasks
             task-item(
-              v-for='(taskId, index) in taskOrder', 
+              v-for='(taskId, index) in settings.taskOrder', 
               :task='tasks[taskId]', 
               :index='index', 
               :key='taskId', 
