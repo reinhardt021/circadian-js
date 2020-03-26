@@ -14,6 +14,7 @@ function updateCurrentTask(currentTask, updatedTask) {
     currentTask.seconds = updatedTask.seconds;
     currentTask.time = updatedTask.time;
     currentTask.nextTask = updatedTask.nextTask;
+    currentTask.audioFile = updatedTask.audioFile;
 
     return currentTask;
 }
@@ -116,6 +117,7 @@ const task01 = {
     hours: 0,
     minutes: 0,
     seconds: 5,
+    audioFile: '',
 };
 const task02 = {
     id: 11,
@@ -123,6 +125,7 @@ const task02 = {
     hours: 0,
     minutes: 1,
     seconds: 0,
+    audioFile: '../audio/Wind-Mark_DiAngelo-1940285615.mp3',
 };
 const task03 = {
     id: 31,
@@ -130,6 +133,17 @@ const task03 = {
     hours: 0,
     minutes: 0,
     seconds: 30,
+    audioFile: '',
+};
+
+const templateTask = {
+    title: 'New Task',
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    time: showTime(0, 0, 0),
+    nextTask: null,
+    audioFile: '',
 };
 
 const appState = {
@@ -138,8 +152,9 @@ const appState = {
         firstTask: task01.id,
         ...task01,
         time: showTime(task01.hours, task01.minutes, task01.seconds),
-        timer: null, // used to keep track of interval of counting down
         nextTask: task02.id,
+        timer: null, // used to keep track of interval of counting down
+        audio: null, // used to keep track of Audio files being played
     },
 
     settings: {
@@ -147,6 +162,7 @@ const appState = {
         autoPlayTasks: true,
         taskOrder: [task01.id, task02.id, task03.id],
         loopTasks: true,
+        timerAudioFile: '../audio/Metal_Gong-Dianakc-109711828.mp3',
     },
 
     tasks: {
@@ -168,9 +184,15 @@ const appState = {
     },
 };
 
-function playAudio() {
-    var audio = new Audio('../audio/Metal_Gong-Dianakc-109711828.mp3');
+function playAudio(filePath, loop) {
+    if (filePath == '') {
+        return null;
+    }
+    var audio = new Audio(filePath);
+    audio.loop = loop ? loop : false;
     audio.play();
+    
+    return audio;
 }
 
 function countdownTimeLoop(app) {
@@ -195,7 +217,10 @@ function countdownTimeLoop(app) {
     }
 
     if (seconds == 1 && minutes == 0 && hours ==0) {
-        playAudio();
+        if (app.currentTask.audio) {
+            app.currentTask.audio.pause();
+        }
+        playAudio(app.settings.timerAudioFile);
     }
 
     if (seconds == 0 && minutes == 0 && hours ==0) {
@@ -213,13 +238,21 @@ function countdownTimeLoop(app) {
         const nextTask = currentTask.nextTask 
             ? tasks[currentTask.nextTask]
             : tasks[currentTask.firstTask];
+
         app.currentTask = updateCurrentTask(currentTask, nextTask);
         app.isTimerActive = true;
-        app.currentTask.timer = 
-            setInterval(countdownTimeLoop, 1000, app);
+        app.currentTask.timer = setInterval(countdownTimeLoop, 1000, app);
+        app.currentTask.audio = playAudio(nextTask.audioFile, true);
     }
 
     currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 const app8 = new Vue({
@@ -234,10 +267,18 @@ const app8 = new Vue({
 
             // start or stop the timer countdown if Timer is clicked
             if (self.isTimerActive) {
-                self.currentTask.timer = 
-                    setInterval(countdownTimeLoop, 1000, self);
+                if (self.currentTask.audio) {
+                    self.currentTask.audio.play();
+                } else {
+                    self.currentTask.audio = playAudio(self.currentTask.audioFile, true);
+                }
+                self.currentTask.timer = setInterval(countdownTimeLoop, 1000, self);
             } else {
+                if (self.currentTask.audio) {
+                    self.currentTask.audio.pause();
+                }
                 clearInterval(self.currentTask.timer);
+                
             }
         },
         resetTimer() {
@@ -252,12 +293,6 @@ const app8 = new Vue({
             this.settings.isOpen = !this.settings.isOpen;
         },
         createTask() {
-            function getRandomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                
-                return Math.floor(Math.random() * (max - min)) + min;
-            }
             const self = this;
             const { settings:{ taskOrder } } = self;
             const newTaskId = getRandomInt(500,1000);
@@ -265,12 +300,7 @@ const app8 = new Vue({
             self.tasks[lastTask].nextTask = newTaskId;
             const newTask = {
                 id: newTaskId,
-                title: 'New Task',
-                hours: 0,
-                minutes: 0,
-                seconds: 0,
-                time: showTime(0, 0, 0),
-                nextTask: null,
+                ...templateTask,
             };
             self.tasks[newTaskId] = newTask;
             self.settings.taskOrder = taskOrder.concat([newTaskId]);            
