@@ -293,17 +293,16 @@ const app8 = new Vue({
             this.settings.isOpen = !this.settings.isOpen;
         },
         createTask() {
-            const self = this;
-            const { settings:{ taskOrder } } = self;
+            const { settings:{ taskOrder } } = this;
             const newTaskId = getRandomInt(500,1000);
             const lastTask = taskOrder[taskOrder.length - 1];
-            self.tasks[lastTask].nextTask = newTaskId;
+            this.tasks[lastTask].nextTask = newTaskId;
             const newTask = {
                 id: newTaskId,
                 ...templateTask,
             };
-            self.tasks[newTaskId] = newTask;
-            self.settings.taskOrder = taskOrder.concat([newTaskId]);            
+            this.tasks[newTaskId] = newTask;
+            this.settings.taskOrder = taskOrder.concat([newTaskId]);            
         },
         deleteTask(taskId) {
             const self = this;
