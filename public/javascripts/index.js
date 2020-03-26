@@ -282,12 +282,15 @@ const app8 = new Vue({
             }
         },
         resetTimer() {
-            const self = this;
-
-            clearInterval(self.currentTask.timer);
-            self.isTimerActive = false;
+            const { currentTask, tasks } = this;
+            if (currentTask.audio) {
+                currentTask.audio.pause();
+            }
+            clearInterval(this.currentTask.timer);
+            this.isTimerActive = false;
+            
             // resets to the first task in the Flow
-            self.currentTask = updateCurrentTask(self.currentTask, self.tasks[self.currentTask.firstTask]);
+            this.currentTask = updateCurrentTask(currentTask, tasks[currentTask.firstTask]);
         },
         toggleSettings() {
             this.settings.isOpen = !this.settings.isOpen;
