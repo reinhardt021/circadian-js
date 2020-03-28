@@ -13,6 +13,7 @@ Helping you get through the rhythms of your day
 
 ## Screenshots
 
-![alt text](public/images/screenshots/circadian-v1-sidebar.png "Main View")
-![alt text](public/images/screenshots/circadian-v1-main.png "Sidebar View")
+![alt text](public/images/screenshots/circadian-v1-main.png "Main View")
+![alt text](public/images/screenshots/circadian-v1-sidebar.png "Sidebar View")
+
 
