@@ -158,7 +158,7 @@ const appState = {
     },
 
     settings: {
-        isOpen: true,
+        isOpen: false,
         autoPlayTasks: true,
         taskOrder: [task01.id, task02.id, task03.id],
         loopTasks: true,
