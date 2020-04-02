@@ -23,7 +23,13 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|svg|jpe?g|gif|mp4)$/,
+                use: [
+                    'file-loader',
+                ],
+            },
+            {
+                test: /\.(ogg|mp3|wav|mpe?g)$/,
                 use: [
                     'file-loader',
                 ],

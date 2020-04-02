@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import './stylesheets/style.css'
+import MetalGongMp3 from './audio/Metal_Gong-Dianakc.mp3'
+import WindMp3 from './audio/Wind-Mark_DiAngelo.mp3'
 
 function ensurePadding(count) {
     return (count < 10 ? `0${count}` : count);
@@ -128,7 +130,7 @@ const task02 = {
     hours: 0,
     minutes: 1,
     seconds: 0,
-    audioFile: '../audio/Wind-Mark_DiAngelo-1940285615.mp3',
+    audioFile: WindMp3,
 };
 const task03 = {
     id: 31,
@@ -165,7 +167,7 @@ const appState = {
         autoPlayTasks: true,
         taskOrder: [task01.id, task02.id, task03.id],
         loopTasks: true,
-        timerAudioFile: '../audio/Metal_Gong-Dianakc-109711828.mp3',
+        timerAudioFile: MetalGongMp3,
     },
 
     tasks: {
