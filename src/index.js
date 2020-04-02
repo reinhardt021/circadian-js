@@ -1,3 +1,5 @@
+// import Vue from 'vue.js'
+
 function ensurePadding(count) {
     return (count < 10 ? `0${count}` : count);
 }
