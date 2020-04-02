@@ -258,13 +258,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const app = new Vue({
-    el: '#app',
-    data: {
-        prompt: 'yoooooo',
-    },
-});
-
 const app8 = new Vue({
     el: '#app-8',
     data: appState,
