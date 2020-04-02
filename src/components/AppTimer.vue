@@ -3,7 +3,7 @@
         <div class="container">
             <div class="timer">
                 <span class="timer-session js-session" v-text="currentTask.title"></span>
-                <span class="timer-countdown.js-countdown" v-text="currentTask.time"></span>
+                <span class="timer-countdown js-countdown" v-text="currentTask.time"></span>
                 <button class="btn-timer" @click='toggleTimer'>
                     <span class="flex-center" v-if='isTimerActive'>
                         <svg width='14' height='18' xmlns='http://www.w3.org/2000/svg'>
