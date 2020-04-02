@@ -9,8 +9,6 @@
                         :task='tasks[taskId]'
                         :index='index'
                         :key='taskId'
-                        :is-timer-active='isTimerActive'
-                        :current-task='currentTask'
                         @change-task='taskChange'
                         @remove-task='taskRemove'
                     />
@@ -52,7 +50,6 @@ export default {
         isTimerActive: Boolean,
         currentTask: Object,
         tasks: Object,
-        
         settings: Object,
     },    
     methods: {
