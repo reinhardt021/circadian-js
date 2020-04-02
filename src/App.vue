@@ -202,7 +202,7 @@ export default {
                 currentTask.audio.pause();
             }
             clearInterval(this.currentTask.timer);
-            self.isTimerActive = false;
+            this.isTimerActive = false;
             
             // resets to the first task in the Flow
             this.currentTask = updateCurrentTask(currentTask, tasks[currentTask.firstTask]);
@@ -229,34 +229,33 @@ export default {
             this.settings.taskOrder = taskOrder.concat([newTaskId]);            
         },
         deleteTask(taskId) {
-            const self = this;
-            const { isTimerActive, currentTask, settings:{ taskOrder }, tasks } = self;
+            const { isTimerActive, currentTask, settings:{ taskOrder }, tasks } = this;
             const thisTaskIndex = taskOrder.indexOf(taskId);
             const taskToDelete = tasks[taskId];
 
             // if the taskToDelete is the first task then update the firstTask
             if (thisTaskIndex == 0) {
-                self.currentTask.firstTask = taskToDelete.nextTask;
+                this.currentTask.firstTask = taskToDelete.nextTask;
             }
 
             if (thisTaskIndex > 0) {
                 // update the Tasks linked list pointer in the previous Task
-                self.tasks[taskOrder[thisTaskIndex - 1]].nextTask = taskToDelete.nextTask;
+                this.tasks[taskOrder[thisTaskIndex - 1]].nextTask = taskToDelete.nextTask;
             }
 
             // update the currentTask.nextTask if this points to the task to be deleted
             if (currentTask.nextTask == taskId) {
-                self.currentTask.nextTask = taskToDelete.nextTask;
+                this.currentTask.nextTask = taskToDelete.nextTask;
             }
 
             // if the currentTask is deleted then update if timer is inactive
             if (currentTask.id == taskId && !isTimerActive && taskToDelete.nextTask) {
-                self.currentTask = updateCurrentTask(currentTask, tasks[taskToDelete.nextTask]);
+                this.currentTask = updateCurrentTask(currentTask, tasks[taskToDelete.nextTask]);
             }
             
             // remove Task from taskOrder list and from Tasks linked list
-            self.settings.taskOrder = taskOrder.filter(task => task != taskId);
-            delete self.tasks[taskId];
+            this.settings.taskOrder = taskOrder.filter(task => task != taskId);
+            delete this.tasks[taskId];
         },
         updateTitle(newTask) {
             this.tasks[newTask.id] = newTask;
