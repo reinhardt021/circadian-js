@@ -7,6 +7,9 @@ block content
         i.fas.fa-bug
         |  #{title}
 
+  div#app
+    h1(v-text='prompt')
+
   div#app-8.site
     app-main(
       :is-timer-active='isTimerActive', 

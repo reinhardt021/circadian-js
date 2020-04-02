@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import './stylesheets/style.css';
+import './stylesheets/style.css'
 
 function ensurePadding(count) {
     return (count < 10 ? `0${count}` : count);
@@ -257,6 +257,13 @@ function getRandomInt(min, max) {
     
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+const app = new Vue({
+    el: '#app',
+    data: {
+        prompt: 'yoooooo',
+    },
+});
 
 const app8 = new Vue({
     el: '#app-8',
