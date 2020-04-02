@@ -16,13 +16,7 @@
 </template>
 
 <script>
-function ensurePadding(count) {
-    return (count < 10 ? `0${count}` : count);
-}
-
-function showTime(hours, minutes, seconds) {
-    return `${ensurePadding(hours)}:${ensurePadding(minutes)}:${ensurePadding(seconds)}`;
-}
+import { showTime } from '../helpers.js'
 
 export default {
     props: {

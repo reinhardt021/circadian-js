@@ -32,18 +32,7 @@
 
 <script>
 import AppTask from './AppTask.vue'
-
-function updateCurrentTask(currentTask, updatedTask) {
-    currentTask.id = updatedTask.id;
-    currentTask.title = updatedTask.title;
-    currentTask.hours = updatedTask.hours;
-    currentTask.minutes = updatedTask.minutes;
-    currentTask.seconds = updatedTask.seconds;
-    currentTask.time = updatedTask.time;
-    currentTask.nextTask = updatedTask.nextTask;
-
-    return currentTask;
-}
+import { updateCurrentTask } from '../helpers.js'
 
 export default {
     props: {

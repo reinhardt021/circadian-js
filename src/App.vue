@@ -31,26 +31,7 @@ import AppSettings from './components/AppSettings.vue'
 import WindMp3 from './audio/Wind-Mark_DiAngelo.mp3'
 import MetalGongMp3 from './audio/Metal_Gong-Dianakc.mp3'
 
-function ensurePadding(count) {
-    return (count < 10 ? `0${count}` : count);
-}
-
-function showTime(hours, minutes, seconds) {
-    return `${ensurePadding(hours)}:${ensurePadding(minutes)}:${ensurePadding(seconds)}`;
-}
-
-function updateCurrentTask(currentTask, updatedTask) {
-    currentTask.id = updatedTask.id;
-    currentTask.title = updatedTask.title;
-    currentTask.hours = updatedTask.hours;
-    currentTask.minutes = updatedTask.minutes;
-    currentTask.seconds = updatedTask.seconds;
-    currentTask.time = updatedTask.time;
-    currentTask.nextTask = updatedTask.nextTask;
-    currentTask.audioFile = updatedTask.audioFile;
-
-    return currentTask;
-}
+import { showTime, updateCurrentTask } from './helpers.js'
 
 const templateTask = {
     title: 'New Task',
