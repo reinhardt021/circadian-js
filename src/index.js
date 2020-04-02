@@ -2,6 +2,7 @@ import Vue from 'vue'
 import './stylesheets/style.css'
 import MetalGongMp3 from './audio/Metal_Gong-Dianakc.mp3'
 import WindMp3 from './audio/Wind-Mark_DiAngelo.mp3'
+import AppTask from './components/AppTask.vue'
 
 function ensurePadding(count) {
     return (count < 10 ? `0${count}` : count);
@@ -50,36 +51,36 @@ Vue.component('app-controls', {
     },
 });
 
-const taskComponent = {
-    props: {
-        isTimerActive: Boolean,
-        currentTask: Object,
-        task: Object,
-    },
-    template: '#task-item',
-    methods: {
-        removeTask(taskId) {
-            this.$emit('remove-task', taskId);
-        },
-        changeTitle(e) {
-            const newTask = {
-                ...this.task,
-                title: e.target.innerText.trim(),
-            };
-            this.$emit('change-task', newTask);
-        },
-        changeTime(e) {
-            const { dataset:{ type }, value } = e.target;
-            const timePeriod = type.replace('task-', '');
-            const newTask = {
-                ...this.task,
-                [timePeriod]: Number(value),
-            };
-            newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
-            this.$emit('change-task', newTask);
-        },
-    },
-};
+// const taskComponent = {
+//     props: {
+//         isTimerActive: Boolean,
+//         currentTask: Object,
+//         task: Object,
+//     },
+//     template: '#task-item',
+//     methods: {
+//         removeTask(taskId) {
+//             this.$emit('remove-task', taskId);
+//         },
+//         changeTitle(e) {
+//             const newTask = {
+//                 ...this.task,
+//                 title: e.target.innerText.trim(),
+//             };
+//             this.$emit('change-task', newTask);
+//         },
+//         changeTime(e) {
+//             const { dataset:{ type }, value } = e.target;
+//             const timePeriod = type.replace('task-', '');
+//             const newTask = {
+//                 ...this.task,
+//                 [timePeriod]: Number(value),
+//             };
+//             newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
+//             this.$emit('change-task', newTask);
+//         },
+//     },
+// };
 
 Vue.component('app-settings', {
     props: {
@@ -112,7 +113,7 @@ Vue.component('app-settings', {
         },
     },
     components: {
-        'task-item': taskComponent,
+        AppTask,
     },
 });
 

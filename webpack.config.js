@@ -1,5 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     mode: 'production',
@@ -8,6 +9,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new VueLoaderPlugin(),
     ],
     output: {
         filename: 'bundle.js',
@@ -20,6 +22,7 @@ module.exports = {
                 use: [
                     'style-loader',
                     'css-loader',
+                    // 'vue-style-loader', // #todo figure this out
                 ],
             },
             {
@@ -32,6 +35,12 @@ module.exports = {
                 test: /\.(ogg|mp3|wav|mpe?g)$/,
                 use: [
                     'file-loader',
+                ],
+            },
+            {
+                test: /\.vue$/,
+                use: [
+                    'vue-loader',
                 ],
             },
         ],
