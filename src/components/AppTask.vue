@@ -26,8 +26,6 @@ function showTime(hours, minutes, seconds) {
 
 export default {
     props: {
-        isTimerActive: Boolean, //#todo remove if redundant
-        currentTask: Object, //#todo remove if redundant
         task: Object,
     },
     methods: {
