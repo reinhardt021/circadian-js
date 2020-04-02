@@ -52,6 +52,16 @@ function updateCurrentTask(currentTask, updatedTask) {
     return currentTask;
 }
 
+const templateTask = {
+    title: 'New Task',
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    time: showTime(0, 0, 0),
+    nextTask: null,
+    audioFile: '',
+};
+
 const task01 = {
     id: 21,
     title: 'Warm Up',
@@ -74,16 +84,6 @@ const task03 = {
     hours: 0,
     minutes: 0,
     seconds: 30,
-    audioFile: '',
-};
-
-const templateTask = {
-    title: 'New Task',
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    time: showTime(0, 0, 0),
-    nextTask: null,
     audioFile: '',
 };
 
