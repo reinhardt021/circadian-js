@@ -43,6 +43,11 @@ module.exports = {
                     'vue-loader',
                 ],
             },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            },
         ],
     },
     resolve: {
