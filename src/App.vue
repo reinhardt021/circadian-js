@@ -204,8 +204,14 @@ export default {
             clearInterval(this.currentTask.timer);
             this.isTimerActive = false;
             
-            // resets to the first task in the Flow
-            this.currentTask = updateCurrentTask(currentTask, tasks[currentTask.firstTask]);
+            // if currentTask.firstTask == null OR there are no more tasks
+            // then just reset to the currentTask
+            // or reset to the first task in the flow
+            const nextTask = (currentTask.firstTask === null)
+                ? currentTask
+                : tasks[currentTask.firstTask];
+            
+            this.currentTask = updateCurrentTask(currentTask, nextTask);
         },
         toggleSettings() {
             this.settings.isOpen = !this.settings.isOpen;
@@ -217,10 +223,26 @@ export default {
                 
                 return Math.floor(Math.random() * (max - min)) + min;
             }
-            const { settings:{ taskOrder } } = this;
+            const { currentTask, settings:{ taskOrder } } = this;
             const newTaskId = getRandomInt(500, 1000);
-            const lastTask = taskOrder[taskOrder.length - 1];
-            this.tasks[lastTask].nextTask = newTaskId;
+            
+            // if there are no more tasks in the flow 
+            if (taskOrder.length === 0) {
+                // then update the currentTask.firstTask to the new task
+                this.currentTask.firstTask = newTaskId;
+            }
+
+            if (taskOrder.length > 0) {
+                const previousTask = taskOrder[taskOrder.length - 1];
+                this.tasks[previousTask].nextTask = newTaskId;
+            }
+
+            // if the current task comes before this new task 
+            if (currentTask.nextTask == null) {
+                // then update currentTask.nextTask to the new task
+                this.currentTask.nextTask = newTaskId;
+            }
+
             const newTask = {
                 id: newTaskId,
                 ...templateTask,
