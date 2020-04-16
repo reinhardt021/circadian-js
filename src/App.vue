@@ -48,14 +48,14 @@ const task01 = {
     title: 'Warm Up',
     hours: 0,
     minutes: 0,
-    seconds: 5,
+    seconds: 30,
     audioFile: '',
 };
 const task02 = {
     id: 11,
     title: 'WORK',
     hours: 0,
-    minutes: 1,
+    minutes: 25,
     seconds: 0,
     audioFile: WindMp3,
 };
@@ -63,8 +63,8 @@ const task03 = {
     id: 31,
     title: 'Break',
     hours: 0,
-    minutes: 0,
-    seconds: 30,
+    minutes: 13,
+    seconds: 0,
     audioFile: '',
 };
 
