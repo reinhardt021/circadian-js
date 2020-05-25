@@ -3,7 +3,7 @@ import './stylesheets/style.css'
 import App from './App.vue'
 
 new Vue({
-    el: '#app',
+    el: '#timer',
     template: '<App/>',
     components: { App }
 })

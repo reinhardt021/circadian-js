@@ -1,8 +1,20 @@
 <template>
     <transition name='settings' enter-active-class='settings-show'>
         <div class="settings">
-            <div class="flow">
-                <h2 class="flow-title">Flow</h2>
+            <div class="settings-header">
+                <button class="settings-button" id="settings-flows">
+                    <i class="fa fa-list-ul" aria-hidden="true"></i>
+                    <span class="settings-button-text">Flows</span>
+                </button>
+                <button class="settings-button" id="settings-close" @click='closeSettings'>
+                    <span class="settings-button-text">Close</span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="settings-content">
+                <!-- <FlowDetails />--><!-- todo: -->
+                <h2 class="flow-title" v-text="currentFlow.title"></h2>
                 <div class="tasks">
                     <AppTask
                         v-for='(taskId, index) in settings.taskOrder'
@@ -14,17 +26,36 @@
                     />
                 </div>
             </div>
-            <div class="options">
-                <button class="settings-btn" @click='taskAdd'>
-                    <svg width='24' height='22' xmlns='http://www.w3.org/2000/svg'>
-                        <path fill='#333' fill-rule='evenodd' d='M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z'/>
-                    </svg>
-                </button>
-                <button class="settings-btn" @click='closeSettings'>
-                    <svg width='14' height='14' xmlns='http://www.w3.org/2000/svg'>
-                        <path fill='#333' fill-rule='evenodd' d='M5.586 7L.636 2.05A1 1 0 0 1 2.05.636L7 5.586l4.95-4.95a1 1 0 0 1 1.414 1.414L8.414 7l4.95 4.95a1 1 0 0 1-1.414 1.414L7 8.414l-4.95 4.95A1 1 0 0 1 .636 11.95L5.586 7z'/>
-                    </svg>
-                </button>
+
+            <div class="settings-options">
+                <!-- # Flow list -->
+                <!--                    <div class="settings-card">-->
+                <!--                        <i class="fa fa-plus" aria-hidden="true"></i>-->
+                <!--                        Add flow-->
+                <!--                         <i class="fa fa-trash" aria-hidden="true"></i>-->
+                <!--                        Delete flow-->
+                <!-- (delete if selected one) -todo -->
+                <!--                    </div>-->
+                <!-- # Flow Details -->
+                <div class="settings-card settings-button" @click="taskAdd">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add task
+                </div>
+                <div class="settings-card settings-button" @click="setPlaylist('focus')">
+                    <i class="fa fa-crosshairs" aria-hidden="true"></i>
+                    Focus playlist
+                    <i class="fa fa-music" aria-hidden="true"></i>
+                </div>
+                <div class="settings-card settings-button" @click="setPlaylist('break')">
+                    <i class="fa fa-coffee" aria-hidden="true"></i>
+                    Break playlist
+                    <i class="fa fa-music" aria-hidden="true"></i>
+                </div>
+                <div class="settings-card">
+                    <i class="fa fa-volume-up" aria-hidden="true"></i>
+                    Now Playing ...
+                    <input class='volume-input' type='range' min='0' max='100' v-model="currentTask.volume" @input='changeVolume'/>
+                </div>
             </div>
         </div>
     </transition>
@@ -37,6 +68,7 @@ import { updateCurrentTask } from '../helpers.js'
 export default {
     props: {
         isTimerActive: Boolean,
+        currentFlow: Object,
         currentTask: Object,
         tasks: Object,
         settings: Object,
@@ -60,6 +92,18 @@ export default {
         },
         closeSettings() {
             this.$emit('close-settings');
+        },
+        setPlaylist(type) {
+            console.log('>>> setPlaylist type=' + type);
+        },
+        changeVolume() {
+            const newVolume = Number(this.currentTask.volume);
+            if (this.currentTask.audio) {
+                this.currentTask.audio.volume = newVolume / 100;
+            }
+            if (this.settings.audio) {
+                this.settings.audio.volume = newVolume / 100;
+            }
         },
     },
     components: {

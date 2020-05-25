@@ -10,6 +10,15 @@ html {
 
 body {
   height: 100%;
+  margin: 0;
+}
+
+input {
+  width: 100%;
+}
+
+#app-timer {
+  height: 100%;
   padding: 50px;
  
   background: #2c3e50;  /* fallback for old browsers */
@@ -25,6 +34,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+#timer {
+  height: 100%;
+}
 
 /* HELPERS */
 .flex-center {
@@ -63,16 +75,17 @@ body {
 
 /* MAIN */
 .timer {
+  min-width: 224px;
+  background-color: rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  max-width: 224px;
+  height: 224px;
+
   position: relative;
   margin: 0 auto;
   display: flex;
   flex-flow: column wrap;  
   justify-content: center;
-  
-  border: 4px solid white;
-  border-radius: 50%;
-  max-width: 224px;
-  height: 224px;
 }
 
 /* the transparent black outlines surrounding */
@@ -104,9 +117,10 @@ body {
 }
 
 /* CONTROLS */
-button {
+.button,
+.settings-button {
   padding: 0;
-  color: white;
+  color: rgba(0, 0, 0, 0.25);
   font-family: inherit;
   font-size: 1rem;
   background-color: transparent;
@@ -116,8 +130,17 @@ button {
   transition: border-color .15s ease;
 }
 
-button:not(:disabled) {
+.button:not(:disabled),
+.settings-button:not(:disabled) {
   cursor: pointer;
+}
+
+.settings-button-text {
+  color: rgba(0, 0, 0, 0.0);
+  text-shadow: none;
+}
+.settings-button-text:hover {
+  color: rgba(0, 0, 0, 0.25);
 }
 
 .controls {
@@ -190,16 +213,21 @@ button:not(:disabled) {
   transform: translateX(100%);
 }
 
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .flow-title {
   color: rgba(0, 0, 0, 0.5);
 }
 
-.task {
+.settings-card {
   overflow: auto;
   position: relative;
 
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(135, 206, 250, 0.3);
+
   border-radius: 5px;
   color: rgba(0, 0, 0, 0.5);
   font-weight: bold;
@@ -208,31 +236,49 @@ button:not(:disabled) {
   margin-bottom: 10px;
 }
 
-.remove-task {
-  position: absolute;
-  float: right;
-  top: 10px;
-  right: 10px;
-  padding: 0;
+.settings-options > .settings-card {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3);
 }
 
-.settings-btn {
-  border: 2px solid rgba(0, 0, 0, .20);
-  border-radius: 50%;
+.settings-options > .settings-card:hover {
+  background-color: rgba(135, 206, 250, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+}
 
-  width: 48px;
-  height: 48px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-
+.task-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 12px;
+  justify-content: space-between;
+}
+.task-type:not(:disabled) {
+  cursor: pointer;
 }
 
-.settings-btn:hover {
-  border-color: #000;
+.task-times {
+  font-size: xx-large;
+}
+.time-labels {
+  font-size: x-small;
+}
+
+.time-view {
+  display: flex;
+  justify-content: space-evenly;
+}
+.time-hours,
+.time-seconds {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+}
+.time-minutes {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.task-delete {
+  text-align: left;
+}
+
+.settings-options {
+  text-align: left;
 }

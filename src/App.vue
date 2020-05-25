@@ -1,5 +1,9 @@
 <template>
-    <div id="app" class="site">
+    <div id="timer" class="site">
+        <h2>
+            <i class="fas fa-bug"></i>
+            <span v-text="currentFlow.title"></span>
+        </h2>
         <AppTimer 
             :is-timer-active='isTimerActive'
             :current-task='currentTask' 
@@ -11,6 +15,7 @@
         />
         <AppSettings 
             :is-timer-active='isTimerActive'
+            :current-flow='currentFlow'
             :current-task='currentTask'
             :tasks='tasks'
             :settings='settings'
@@ -28,17 +33,19 @@ import AppTimer from './components/AppTimer.vue'
 import AppControls from './components/AppControls.vue'
 import AppSettings from './components/AppSettings.vue'
 
+import { showTime, formatTime, updateCurrentTask } from './helpers.js'
+
 import WindMp3 from './audio/Wind-Mark_DiAngelo.mp3'
 import MetalGongMp3 from './audio/Metal_Gong-Dianakc.mp3'
 
-import { showTime, updateCurrentTask } from './helpers.js'
-
 const templateTask = {
     title: 'New Task',
+    type: 'break',
     hours: 0,
     minutes: 0,
     seconds: 0,
     time: showTime(0, 0, 0),
+    view: formatTime(0, 0, 0),
     nextTask: null,
     audioFile: '',
 };
@@ -46,6 +53,7 @@ const templateTask = {
 const task01 = {
     id: 21,
     title: 'Warm Up',
+    type: 'break',
     hours: 0,
     minutes: 0,
     seconds: 30,
@@ -54,6 +62,7 @@ const task01 = {
 const task02 = {
     id: 11,
     title: 'WORK',
+    type: 'focus',
     hours: 0,
     minutes: 25,
     seconds: 0,
@@ -62,6 +71,7 @@ const task02 = {
 const task03 = {
     id: 31,
     title: 'Break',
+    type: 'break',
     hours: 0,
     minutes: 13,
     seconds: 0,
@@ -70,48 +80,66 @@ const task03 = {
 
 const appState = {
     isTimerActive: false,
+
+    // todo: move this to UserTimerSettings
+    currentFlow: {
+        id: 13,
+        title: 'Mein Flow'
+    },
+
+    // todo: move this to UserTimerSettings
     currentTask: {
         firstTask: task01.id,
         ...task01,
         time: showTime(task01.hours, task01.minutes, task01.seconds),
+        view: formatTime(task01.hours, task01.minutes, task01.seconds),
         nextTask: task02.id,
         timer: null, // used to keep track of interval of counting down
         audio: null, // used to keep track of Audio files being played
+        volume: 75, // default to 75% audio
     },
 
+    // todo: get this from API for UserTimerSettings
     settings: {
         isOpen: false,
         autoPlayTasks: true,
-        taskOrder: [task01.id, task02.id, task03.id],
+        taskOrder: [task01.id, task02.id, task03.id], // todo: move this to currentFlow
         loopTasks: true,
         timerAudioFile: MetalGongMp3,
+        audio: null,
     },
+
+    flows: {},
 
     tasks: {
         [task01.id]: {
             ...task01,
             time: showTime(task01.hours, task01.minutes, task01.seconds),
+            view: formatTime(task01.hours, task01.minutes, task01.seconds),
             nextTask: task02.id,
         },
         [task02.id]: {
             ...task02,
             time: showTime(task02.hours, task02.minutes, task02.seconds),
+            view: formatTime(task02.hours, task02.minutes, task02.seconds),
             nextTask: task03.id,
         },
         [task03.id]: {
             ...task03,
             time: showTime(task03.hours, task03.minutes, task03.seconds),
+            view: formatTime(task03.hours, task03.minutes, task03.seconds),
             nextTask: null,
         },
     },
 };
 
-function playAudio(filePath, loop) {
+function playAudio(filePath, volumePercent, loop) {
     if (filePath == '') {
         return null;
     }
     var audio = new Audio(filePath);
     audio.loop = loop ? loop : false;
+    audio.volume = volumePercent / 100;
     audio.play();
     
     return audio;
@@ -142,7 +170,7 @@ function countdownTimeLoop(app) {
         if (app.currentTask.audio) {
             app.currentTask.audio.pause();
         }
-        playAudio(app.settings.timerAudioFile);
+        app.settings.audio = playAudio(app.settings.timerAudioFile, currentTask.volume);
     }
 
     if (seconds == 0 && minutes == 0 && hours ==0) {
@@ -164,14 +192,16 @@ function countdownTimeLoop(app) {
         app.currentTask = updateCurrentTask(currentTask, nextTask);
         app.isTimerActive = true;
         app.currentTask.timer = setInterval(countdownTimeLoop, 1000, app);
-        app.currentTask.audio = playAudio(nextTask.audioFile, true);
+        app.currentTask.audio = playAudio(nextTask.audioFile, currentTask.volume, true);
     }
 
     currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
+    currentTask.view = formatTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
 }
 
 export default {
     data: function () {
+        //todo: find out proper styling for this to be consistent
         return appState;
     },
     methods: {
@@ -186,7 +216,7 @@ export default {
                 if (self.currentTask.audio) {
                     self.currentTask.audio.play();
                 } else {
-                    self.currentTask.audio = playAudio(self.currentTask.audioFile, true);
+                    self.currentTask.audio = playAudio(self.currentTask.audioFile, self.currentTask.volume, true);
                 }
                 self.currentTask.timer = setInterval(countdownTimeLoop, 1000, self);
             } else {
