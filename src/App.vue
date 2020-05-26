@@ -84,7 +84,7 @@ const appState = {
     // todo: move this to UserTimerSettings
     currentFlow: {
         id: 13,
-        title: 'Mein Flow'
+        title: 'Pomodoro Flow'
     },
 
     // todo: move this to UserTimerSettings
