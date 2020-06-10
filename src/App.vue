@@ -145,12 +145,28 @@ function playAudio(filePath, volumePercent, loop) {
     return audio;
 }
 
-function showNotification(taskTitle) {
+function getTimeLeft(task) {
+    let times = [];
+    if (task.hours > 0) {
+        times.push(`${task.hours}h`);
+    }
+    if (task.minutes > 0) {
+        times.push(`${task.minutes}m`);
+    }
+    if (task.seconds > 0) {
+        times.push(`${task.seconds}s`);
+    }
+
+    return times.join(' ');
+}
+
+function showNotification(task) {
     if (!("Notification" in window)) {
         return;
     }
 
-    const notificationMessage = 'Time for: ' + taskTitle;
+    const timeLeft = getTimeLeft(task);
+    const notificationMessage = `Time for: ${task.title} (${timeLeft})`;
     if (Notification.permission === 'granted') {
         new Notification(notificationMessage);
     } else if (Notification.permission !== 'denied') {
@@ -210,7 +226,7 @@ function countdownTimeLoop(app) {
         app.isTimerActive = true;
         app.currentTask.timer = setInterval(countdownTimeLoop, 1000, app);
         app.currentTask.audio = playAudio(nextTask.audioFile, currentTask.volume, true);
-        showNotification(app.currentTask.title);
+        showNotification(app.currentTask);
     }
 
     currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
