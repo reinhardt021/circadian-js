@@ -145,6 +145,23 @@ function playAudio(filePath, volumePercent, loop) {
     return audio;
 }
 
+function showNotification(taskTitle) {
+    if (!("Notification" in window)) {
+        return;
+    }
+
+    const notificationMessage = 'Time for: ' + taskTitle;
+    if (Notification.permission === 'granted') {
+        new Notification(notificationMessage);
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                new Notification(notificationMessage);
+            }
+        });
+    }
+}
+
 function countdownTimeLoop(app) {
     const { tasks, $data, currentTask, settings } = app;
     const hours = Number($data.currentTask.hours);
@@ -193,6 +210,7 @@ function countdownTimeLoop(app) {
         app.isTimerActive = true;
         app.currentTask.timer = setInterval(countdownTimeLoop, 1000, app);
         app.currentTask.audio = playAudio(nextTask.audioFile, currentTask.volume, true);
+        showNotification(app.currentTask.title);
     }
 
     currentTask.time = showTime(currentTask.hours, currentTask.minutes, currentTask.seconds);
