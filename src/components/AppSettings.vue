@@ -95,6 +95,7 @@ export default {
         },
         setPlaylist(type) {
             console.log('>>> setPlaylist type=' + type);
+            this.$emit('open-modal');
         },
         changeVolume() {
             const newVolume = Number(this.currentTask.volume);

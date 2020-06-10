@@ -4,6 +4,9 @@
             <i class="fas fa-bug"></i>
             <span v-text="currentFlow.title"></span>
         </h2>
+        <AppModal v-if="showPlaylistModal" @close="showPlaylistModal = false">
+            <h3 slot="header">Custom Header</h3>
+        </AppModal>
         <AppTimer 
             :is-timer-active='isTimerActive'
             :current-task='currentTask' 
@@ -20,6 +23,7 @@
             :tasks='tasks'
             :settings='settings'
             v-show='settings.isOpen'
+            @open-modal='openModal'
             @task-change='updateTask'
             @task-remove='deleteTask'
             @task-add='createTask'
@@ -29,6 +33,7 @@
 </template>
 
 <script>
+import AppModal from './components/AppModal.vue'
 import AppTimer from './components/AppTimer.vue'
 import AppControls from './components/AppControls.vue'
 import AppSettings from './components/AppSettings.vue'
@@ -80,6 +85,8 @@ const task03 = {
 
 const appState = {
     isTimerActive: false,
+    showPlaylistModal: false,
+    // showPlaylistModal: true, // for testing TODO: remove
 
     // todo: move this to UserTimerSettings
     currentFlow: {
@@ -280,6 +287,10 @@ export default {
         toggleSettings() {
             this.settings.isOpen = !this.settings.isOpen;
         },
+        openModal() {
+            console.log('>>> openModal @ App.vue');
+            this.showPlaylistModal = true;
+        },
         createTask() {
             function getRandomInt(min, max) {
                 min = Math.ceil(min);
@@ -355,6 +366,7 @@ export default {
         },
     },
     components: {
+        AppModal,
         AppTimer,
         AppControls,
         AppSettings,
