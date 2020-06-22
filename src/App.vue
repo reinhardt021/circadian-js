@@ -148,8 +148,8 @@ const appState = {
     showPlaylistModal: false,
     // showPlaylistModal: true, // for testing TODO: remove
 
-    // showDefaultsModal: false,
-    showDefaultsModal: true, // for testing TODO: remove
+    showDefaultsModal: false,
+    // showDefaultsModal: true, // for testing TODO: remove
 
     // todo: move this to UserTimerSettings
     currentFlow: {
