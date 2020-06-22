@@ -52,9 +52,13 @@
                     <i class="fa fa-music" aria-hidden="true"></i>
                 </div>
                 <div class="settings-card">
-                    <i class="fa fa-volume-up" aria-hidden="true"></i>
-                    Now Playing ...
-                    <input class='volume-input' type='range' min='0' max='100' v-model="currentTask.volume" @input='changeVolume'/>
+                    <span @click="openDefaults">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                        Defaults
+                    </span>
+                    <span>
+                        <input class='volume-input' type='range' min='0' max='100' v-model="currentTask.volume" @input='changeVolume'/>
+                    </span>
                 </div>
             </div>
         </div>
@@ -94,8 +98,10 @@ export default {
             this.$emit('close-settings');
         },
         setPlaylist(type) {
-            console.log('>>> setPlaylist type=' + type);
-            this.$emit('open-modal');
+            this.$emit('open-playlist-modal', type);
+        },
+        openDefaults() {
+            this.$emit('open-defaults-modal');
         },
         changeVolume() {
             const newVolume = Number(this.currentTask.volume);

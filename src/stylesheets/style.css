@@ -218,6 +218,11 @@ input {
   justify-content: space-between;
 }
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .flow-title {
   color: rgba(0, 0, 0, 0.5);
 }
@@ -279,7 +284,7 @@ input {
   text-align: left;
 }
 
-.settings-options {
+.settings-options, .modal-body {
   text-align: left;
 }
 

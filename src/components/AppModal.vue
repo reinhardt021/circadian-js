@@ -17,6 +17,7 @@
                             </button> 
                         </span>
                     </div>
+
                     <div class="modal-body">
                         <slot name="body">
                             Default Body

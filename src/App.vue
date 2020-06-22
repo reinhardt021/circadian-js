@@ -5,7 +5,66 @@
             <span v-text="currentFlow.title"></span>
         </h2>
         <AppModal v-if="showPlaylistModal" @close="showPlaylistModal = false">
-            <h3 slot="header">Custom Header</h3>
+            <h3 slot="header">
+                <i class="fa fa-crosshairs" aria-hidden="true"></i>
+                Focus Playlist
+            </h3>
+            <div slot="body">
+                <div class="settings-card">
+                    <i class="fa fa-circle" aria-hidden="true"></i>
+                    Default Playlist
+                </div>
+                <div class="settings-card">
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                    Flex Playlist
+                </div>
+
+                <div class="settings-options">
+                    <div class="settings-card">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Playlist
+                    </div>
+                </div>
+                
+            </div>
+        </AppModal>
+        <AppModal v-if="showDefaultsModal" @close="showDefaultsModal = false">
+            <h3 slot="header">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                Defaults
+            </h3>
+            <div slot="body">
+                <div class="settings-card">
+                    <span>
+                        <i class="fa fa-volume-up" aria-hidden="true"></i>
+                        Master Volume
+                    </span>
+                    <span>
+                        <input class='volume-input' type='range' min='0' max='100' v-model="currentTask.volume" @input='changeVolume'/>
+                    </span>
+                </div>
+                <div class="settings-options">
+                    <div class="settings-card">
+                        <span>
+                            <i class="fa fa-volume-up" aria-hidden="true"></i>
+                            Task Ending Audio
+                        </span>
+                        <span>
+                            <input class='volume-input' type='range' min='0' max='100'/>
+                        </span>
+                    </div>
+
+                    <div class="settings-card">
+                        <span>
+                            <i class="fa fa-volume-up" aria-hidden="true"></i>
+                            Focus Ambient Audio
+                        </span>
+                        <span>
+                            <input class='volume-input' type='range' min='0' max='100'/>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </AppModal>
         <AppTimer 
             :is-timer-active='isTimerActive'
@@ -23,7 +82,8 @@
             :tasks='tasks'
             :settings='settings'
             v-show='settings.isOpen'
-            @open-modal='openModal'
+            @open-playlist-modal='openPlaylistModal'
+            @open-defaults-modal='openDefaultsModal'
             @task-change='updateTask'
             @task-remove='deleteTask'
             @task-add='createTask'
@@ -87,6 +147,9 @@ const appState = {
     isTimerActive: false,
     showPlaylistModal: false,
     // showPlaylistModal: true, // for testing TODO: remove
+
+    // showDefaultsModal: false,
+    showDefaultsModal: true, // for testing TODO: remove
 
     // todo: move this to UserTimerSettings
     currentFlow: {
@@ -287,9 +350,12 @@ export default {
         toggleSettings() {
             this.settings.isOpen = !this.settings.isOpen;
         },
-        openModal() {
-            console.log('>>> openModal @ App.vue');
+        openPlaylistModal(type) {
+            // todo: use the type to open for FOCUS or BREAK
             this.showPlaylistModal = true;
+        },
+        openDefaultsModal() {
+            this.showDefaultsModal = true;
         },
         createTask() {
             function getRandomInt(min, max) {
