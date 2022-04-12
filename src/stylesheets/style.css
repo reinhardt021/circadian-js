@@ -290,10 +290,9 @@ input {
   color: rgba(0, 0, 0, 0.5);
 }
 
-/*TODO: make a better class rather than these IDs*/
-#XMLID_21_,
-#XMLID_23_{
-  fill: rgba(0,0,0,0.6)
+.time-increase,
+.time-decrease{
+  fill: rgba(0,0,0,0.2)
 }
 
 .task-delete {
