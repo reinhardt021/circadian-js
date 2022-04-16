@@ -8,10 +8,10 @@ const { errorResponse } = require('./helpers');
 // GET /
 router.get('/', async (req, res, next) => {
     try {
-        const tasks = await Task.findAll();
+        const items = await Task.findAll();
         return res.status(200).json({
             status: true,
-            data: tasks
+            data: items
         });
     } catch(error) {
         return errorResponse(res, error);
@@ -19,11 +19,94 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET /:id
+router.get('/:id', async (req, res, next) => {
+    try {
+        const item_id = req.params.id;
+        const item = await Task.findByPk(item_id);
+
+        return res.status(200).json({
+            status: true,
+            data: item
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
+});
+
+function validTitle(title) {
+    return title;
+}
+function validHours(hours) {
+    return hours && 0 <= hours;
+}
+function validMinutes(minutes) {
+    return minutes && 0 <= minutes && minutes <= 59;
+}
+function validSeconds(seconds) {
+    return seconds && 0 <= seconds && seconds <= 59;
+}
 
 // POST /
+router.post('/', async (req, res, next) => {
+    try {
+        const { title, hours, minutes, seconds } = req.body;
+        const attributes = {
+            ...(validTitle(title) && { title }),
+            ...(validHours(hours) && { hours }),
+            ...(validMinutes(minutes) && { minutes }),
+            ...(validSeconds(seconds) && { seconds }),
+        };
+        const item = await Task.create(attributes);
+
+        return res.status(201).json({
+            status: true,
+            data: item
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
+});
+
 
 // PUT /:id
+router.put('/:id', async (req, res, next) => {
+    try {
+        const item_id = req.params.id;
+        //TODO: do validation to make sure item exists
+        const { title, hours, minutes, seconds } = req.body;
+        const attributes = {
+            ...(validTitle(title) && { title }),
+            ...(validHours(hours) && { hours }),
+            ...(validMinutes(minutes) && { minutes }),
+            ...(validSeconds(seconds) && { seconds }),
+        };
+        await Task.update(attributes, {
+            where: { id: item_id }
+        });
+        const item = await Task.findByPk(item_id);
+
+        return res.status(200).json({
+            status: true,
+            data: item
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
+});
 
 // DELETE /:id
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const item_id = req.params.id;
+        //TODO: do validation to make sure item exists
+        await Task.destroy({
+            where: { id: item_id }
+        });
+
+        return res.status(204).json({ status: true });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
+});
 
 module.exports = router;
