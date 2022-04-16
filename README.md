@@ -1,17 +1,17 @@
 # CIRCADIAN
 
-Helping you get through the rhythms of your day
+Helping you get through the rhythms of your day.
 
 ## DEPENDENCIES
 
 In order to run the app,
 you will need the following dependencies:
 
-* node version 12.13.0
-* npm version 6.14.1
-* postgresql 13 (14 has an issue with ports)
-* Express for Node.js
-* Vue.js for front-end
+* Node version 12.13.0
+* Npm version 6.14.1
+* Postgresql version 13 (14 has an issue with ports)
+* Express version 4.16.0
+* Vue version 2.6.11
 
 ```
 // to install with homebrew and start postgres
@@ -33,23 +33,27 @@ reference: https://stackoverflow.com/questions/69754628/psql-error-connection-to
 How to run this locally for testing and development
 
 ```
-# SETUP DATABASE
-## create database
+// SETUP DATABASE
 $ psql
+
 > \du # to list the users
-# if need to create specific user then do that
+// if need to create specific user then do that
 > CREATE ROLE <DB_USER> WITH createdb login password '<DB_PASSWORD>'
-# log out and log back in as new user before creating database
+// log out and log back in as new user before creating database
 
 > \l # to list the databases
+// create database
 > CREATE DATABASE <DB_NAME>;
 > \l
 
 
-#// install dependencies
+// install dependencies
 $ npm install
 
-#// run the server
+// run migrations
+$ npx sequelize-cli db:migrate
+
+// run the server
 $ npm run start
 
 #// go to app in browser

@@ -17,7 +17,6 @@ router.get('/', async (req, res, next) => {
             errors: Object.values(error.errors).map(el => el.message)
         });
     }
-    res.send('GET FLOWS');
 });
 
 // GET /:id

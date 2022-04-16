@@ -1,6 +1,6 @@
 // used mostly for sequelize CLI
 require('dotenv').config()
-const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_TYPE, DBTEST_NAME } = process.env;
+const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_TYPE, DB_TEST_NAME } = process.env;
 module.exports = {
   "development": {
     "username": DB_USER,
@@ -12,7 +12,7 @@ module.exports = {
   "test": {
     "username": DB_USER,
     "password": DB_PASSWORD,
-    "database": DBTEST_NAME,
+    "database": DB_TEST_NAME,
     "host": DB_HOST,
     "dialect": DB_TYPE
   },
