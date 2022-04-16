@@ -23,8 +23,8 @@ psql --version
 // might have to run the following if doesn't work
 echo 'export PATH="/usr/local/opt/postgresql@13/bin:$PATH"' >> ~/.zshrc
 
-reference: https://dyclassroom.com/howto-mac/how-to-install-postgresql-on-mac-using-homebrew
-reference: https://stackoverflow.com/questions/69754628/psql-error-connection-to-server-on-socket-tmp-s-pgsql-5432-failed-no-such
+// reference: https://dyclassroom.com/howto-mac/how-to-install-postgresql-on-mac-using-homebrew
+// reference: https://stackoverflow.com/questions/69754628/psql-error-connection-to-server-on-socket-tmp-s-pgsql-5432-failed-no-such
 ```
 
 
@@ -70,19 +70,31 @@ http://localhost:3000
 
 ## TODO:
 
-* [ ] create migrations & routes for tasks
-* [ ] test routes with HTTPIE
-* [ ] create migrations & routes for users
-* [ ] deploy to heroku to test and plan out next steps
+Running list of things to focus on.
 
-* [ ] change the event handler to change the times on click of the arrows
+### BACK-END:
 
 * [x] setup sequelize with express to use postgres database
 * [x] npx sequelize-cli init // to setup folders needed
 * [x] npx sequelize-cli model:generate --name Flows --attributes title:string
 * [x] npx sequelize-cli db:migrate
+* [ ] create POST flows route
+* [ ] create migrations for tasks
+* [ ] create GET tasks route
+* [ ] create POST tasks route
+* [ ] test routes with HTTPIE
+* [ ] create relation for flows and tasks
+* [ ] update GET flows to have tasks data as well
+* [ ] create seeder for default flow and tasks
+* [ ] create migrations & routes for users
+* [ ] deploy to heroku to test and plan out next steps
 
-stretch:
+### FRONT-END:
+
+* [ ] change the event handler to change the times on click of the arrows
+
+### stretch:
+
 * chrome extension to run spotify playlists
 * tmux plugin to have pomodoro in tmux
 
