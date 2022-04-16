@@ -80,18 +80,21 @@ Running list of things to focus on.
 * [x] npx sequelize-cli db:migrate
 
 * [x] create GET flows route
-* [ ] create POST flows route
-* [ ] create DELETE flows route
+* [x] create POST flows route
+* [x] create PUT flows route
+* [x] create DELETE flows route
+* [x] test routes with HTTPIE
+
 * [ ] create migrations for tasks
 * [ ] create GET tasks route
 * [ ] create POST tasks route
+* [ ] create PUT tasks route
 * [ ] create DELETE tasks route
 * [ ] test routes with HTTPIE
 
 * [ ] create relation for flows and tasks
 * [ ] update GET flows to have tasks data as well
 * [ ] create seeder for default flow and tasks
-* [ ] create PUT flows route
 
 * [ ] create migrations & routes for users
 * [ ] deploy to heroku to test and plan out next steps

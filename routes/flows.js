@@ -10,6 +10,7 @@ function errorResponse(res, error) {
     });
 }
 
+// GET /
 router.get('/', async (req, res, next) => {
     try {
         const flows = await Flow.findAll();
