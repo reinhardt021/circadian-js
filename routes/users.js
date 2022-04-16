@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
 // GET /:id
 
 // POST /
+// TODO: consider if you have body parser setup properly
 
 // PUT /:id
 
