@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/models');
-//console.log('datbas models: ', db);
 const Flow = db.Flow;
 
 function errorResponse(res, error) {
@@ -74,7 +73,19 @@ router.put('/:id', async (req, res, next) => {
 
 // DELETE /:id
 router.delete('/:id', async (req, res, next) => {
-    res.send('DELETE FLOW');
+    try {
+        await Flow.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        return res.status(204).json({
+            status: true
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
 });
 
 module.exports = router;
