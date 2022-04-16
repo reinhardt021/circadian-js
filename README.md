@@ -66,10 +66,12 @@ http://localhost:3000
 
 ## TODO:
 
-* [] deploy to heroku to test and plan out next steps
-* [] create migrations & routes for tasks
-* [] test routes with HTTPIE
-* [] create migrations & routes for users
+* [ ] create migrations & routes for tasks
+* [ ] test routes with HTTPIE
+* [ ] create migrations & routes for users
+* [ ] deploy to heroku to test and plan out next steps
+
+* [ ] change the event handler to change the times on click of the arrows
 
 * [x] setup sequelize with express to use postgres database
 * [x] npx sequelize-cli init // to setup folders needed
