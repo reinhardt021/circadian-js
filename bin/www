@@ -3,14 +3,13 @@
 /**
  * Module dependencies.
  */
+require('dotenv').config()
+if (process.env.DEBUG && process.env.DEBUG == 'true') {
+    console.log(process.env)
+}
 var app = require('../app');
 var debug = require('debug')('circadianV1:server');
 var http = require('http');
-require('dotenv').config()
-
-if (process.env.DEBUG && process.env.DEBUG == 'true') {
-    //console.log(process.env)
-}
 
 /**
  * Get port from environment and store in Express.
