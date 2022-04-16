@@ -4,6 +4,13 @@ const db = require('../db/models');
 //console.log('datbas models: ', db);
 const Flow = db.Flow;
 
+function errorResponse(res, error) {
+    return res.status(500).json({
+        status: false,
+        errors: Object.values(error.errors).map(el => el.message)
+    });
+}
+
 router.get('/', async (req, res, next) => {
     try {
         const flows = await Flow.findAll();
@@ -12,10 +19,7 @@ router.get('/', async (req, res, next) => {
             data: flows
         });
     } catch(error) {
-        return res.status(500).json({
-            status: false,
-            errors: Object.values(error.errors).map(el => el.message)
-        });
+        return errorResponse(res, error);
     }
 });
 
@@ -25,7 +29,18 @@ router.get('/:id', (req, res, next) => {
 });
 
 // POST /
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
+    try {
+        const { title } = req.body;
+        const flow = await Flow.create({ title });
+
+        return res.status(201).json({
+            status: true,
+            data: flow
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
     res.send('POST FLOWS');
 });
 
