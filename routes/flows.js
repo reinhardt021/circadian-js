@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET /:id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
     res.send('GET ITEM FLOW');
 });
 
@@ -41,16 +41,30 @@ router.post('/', async (req, res, next) => {
     } catch(error) {
         return errorResponse(res, error);
     }
-    res.send('POST FLOWS');
 });
 
 // PUT /:id
-router.put('/:id', (req, res, next) => {
-    res.send('PUT FLOW');
+router.put('/:id', async (req, res, next) => {
+    try {
+        const { title } = req.body;
+        await Flow.update({ title }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        const flow = await Flow.findByPk(req.params.id);
+
+        return res.status(200).json({
+            status: true,
+            data: flow
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
 });
 
 // DELETE /:id
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
     res.send('DELETE FLOW');
 });
 
