@@ -65,13 +65,16 @@ http://localhost:3000
 
 
 ## TODO:
-* deploy to heroku to test and plan out next steps
-* create migrations for tasks and users
 
-[x] setup sequelize with express to use postgres database
-[x] npx sequelize-cli init // to setup folders needed
-[x] npx sequelize-cli model:generate --name Flows --attributes title:string
-[x] npx sequelize-cli db:migrate
+* [] deploy to heroku to test and plan out next steps
+* [] create migrations & routes for tasks
+* [] test routes with HTTPIE
+* [] create migrations & routes for users
+
+* [x] setup sequelize with express to use postgres database
+* [x] npx sequelize-cli init // to setup folders needed
+* [x] npx sequelize-cli model:generate --name Flows --attributes title:string
+* [x] npx sequelize-cli db:migrate
 
 stretch:
 * chrome extension to run spotify playlists
