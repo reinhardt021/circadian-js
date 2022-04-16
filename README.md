@@ -79,7 +79,7 @@ Running list of things to focus on.
 * [x] npx sequelize-cli model:generate --name Flows --attributes title:string
 * [x] npx sequelize-cli db:migrate
 
-* [ ] create GET flows route
+* [x] create GET flows route
 * [ ] create POST flows route
 * [ ] create DELETE flows route
 * [ ] create migrations for tasks

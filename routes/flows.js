@@ -20,11 +20,23 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET /:id
+router.get('/:id', (req, res, next) => {
+    res.send('GET ITEM FLOW');
+});
 
 // POST /
+router.post('/', (req, res, next) => {
+    res.send('POST FLOWS');
+});
 
 // PUT /:id
+router.put('/:id', (req, res, next) => {
+    res.send('PUT FLOW');
+});
 
 // DELETE /:id
+router.delete('/:id', (req, res, next) => {
+    res.send('DELETE FLOW');
+});
 
 module.exports = router;
