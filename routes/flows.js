@@ -3,12 +3,7 @@ const router = express.Router();
 const db = require('../db/models');
 const Flow = db.Flow;
 
-function errorResponse(res, error) {
-    return res.status(500).json({
-        status: false,
-        errors: Object.values(error.errors).map(el => el.message)
-    });
-}
+const { errorResponse } = require('./helpers');
 
 // GET /
 router.get('/', async (req, res, next) => {

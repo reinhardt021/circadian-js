@@ -102,6 +102,7 @@ Running list of things to focus on.
 ### FRONT-END:
 
 * [ ] change the event handler to change the times on click of the arrows
+* [ ] make API call to load the default Flow with presets
 
 ### stretch:
 

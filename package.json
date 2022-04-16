@@ -9,6 +9,7 @@
     "npm": "8.5.5"
   },
   "scripts": {
+    "db:migrate": "npx sequelize-cli db:migrate",
     "start": "node ./bin/www",
     "build": "webpack --config webpack.config.js"
   },
