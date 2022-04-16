@@ -10,6 +10,8 @@ you will need the following dependencies:
 * node version 12.13.0
 * npm version 6.14.1
 * postgresql 13 (14 has an issue with ports)
+* Express for Node.js
+* Vue.js for front-end
 
 ```
 // to install with homebrew and start postgres
@@ -55,11 +57,6 @@ http://localhost:3000
 ```
 
 
-## Dependencies
-
-* Express for Node.js
-* Vue.js for front-end
-
 ## Screenshots
 
 ![alt text](public/images/screenshots/circadian-timer.png "Timer")
@@ -69,7 +66,12 @@ http://localhost:3000
 
 ## TODO:
 * deploy to heroku to test and plan out next steps
-* setup sequelize with express to use postgres database
+* create migrations for tasks and users
+
+[x] setup sequelize with express to use postgres database
+[x] npx sequelize-cli init // to setup folders needed
+[x] npx sequelize-cli model:generate --name Flows --attributes title:string
+[x] npx sequelize-cli db:migrate
 
 stretch:
 * chrome extension to run spotify playlists
