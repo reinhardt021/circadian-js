@@ -25,7 +25,16 @@ router.get('/', async (req, res, next) => {
 
 // GET /:id
 router.get('/:id', async (req, res, next) => {
-    res.send('GET ITEM FLOW');
+    try {
+        const flow = await Flow.findByPk(req.params.id);
+
+        return res.status(200).json({
+            status: true,
+            data: flow
+        });
+    } catch(error) {
+        return errorResponse(res, error);
+    }
 });
 
 // POST /
