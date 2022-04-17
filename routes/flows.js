@@ -2,13 +2,22 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/models');
 const Flow = db.Flow;
+const Task = db.Task;
 
 const { errorResponse } = require('./helpers');
 
 // GET /
 router.get('/', async (req, res, next) => {
     try {
-        const flows = await Flow.findAll();
+        const flows = await Flow.findAll({ 
+            include: Task
+            //include: [
+                //{
+                    //model: Task,
+                    //where: { flow_id: Sequelize.col('flow.id') }
+                //}
+            //] 
+        });
         return res.status(200).json({
             status: true,
             data: flows
