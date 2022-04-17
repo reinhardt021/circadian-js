@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/flows', flowsRouter);
-app.use('/tasks', tasksRouter);
+app.use('/flows/:flow_id/tasks', tasksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
