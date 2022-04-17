@@ -1,5 +1,10 @@
 # http [flags] [METHOD] URL [ITEM [ITEM]]
+echo "should give 404"
 http GET http://localhost:3000/tasks
+echo "should give 400"
+http GET http://localhost:3000/flows/99/tasks
+echo "should give list of tasks"
+http GET http://localhost:3000/flows/1/tasks
 
 #EXAMPLE:
 #$ sh ./httpie/tasks/get.sh

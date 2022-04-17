@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router({ mergeParams: true });
 const db = require('../db/models');
 const Flow = db.Flow;
 const Task = db.Task;
@@ -9,7 +9,16 @@ const { errorResponse } = require('./helpers');
 // GET /
 router.get('/', async (req, res, next) => {
     try {
-        const items = await Task.findAll();
+        const flow_id = req.params.flow_id;
+        const flow = await Flow.findByPk(flow_id, { include: Task });
+        if (flow == null) {
+            return res.status(400).json({
+                status: false,
+                errors: 'Invalid flow_id'
+            });
+        }
+
+        const items = await Task.findAll({ where: { flow_id } });
         return res.status(200).json({
             status: true,
             data: items
@@ -22,6 +31,7 @@ router.get('/', async (req, res, next) => {
 // GET /:id
 router.get('/:id', async (req, res, next) => {
     try {
+        console.log('req params', req.params);
         const item_id = req.params.id;
         const item = await Task.findByPk(item_id);
 
