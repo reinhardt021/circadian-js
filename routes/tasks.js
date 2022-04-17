@@ -142,6 +142,15 @@ router.put('/:id', async (req, res, next) => {
 // DELETE /:id
 router.delete('/:id', async (req, res, next) => {
     try {
+        const flow_id = req.params.flow_id;
+        const flow = await Flow.findByPk(flow_id);
+        if (flow == null) {
+            return res.status(400).json({
+                status: false,
+                errors: 'Invalid flow_id'
+            });
+        }
+
         const item_id = req.params.id;
         //TODO: do validation to make sure item exists
         await Task.destroy({

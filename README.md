@@ -108,10 +108,10 @@ Running list of things to focus on.
 * [x] update GET flows to have tasks data as well
 * [x] update tasks routes to have /flows/:flow_id/ prefix
 * [x] test GET tasks
-* [ ] test POST tasks
+* [x] test POST tasks
 * [x] test GET task
 * [ ] test PUT task
-* [ ] test DELETE task
+* [x] test DELETE task
 
 * [ ] create seeder for default flow and tasks
   * Pomodoro Flow
