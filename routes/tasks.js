@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../db/models');
+const Flow = db.Flow;
 const Task = db.Task;
 
 const { errorResponse } = require('./helpers');
@@ -33,6 +34,14 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+async function validFlow(flow_id) {
+    if (!flow_id) {
+        return null;
+    }
+    const flow = await Flow.findByPk(flow_id);
+
+    return flow ;
+}
 function validTitle(title) {
     return title;
 }
@@ -52,8 +61,9 @@ function validType(type) {
 // POST /
 router.post('/', async (req, res, next) => {
     try {
-        const { title, hours, minutes, seconds, type } = req.body;
+        const { flow_id, title, hours, minutes, seconds, type } = req.body;
         const attributes = {
+            ...(await validFlow(flow_id) && { flow_id }),
             ...(validTitle(title) && { title }),
             ...(validHours(hours) && { hours }),
             ...(validMinutes(minutes) && { minutes }),
@@ -77,8 +87,9 @@ router.put('/:id', async (req, res, next) => {
     try {
         const item_id = req.params.id;
         //TODO: do validation to make sure item exists
-        const { title, hours, minutes, seconds, type } = req.body;
+        const { flow_id, title, hours, minutes, seconds, type } = req.body;
         const attributes = {
+            ...(await validFlow(flow_id) && { flow_id }),
             ...(validTitle(title) && { title }),
             ...(validHours(hours) && { hours }),
             ...(validMinutes(minutes) && { minutes }),

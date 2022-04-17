@@ -101,10 +101,10 @@ Running list of things to focus on.
 * [x] update model to access types
 * [x] update tasks routes to have include type data
 
-* [ ] add flow_id to tasks
+* [x] add flow_id to tasks
   * `npx sequelize-cli migration:create --name add-flow-id-to-tasks`
 * [x] run migrations `npx sequelize-cli db:migrate`
-* [ ] create relation for flows and tasks
+* [x] create relation for flows and tasks
 * [ ] update GET flows to have tasks data as well
 * [ ] update tasks routes to have /flows/:flow_id/ prefix
 
