@@ -10,7 +10,7 @@ const { errorResponse } = require('./helpers');
 router.get('/', async (req, res, next) => {
     try {
         const flow_id = req.params.flow_id;
-        const flow = await Flow.findByPk(flow_id, { include: Task });
+        const flow = await Flow.findByPk(flow_id);
         if (flow == null) {
             return res.status(400).json({
                 status: false,
@@ -31,9 +31,19 @@ router.get('/', async (req, res, next) => {
 // GET /:id
 router.get('/:id', async (req, res, next) => {
     try {
-        console.log('req params', req.params);
+        // TODO: find out how to move this into middleware 
+        // to run before just this group of routes
+        const flow_id = req.params.flow_id;
+        const flow = await Flow.findByPk(flow_id);
+        if (flow == null) {
+            return res.status(400).json({
+                status: false,
+                errors: 'Invalid flow_id'
+            });
+        }
+
         const item_id = req.params.id;
-        const item = await Task.findByPk(item_id);
+        const item = await Task.findByPk(item_id, { where: { flow_id } });
 
         return res.status(200).json({
             status: true,

@@ -106,10 +106,10 @@ Running list of things to focus on.
 * [x] run migrations `npx sequelize-cli db:migrate`
 * [x] create relation for flows and tasks
 * [x] update GET flows to have tasks data as well
-* [ ] update tasks routes to have /flows/:flow_id/ prefix
-* [ ] test GET tasks
+* [x] update tasks routes to have /flows/:flow_id/ prefix
+* [x] test GET tasks
 * [ ] test POST tasks
-* [ ] test GET task
+* [x] test GET task
 * [ ] test PUT task
 * [ ] test DELETE task
 
