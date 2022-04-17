@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     hours: DataTypes.INTEGER,
     minutes: DataTypes.INTEGER,
-    seconds: DataTypes.INTEGER
+    seconds: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Task',

@@ -95,13 +95,16 @@ Running list of things to focus on.
 * [x] create DELETE tasks route
 * [x] test routes with HTTPIE
 
+* [x] add column type:string for tasks table
+* [x] update model to access types
+* [x] update tasks routes to have include type data
+
 * [ ] add flow_id to tasks
 * [ ] create relation for flows and tasks
 
 * [ ] update GET flows to have tasks data as well
 * [ ] update tasks routes to have /flows/:flow_id/ prefix
 
-* [ ] add column type:string for tasks table
 * [ ] create seeder for default flow and tasks
   * Pomodoro Flow
   * Warm Up (break)

@@ -45,16 +45,20 @@ function validMinutes(minutes) {
 function validSeconds(seconds) {
     return seconds && 0 <= seconds && seconds <= 59;
 }
+function validType(type) {
+    return type == 'break' || type == 'focus';
+}
 
 // POST /
 router.post('/', async (req, res, next) => {
     try {
-        const { title, hours, minutes, seconds } = req.body;
+        const { title, hours, minutes, seconds, type } = req.body;
         const attributes = {
             ...(validTitle(title) && { title }),
             ...(validHours(hours) && { hours }),
             ...(validMinutes(minutes) && { minutes }),
             ...(validSeconds(seconds) && { seconds }),
+            ...(validType(type) && { type }),
         };
         const item = await Task.create(attributes);
 
@@ -73,12 +77,13 @@ router.put('/:id', async (req, res, next) => {
     try {
         const item_id = req.params.id;
         //TODO: do validation to make sure item exists
-        const { title, hours, minutes, seconds } = req.body;
+        const { title, hours, minutes, seconds, type } = req.body;
         const attributes = {
             ...(validTitle(title) && { title }),
             ...(validHours(hours) && { hours }),
             ...(validMinutes(minutes) && { minutes }),
             ...(validSeconds(seconds) && { seconds }),
+            ...(validType(type) && { type }),
         };
         await Task.update(attributes, {
             where: { id: item_id }
