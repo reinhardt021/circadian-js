@@ -88,7 +88,7 @@ Running list of things to focus on.
 
 * [x] create migrations for tasks
 * `npx sequelize-cli model:generate --name Tasks --attributes title:string,hours=integer,minutes=integer,seconds=integer`
-* [x] run migrations 
+* [x] run migrations `npx sequelize-cli db:migrate`
 * [x] create GET tasks route
 * [x] create POST tasks route
 * [x] create PUT tasks route
@@ -96,12 +96,15 @@ Running list of things to focus on.
 * [x] test routes with HTTPIE
 
 * [x] add column type:string for tasks table
+  * `npx sequelize-cli migration:create --name add-type-to-tasks`
+* [x] run migrations `npx sequelize-cli db:migrate`
 * [x] update model to access types
 * [x] update tasks routes to have include type data
 
 * [ ] add flow_id to tasks
+  * `npx sequelize-cli migration:create --name add-flow-id-to-tasks`
+* [x] run migrations `npx sequelize-cli db:migrate`
 * [ ] create relation for flows and tasks
-
 * [ ] update GET flows to have tasks data as well
 * [ ] update tasks routes to have /flows/:flow_id/ prefix
 

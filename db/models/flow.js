@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Flow.hasMany(models.Task, { foreignKey: 'flow_id' });
     }
   }
   Flow.init({
