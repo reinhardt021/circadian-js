@@ -110,7 +110,7 @@ Running list of things to focus on.
 * [x] test GET tasks
 * [x] test POST tasks
 * [x] test GET task
-* [ ] test PUT task
+* [x] test PUT task
 * [x] test DELETE task
 
 * [ ] create seeder for default flow and tasks

@@ -114,9 +114,18 @@ router.post('/', async (req, res, next) => {
 // PUT /:id
 router.put('/:id', async (req, res, next) => {
     try {
+        const flow_id = req.params.flow_id;
+        const flow = await Flow.findByPk(flow_id);
+        if (flow == null) {
+            return res.status(400).json({
+                status: false,
+                errors: 'Invalid flow_id'
+            });
+        }
+
         const item_id = req.params.id;
         //TODO: do validation to make sure item exists
-        const { flow_id, title, hours, minutes, seconds, type } = req.body;
+        const { title, hours, minutes, seconds, type } = req.body;
         const attributes = {
             ...(await validFlow(flow_id) && { flow_id }),
             ...(validTitle(title) && { title }),
