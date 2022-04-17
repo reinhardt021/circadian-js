@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const db = require('../db/models');
 const Flow = db.Flow;
 const Task = db.Task;
@@ -9,15 +9,7 @@ const { errorResponse } = require('./helpers');
 // GET /
 router.get('/', async (req, res, next) => {
     try {
-        const flows = await Flow.findAll({ 
-            include: Task
-            //include: [
-                //{
-                    //model: Task,
-                    //where: { flow_id: Sequelize.col('flow.id') }
-                //}
-            //] 
-        });
+        const flows = await Flow.findAll({ include: Task });
         return res.status(200).json({
             status: true,
             data: flows
@@ -30,7 +22,7 @@ router.get('/', async (req, res, next) => {
 // GET /:id
 router.get('/:id', async (req, res, next) => {
     try {
-        const flow = await Flow.findByPk(req.params.id);
+        const flow = await Flow.findByPk(req.params.id, { include: Task });
 
         return res.status(200).json({
             status: true,
