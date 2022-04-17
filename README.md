@@ -113,7 +113,7 @@ Running list of things to focus on.
 * [x] test PUT task
 * [x] test DELETE task
 
-* [ ] create seeder for default flow and tasks
+* [ ] 01: create seeder for default flow and tasks
   * Pomodoro Flow
   * Warm Up (break)
   * Work (focus)
@@ -123,10 +123,12 @@ Running list of things to focus on.
 * [ ] add created_by user column in the flows table
 * [ ] deploy to heroku to test and plan out next steps
 
+* [ ] add migration for table to task order per flow
+
 ### FRONT-END:
 
-* [ ] change the event handler to change the times on click of the arrows
-* [ ] make API call to load the default Flow with presets
+* [ ] 02: make API call to load the default Flow with presets
+* [ ] 03: change the event handler to change the times on click of the arrows
 
 ### stretch:
 
