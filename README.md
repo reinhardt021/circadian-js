@@ -76,27 +76,40 @@ Running list of things to focus on.
 
 * [x] setup sequelize with express to use postgres database
 * [x] npx sequelize-cli init // to setup folders needed
-* [x] npx sequelize-cli model:generate --name Flows --attributes title:string
-* [x] npx sequelize-cli db:migrate
 
+* [x] create migrations for flows
+* `npx sequelize-cli model:generate --name Flows --attributes title:string` 
+* [x] run migrations `npx sequelize-cli db:migrate`
 * [x] create GET flows route
 * [x] create POST flows route
 * [x] create PUT flows route
 * [x] create DELETE flows route
 * [x] test routes with HTTPIE
 
-* [ ] create migrations for tasks
-* [ ] create GET tasks route
-* [ ] create POST tasks route
-* [ ] create PUT tasks route
-* [ ] create DELETE tasks route
-* [ ] test routes with HTTPIE
+* [x] create migrations for tasks
+* `npx sequelize-cli model:generate --name Tasks --attributes title:string,hours=integer,minutes=integer,seconds=integer`
+* [x] run migrations 
+* [x] create GET tasks route
+* [x] create POST tasks route
+* [x] create PUT tasks route
+* [x] create DELETE tasks route
+* [x] test routes with HTTPIE
 
+* [ ] add flow_id to tasks
 * [ ] create relation for flows and tasks
+
 * [ ] update GET flows to have tasks data as well
+* [ ] update tasks routes to have /flows/:flow_id/ prefix
+
+* [ ] add column type:string for tasks table
 * [ ] create seeder for default flow and tasks
+  * Pomodoro Flow
+  * Warm Up (break)
+  * Work (focus)
+  * Cool Down (break)
 
 * [ ] create migrations & routes for users
+* [ ] add created_by user column in the flows table
 * [ ] deploy to heroku to test and plan out next steps
 
 ### FRONT-END:
