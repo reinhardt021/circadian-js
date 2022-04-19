@@ -1,3 +1,6 @@
+<style scoped>
+</style>
+
 <template>
     <transition name='settings' enter-active-class='settings-show'>
         <div class="settings">
@@ -66,59 +69,55 @@
 </template>
 
 <script>
-import AppTask from './AppTask.vue'
-import { updateCurrentTask } from '../helpers.js'
+    import AppTask from './AppTask.vue'
+    import { updateCurrentTask } from '../helpers.js'
 
-export default {
-    props: {
-        isTimerActive: Boolean,
-        currentFlow: Object,
-        currentTask: Object,
-        tasks: Object,
-        settings: Object,
-    },    
-    methods: {
-        taskChange(newTask) {
-            const newTasks = {
-                ...this.tasks,
-                [newTask.id]: newTask,
-            };
-            const newCurrentTask = (newTask.id == this.currentTask.id && !this.isTimerActive)
-                ? updateCurrentTask(this.currentTask, newTask)
-                : this.currentTask;
-            this.$emit('task-change', newTasks, newCurrentTask);
+    export default {
+        props: {
+            isTimerActive: Boolean,
+            currentFlow: Object,
+            currentTask: Object,
+            tasks: Object,
+            settings: Object,
+        },    
+        methods: {
+            taskChange(newTask) {
+                const newTasks = {
+                    ...this.tasks,
+                    [newTask.id]: newTask,
+                };
+                const newCurrentTask = (newTask.id == this.currentTask.id && !this.isTimerActive)
+                    ? updateCurrentTask(this.currentTask, newTask)
+                    : this.currentTask;
+                this.$emit('task-change', newTasks, newCurrentTask);
+            },
+            taskRemove(data) {
+                this.$emit('task-remove', data);
+            },
+            taskAdd() {
+                this.$emit('task-add');
+            },
+            closeSettings() {
+                this.$emit('close-settings');
+            },
+            setPlaylist(type) {
+                this.$emit('open-playlist-modal', type);
+            },
+            openDefaults() {
+                this.$emit('open-defaults-modal');
+            },
+            changeVolume() {
+                const newVolume = Number(this.currentTask.volume);
+                if (this.currentTask.audio) {
+                    this.currentTask.audio.volume = newVolume / 100;
+                }
+                if (this.settings.audio) {
+                    this.settings.audio.volume = newVolume / 100;
+                }
+            },
         },
-        taskRemove(data) {
-            this.$emit('task-remove', data);
+        components: {
+            AppTask,
         },
-        taskAdd() {
-            this.$emit('task-add');
-        },
-        closeSettings() {
-            this.$emit('close-settings');
-        },
-        setPlaylist(type) {
-            this.$emit('open-playlist-modal', type);
-        },
-        openDefaults() {
-            this.$emit('open-defaults-modal');
-        },
-        changeVolume() {
-            const newVolume = Number(this.currentTask.volume);
-            if (this.currentTask.audio) {
-                this.currentTask.audio.volume = newVolume / 100;
-            }
-            if (this.settings.audio) {
-                this.settings.audio.volume = newVolume / 100;
-            }
-        },
-    },
-    components: {
-        AppTask,
-    },
-}
+    }
 </script>
-
-<style scoped>
-
-</style>

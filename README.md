@@ -129,6 +129,7 @@ Running list of things to focus on.
 
 * [ ] 02: make API call to load the default Flow with presets
 * [ ] 03: change the event handler to change the times on click of the arrows
+* [ ] fix the center alignment of the task time buttons
 
 ### stretch:
 
