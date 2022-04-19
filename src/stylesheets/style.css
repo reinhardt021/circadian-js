@@ -269,7 +269,7 @@ input {
   cursor: pointer;
 }
 
-.task-times {
+.time-values {
   font-size: xxx-large;
 }
 .time-labels {
@@ -279,7 +279,14 @@ input {
 .task-time {
   display: flex;
   justify-content: space-evenly;
+  padding: 1em 0;
 }
+
+.time-item button{
+    margin: 0 auto;
+    border: none;
+}
+
 .time-hours,
 .time-seconds {
   text-align: center;

@@ -24,6 +24,8 @@
                     :timeValue='timeValue'
                     :timeLabel='timeType'
                     :key='timeType'
+                    @increase-time='timeIncrease(task, timeType)'
+                    @decrease-time='timeDecrease(task, timeType)'
                 />
             </div>
             <input class='task-input' type='range' min='0' max='24' data-type='task-hours' v-model='task.hours' @input='changeTime'/>
@@ -40,6 +42,17 @@
 <script>
     import TimeItem from "./TimeItem.vue";
     import { showTime, formatTime } from '../helpers.js'
+
+    function buildNewTask(oldTask, timePeriod, newValue) {
+        const newTask = {
+            ...oldTask,
+            [timePeriod]: Number(newValue),
+        };
+        newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
+        newTask.view = formatTime(newTask.hours, newTask.minutes, newTask.seconds);
+        
+        return newTask;
+    }
 
     export default {
         props: {
@@ -67,15 +80,22 @@
                 }
                 this.$emit('change-task', newTask);
             },
+            timeIncrease(task, timeType) {
+                console.log('>>> timeIncrease', timeType, task);
+                const newValue = task[timeType] + 1;
+                const newTask = buildNewTask(task, timeType, newValue);
+                this.$emit('change-task', newTask);
+            },
+            timeDecrease(task, timeType) {
+                console.log('>>> timeDecrease', timeType, task);
+                const newValue = task[timeType] - 1;
+                const newTask = buildNewTask(task, timeType, newValue);
+                this.$emit('change-task', newTask);
+            },
             changeTime(e) {
                 const { dataset:{ type }, value } = e.target;
                 const timePeriod = type.replace('task-', '');
-                const newTask = {
-                    ...this.task,
-                    [timePeriod]: Number(value),
-                };
-                newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
-                newTask.view = formatTime(newTask.hours, newTask.minutes, newTask.seconds);
+                const newTask = buildNewTask(this.task, timePeriod, value);
                 this.$emit('change-task', newTask);
             },
         },

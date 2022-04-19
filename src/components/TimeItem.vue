@@ -2,7 +2,7 @@
 </style>
 
 <template>
-    <span :class="'time-' + timeLabel">
+    <span :class="['time-item', 'time-' + timeLabel]">
         <button class="button btn-sm" title='up-arrow' @click='increaseTime'>
             <svg 
                 version="1.1" 
@@ -22,7 +22,7 @@
           C331.264,223.954,329.346,217.267,324.371,213.287z"/>
             </svg>
         </button>
-        <div class="task-times" v-text="timeValue"></div>
+        <div class="time-values" v-text="timeValue"></div>
         <div class="time-labels" v-text="timeLabel"></div>
         <button class="button btn-sm" title='down-arrow' @click='decreaseTime'>
             <svg 
@@ -55,12 +55,10 @@
         },
         methods: {
             increaseTime() {
-                console.log('>>> increase Time');
-                /*this.$emit('increase-time');*/
+                this.$emit('increase-time');
             },
             decreaseTime() {
-                console.log('>>> decrease Time');
-                /*this.$emit('decrease-time');*/
+                this.$emit('decrease-time');
             },
         },
     }
