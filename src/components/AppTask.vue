@@ -70,27 +70,34 @@
                 this.$emit('change-task', newTask);
             },
             toggleTaskType() {
-                const taskTypeMap = {
+                const taskToggleMap = {
                     'break': 'focus',
                     'focus': 'break',
                 };
                 const newTask = {
                     ...this.task,
-                    type: taskTypeMap[this.task.type]
+                    type: taskToggleMap[this.task.type]
                 }
                 this.$emit('change-task', newTask);
             },
             timeIncrease(task, timeType) {
-                console.log('>>> timeIncrease', timeType, task);
+                const maxTimeMap = {
+                    'hours': 24,
+                    'minutes': 59,
+                    'seconds': 59,
+                };
                 const newValue = task[timeType] + 1;
-                const newTask = buildNewTask(task, timeType, newValue);
-                this.$emit('change-task', newTask);
+                if (newValue <= maxTimeMap[timeType]) {
+                    const newTask = buildNewTask(task, timeType, newValue);
+                    this.$emit('change-task', newTask);
+                }
             },
             timeDecrease(task, timeType) {
-                console.log('>>> timeDecrease', timeType, task);
                 const newValue = task[timeType] - 1;
-                const newTask = buildNewTask(task, timeType, newValue);
-                this.$emit('change-task', newTask);
+                if (0 <= newValue) {
+                    const newTask = buildNewTask(task, timeType, newValue);
+                    this.$emit('change-task', newTask);
+                }
             },
             changeTime(e) {
                 const { dataset:{ type }, value } = e.target;
