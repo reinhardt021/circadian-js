@@ -15,7 +15,7 @@
             </span>
         </div>
         <div class='task-content'>
-            <TimeView :time='task.view'/>
+            <TaskTime :time='task.view'/>
             <input class='task-input' type='range' min='0' max='24' data-type='task-hours' v-model='task.hours' @input='changeTime'/>
             <input class='task-input' type='range' min='0' max='59' data-type='task-minutes' v-model='task.minutes' @input='changeTime'/>
             <input class='task-input' type='range' min='0' max='59' data-type='task-seconds' v-model='task.seconds' @input='changeTime'/>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import TimeView from "./TimeView.vue";
+import TaskTime from "./TaskTime.vue";
 import { showTime, formatTime } from '../helpers.js'
 
 export default {
@@ -70,7 +70,7 @@ export default {
         },
     },
     components: {
-        TimeView,
+        TaskTime,
     },
 }
 </script>

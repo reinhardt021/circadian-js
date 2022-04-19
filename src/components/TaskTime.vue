@@ -1,5 +1,17 @@
 <template>
     <div class="time-view">
+        /*<TimeItem */
+            /*v-for='(taskId, index) in settings.taskOrder'*/
+            /*v-for='(timeValue, timeType) in time'*/
+            /*:timeValue='timeValue'*/
+            /*:key='timeType'*/
+            /*@change-task='taskChange'*/
+            /*@remove-task='taskRemove'*/
+        /*/>*/
+        <TimeItem 
+            :timeValue='time.hours'
+            :timeLabel='hours'
+        />
         <span class="time-hours">
         <!-- /*TODO: move this to its own component*/ -->
         <!-- /*that has handlers for up and down arrows*/ -->
@@ -121,9 +133,17 @@
 </template>
 
 <script>
+    import TimeItem from "./TimeItem.vue";
+
     export default {
         props: {
             time: Object,
+        },
+        methods: {
+            
+        },
+        components: {
+            TimeItem,
         },
     }
 </script>
