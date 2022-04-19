@@ -276,7 +276,7 @@ input {
   font-size: x-small;
 }
 
-.time-view {
+.task-time {
   display: flex;
   justify-content: space-evenly;
 }

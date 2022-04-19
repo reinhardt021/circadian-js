@@ -1,3 +1,6 @@
+<style scoped>
+</style>
+
 <template>
     <div class='task settings-card'>
         <div class="task-header">
@@ -15,7 +18,14 @@
             </span>
         </div>
         <div class='task-content'>
-            <TaskTime :time='task.view'/>
+            <div class="task-time">
+                <TimeItem 
+                    v-for='(timeValue, timeType) in task.view'
+                    :timeValue='timeValue'
+                    :timeLabel='timeType'
+                    :key='timeType'
+                />
+            </div>
             <input class='task-input' type='range' min='0' max='24' data-type='task-hours' v-model='task.hours' @input='changeTime'/>
             <input class='task-input' type='range' min='0' max='59' data-type='task-minutes' v-model='task.minutes' @input='changeTime'/>
             <input class='task-input' type='range' min='0' max='59' data-type='task-seconds' v-model='task.seconds' @input='changeTime'/>
@@ -28,53 +38,49 @@
 </template>
 
 <script>
-import TaskTime from "./TaskTime.vue";
-import { showTime, formatTime } from '../helpers.js'
+    import TimeItem from "./TimeItem.vue";
+    import { showTime, formatTime } from '../helpers.js'
 
-export default {
-    props: {
-        task: Object,
-    },
-    methods: {
-        removeTask(taskId) {
-            this.$emit('remove-task', taskId);
+    export default {
+        props: {
+            task: Object,
         },
-        changeTitle(e) {
-            const newTask = {
-                ...this.task,
-                title: e.target.innerText.trim(),
-            };
-            this.$emit('change-task', newTask);
+        methods: {
+            removeTask(taskId) {
+                this.$emit('remove-task', taskId);
+            },
+            changeTitle(e) {
+                const newTask = {
+                    ...this.task,
+                    title: e.target.innerText.trim(),
+                };
+                this.$emit('change-task', newTask);
+            },
+            toggleTaskType() {
+                const taskTypeMap = {
+                    'break': 'focus',
+                    'focus': 'break',
+                };
+                const newTask = {
+                    ...this.task,
+                    type: taskTypeMap[this.task.type]
+                }
+                this.$emit('change-task', newTask);
+            },
+            changeTime(e) {
+                const { dataset:{ type }, value } = e.target;
+                const timePeriod = type.replace('task-', '');
+                const newTask = {
+                    ...this.task,
+                    [timePeriod]: Number(value),
+                };
+                newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
+                newTask.view = formatTime(newTask.hours, newTask.minutes, newTask.seconds);
+                this.$emit('change-task', newTask);
+            },
         },
-        toggleTaskType() {
-            const taskTypeMap = {
-                'break': 'focus',
-                'focus': 'break',
-            };
-            const newTask = {
-                ...this.task,
-                type: taskTypeMap[this.task.type]
-            }
-            this.$emit('change-task', newTask);
+        components: {
+            TimeItem,
         },
-        changeTime(e) {
-            const { dataset:{ type }, value } = e.target;
-            const timePeriod = type.replace('task-', '');
-            const newTask = {
-                ...this.task,
-                [timePeriod]: Number(value),
-            };
-            newTask.time = showTime(newTask.hours, newTask.minutes, newTask.seconds);
-            newTask.view = formatTime(newTask.hours, newTask.minutes, newTask.seconds);
-            this.$emit('change-task', newTask);
-        },
-    },
-    components: {
-        TaskTime,
-    },
-}
+    }
 </script>
-
-<style scoped>
-
-</style>
