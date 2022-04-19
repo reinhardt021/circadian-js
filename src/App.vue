@@ -66,7 +66,7 @@
                 </div>
             </div>
         </AppModal>
-        <AppTimer 
+        <CountdownTimer 
             :is-timer-active='isTimerActive'
             :current-task='currentTask' 
             @toggle-timer='toggleTimer'
@@ -94,7 +94,7 @@
 
 <script>
 import AppModal from './components/AppModal.vue'
-import AppTimer from './components/AppTimer.vue'
+import CountdownTimer from './components/CountdownTimer.vue'
 import AppControls from './components/AppControls.vue'
 import AppSettings from './components/AppSettings.vue'
 
@@ -433,7 +433,7 @@ export default {
     },
     components: {
         AppModal,
-        AppTimer,
+        CountdownTimer,
         AppControls,
         AppSettings,
     },

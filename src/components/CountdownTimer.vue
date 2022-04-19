@@ -1,7 +1,7 @@
 <template>
     <main class="site-content">
         <div class="container">
-            <div class="timer">
+            <div class="countdown-view">
                 <span>
                     <span v-show="currentTask.type === 'break'">
                         <i class="fa fa-coffee" aria-hidden="true"></i>

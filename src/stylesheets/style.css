@@ -17,7 +17,7 @@ input {
   width: 100%;
 }
 
-#app-timer {
+#app-container {
   height: 100%;
   padding: 50px;
  
@@ -74,7 +74,7 @@ input {
 }
 
 /* MAIN */
-.timer {
+.countdown-view {
   min-width: 224px;
   background-color: rgba(255, 255, 255, .25);
   border-radius: 50%;
@@ -89,7 +89,7 @@ input {
 }
 
 /* the transparent black outlines surrounding */
-.timer ::before {
+.countdown-view ::before {
   content: '';
   display: block;
   position: absolute;
@@ -100,7 +100,7 @@ input {
   transform: translate(-50%, -50%);
 }
 
-.timer ::before {
+.countdown-view ::before {
   width: 120%;
   height: 120%;
 }
