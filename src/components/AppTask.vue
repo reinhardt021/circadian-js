@@ -28,9 +28,6 @@
                     @decrease-time='timeDecrease(task, timeType)'
                 />
             </div>
-            <input class='task-input' type='range' min='0' max='24' data-type='task-hours' v-model='task.hours' @input='changeTime'/>
-            <input class='task-input' type='range' min='0' max='59' data-type='task-minutes' v-model='task.minutes' @input='changeTime'/>
-            <input class='task-input' type='range' min='0' max='59' data-type='task-seconds' v-model='task.seconds' @input='changeTime'/>
         </div>
         <div class='button task-delete' @click='removeTask(task.id)'>
             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -98,12 +95,6 @@
                     const newTask = buildNewTask(task, timeType, newValue);
                     this.$emit('change-task', newTask);
                 }
-            },
-            changeTime(e) {
-                const { dataset:{ type }, value } = e.target;
-                const timePeriod = type.replace('task-', '');
-                const newTask = buildNewTask(this.task, timePeriod, value);
-                this.$emit('change-task', newTask);
             },
         },
         components: {
