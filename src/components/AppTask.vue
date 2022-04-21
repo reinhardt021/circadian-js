@@ -26,6 +26,7 @@
                     :key='timeType'
                     @increase-time='timeIncrease(task, timeType)'
                     @decrease-time='timeDecrease(task, timeType)'
+                    @stop-increment='stopIncrement'
                 />
             </div>
         </div>
@@ -52,6 +53,9 @@
     }
 
     export default {
+        data () {
+            return { intervalID: null };
+        } ,
         props: {
             task: Object,
         },
@@ -83,18 +87,56 @@
                     'minutes': 59,
                     'seconds': 59,
                 };
-                const newValue = task[timeType] + 1;
-                if (newValue <= maxTimeMap[timeType]) {
-                    const newTask = buildNewTask(task, timeType, newValue);
-                    this.$emit('change-task', newTask);
-                }
+                let oldValue = task[timeType];
+                /*this.updateTime = true;*/
+                /*console.log('test updateTime', this.updateTime);*/
+                this.intervalID = setInterval(() => {
+                    let newValue = oldValue + 1;
+                    if (newValue <= maxTimeMap[timeType]) {
+                        const newTask = buildNewTask(task, timeType, newValue);
+                        this.$emit('change-task', newTask);
+                        oldValue = newValue
+                    }
+                }, 500);
+                console.log('mousedown intervalID', this.intervalID);
+                /*while (this.updateTime) {*/
+                    /*console.log('testing this mousedown');*/
+                    /*let newValue = oldValue + 1;*/
+                    /*if (newValue <= maxTimeMap[timeType]) {*/
+                        /*const newTask = buildNewTask(task, timeType, newValue);*/
+                        /*this.$emit('change-task', newTask);*/
+                        /*oldValue = newValue*/
+                    /*}*/
+                /*}*/
             },
             timeDecrease(task, timeType) {
-                const newValue = task[timeType] - 1;
-                if (0 <= newValue) {
-                    const newTask = buildNewTask(task, timeType, newValue);
-                    this.$emit('change-task', newTask);
-                }
+                let oldValue = task[timeType];
+                /*this.updateTime = true;*/
+                /*console.log('mousedown updateTime', this.updateTime);*/
+                this.intervalID = setInterval(() => {
+                    let newValue = oldValue - 1;
+                    if (0 <= newValue) {
+                        const newTask = buildNewTask(task, timeType, newValue);
+                        this.$emit('change-task', newTask);
+                        oldValue = newValue
+                    }
+                }, 500);
+                console.log('mousedown intervalID', this.intervalID);
+                /*while (this.updateTime) {*/
+                    /*let newValue = oldValue - 1;*/
+                    /*if (0 <= newValue) {*/
+                        /*const newTask = buildNewTask(task, timeType, newValue);*/
+                        /*this.$emit('change-task', newTask);*/
+                        /*oldValue = newValue*/
+                    /*}*/
+                /*}*/
+            },
+            stopIncrement() {
+                /*this.updateTime = false;*/
+                /*console.log('mouseup updateTime', this.updateTime);*/
+                console.log('mouseup this.intervalID', this.intervalID);
+                clearInterval(this.intervalID);
+                this.intervalID = null;
             },
         },
         components: {

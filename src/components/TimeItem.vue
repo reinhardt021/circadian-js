@@ -3,7 +3,7 @@
 
 <template>
     <span :class="['time-item', 'time-' + timeLabel]">
-        <button class="button btn-sm" title='up-arrow' @click='increaseTime'>
+        <button class="button btn-sm" title='up-arrow' @mousedown='increaseTime' @mouseup='stopIncrement'>
             <svg 
                 version="1.1" 
                 id="Layer_1" 
@@ -24,7 +24,7 @@
         </button>
         <div class="time-values" v-text="timeValue"></div>
         <div class="time-labels" v-text="timeLabel"></div>
-        <button class="button btn-sm" title='down-arrow' @click='decreaseTime'>
+        <button class="button btn-sm" title='down-arrow' @mousedown='decreaseTime' @mouseup='stopIncrement'>
             <svg 
                 version="1.1" 
                 id="Layer_1" 
@@ -60,6 +60,9 @@
             decreaseTime() {
                 this.$emit('decrease-time');
             },
+            stopIncrement() {
+                this.$emit('stop-increment');
+            }
         },
     }
 </script>
