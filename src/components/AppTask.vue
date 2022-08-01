@@ -52,6 +52,35 @@
         return newTask;
     }
 
+
+    const maxTimeMap = {
+        'hours': 24,
+        'minutes': 59,
+        'seconds': 59,
+    };
+    function inTimeBound(value, max) {
+        return 0 <= value && value <= max;
+    }
+
+    function increaseTime(self, task, timeType) {
+        let oldValue = task[timeType];
+        let newValue = oldValue + 1;
+        if (!inTimeBound(newValue, maxTimeMap[timeType])) {
+            return;
+        }
+        const newTask = buildNewTask(task, timeType, newValue);
+        self.$emit('change-task', newTask);
+    }
+    function decreaseTime(self, task, timeType) {
+        let oldValue = task[timeType];
+        let newValue = oldValue - 1;
+        if (!inTimeBound(newValue, maxTimeMap[timeType])) {
+            return;
+        }
+        const newTask = buildNewTask(task, timeType, newValue);
+        self.$emit('change-task', newTask);
+    }
+
     export default {
         data () {
             return { intervalID: null };
@@ -82,61 +111,37 @@
                 this.$emit('change-task', newTask);
             },
             timeIncrease(task, timeType) {
-                const maxTimeMap = {
-                    'hours': 24,
-                    'minutes': 59,
-                    'seconds': 59,
-                };
-                let oldValue = task[timeType];
-                /*this.updateTime = true;*/
-                /*console.log('test updateTime', this.updateTime);*/
+                /*let oldValue = task[timeType];*/
+                increaseTime(this, task, timeType);
                 this.intervalID = setInterval(() => {
-                    let newValue = oldValue + 1;
-                    if (newValue <= maxTimeMap[timeType]) {
-                        const newTask = buildNewTask(task, timeType, newValue);
-                        this.$emit('change-task', newTask);
-                        oldValue = newValue
-                    }
-                }, 500);
-                console.log('mousedown intervalID', this.intervalID);
-                /*while (this.updateTime) {*/
-                    /*console.log('testing this mousedown');*/
+                    increaseTime(this, task, timeType);
                     /*let newValue = oldValue + 1;*/
                     /*if (newValue <= maxTimeMap[timeType]) {*/
                         /*const newTask = buildNewTask(task, timeType, newValue);*/
                         /*this.$emit('change-task', newTask);*/
                         /*oldValue = newValue*/
                     /*}*/
-                /*}*/
+                }, 500);
+                console.log('mousedown INCR intervalID', this.intervalID);
             },
             timeDecrease(task, timeType) {
-                let oldValue = task[timeType];
-                /*this.updateTime = true;*/
-                /*console.log('mousedown updateTime', this.updateTime);*/
+                /*let oldValue = task[timeType];*/
+                decreaseTime(this, task, timeType);
                 this.intervalID = setInterval(() => {
-                    let newValue = oldValue - 1;
-                    if (0 <= newValue) {
-                        const newTask = buildNewTask(task, timeType, newValue);
-                        this.$emit('change-task', newTask);
-                        oldValue = newValue
-                    }
-                }, 500);
-                console.log('mousedown intervalID', this.intervalID);
-                /*while (this.updateTime) {*/
+                    decreaseTime(this, task, timeType);
                     /*let newValue = oldValue - 1;*/
                     /*if (0 <= newValue) {*/
                         /*const newTask = buildNewTask(task, timeType, newValue);*/
                         /*this.$emit('change-task', newTask);*/
                         /*oldValue = newValue*/
                     /*}*/
-                /*}*/
+                }, 500);
+                console.log('mousedown DECR intervalID', this.intervalID);
             },
             stopIncrement() {
-                /*this.updateTime = false;*/
-                /*console.log('mouseup updateTime', this.updateTime);*/
-                console.log('mouseup this.intervalID', this.intervalID);
                 clearInterval(this.intervalID);
                 this.intervalID = null;
+                console.log('mouseup this.intervalID', this.intervalID);
             },
         },
         components: {
