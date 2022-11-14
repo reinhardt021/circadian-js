@@ -8,6 +8,8 @@ Helping you get through the rhythms of your day
 * run `npm install`
 * run `npm start`
 
+* run `npm run build`
+
 ## Dependencies
 
 * install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash`
